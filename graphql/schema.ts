@@ -1,17 +1,15 @@
 export const typeDefs = `#graphql
-  type User {
-    id: Int!
-    username: String!
-    birthDate: Date!
+  type Profile {
+    name: String
     avatar: String
+    email: String
   }
 
   type Query {
-    Users: [User!]!
+    profiles:[Profile]
   }
 
   type Mutation {
-    createUser(username: String!, birthDate: Date!, avatar: String): User!
-    deleteUser(id: Int!): User!
+    addProfile(token:String!):Profile
   }
 `;

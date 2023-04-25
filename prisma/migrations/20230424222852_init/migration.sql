@@ -1,13 +1,13 @@
 -- CreateTable
-CREATE TABLE "UserApp" (
+CREATE TABLE "Profile" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "username" TEXT NOT NULL,
-    "birth" TIMESTAMP(3) NOT NULL,
     "avatar" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
 
-    CONSTRAINT "UserApp_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

@@ -1,4 +1,5 @@
 import React from "react";
+import { useQuery, gql } from "@apollo/client";
 import Header from "../components/Header/Header";
 
 type Props = {

@@ -1,10 +1,13 @@
 import Start from "@/components/Start/Start";
-import MainLayout from "@/layouts/mainLayout";
+import StreamView from "@/components/StreamView/StreamView";
+import { useState } from "react";
 
 export default function Page() {
-  return (
-    <MainLayout>
-      <Start />
-    </MainLayout>
-  );
+  const [streamMode, setStreamMode] = useState(false);
+
+  const handleClick = () => setStreamMode(!streamMode);
+
+  console.log(streamMode);
+
+  return streamMode ? <StreamView /> : <Start handleClick={handleClick} />;
 }
