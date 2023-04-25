@@ -2,23 +2,6 @@ import { Container, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { keyframes } from "@emotion/react";
 
-const pulse = keyframes`
-  0% {
-    transform: scale(0);
-    opacity: 0.5;
-  }
-
-  50% {
-    transform: scale(1.5);
-    opacity: 0.25;
-  }
-
-  100% {
-    transform: scale(0);
-    opacity: 0;
-  }
-`;
-
 const CircleButton = styled(Button)(({ theme }) => ({
   borderRadius: "50%",
   width: "200px",
