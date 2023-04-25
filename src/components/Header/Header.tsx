@@ -11,7 +11,6 @@ import {
   Menu,
   MenuItem,
   Button,
-  Theme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 
@@ -105,7 +104,7 @@ export default function Header() {
               }}
             >
               {pages.map(({ title, link }) => (
-                <StyledLink href={link} isMobile>
+                <StyledLink key={title} href={link} isMobile>
                   <MenuItem key={title} onClick={handleCloseNavMenu}>
                     {title}
                   </MenuItem>

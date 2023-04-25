@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useQuery, gql } from "@apollo/client";
 import {
   Container,
   Unstable_Grid2 as Grid,
@@ -13,6 +14,7 @@ import {
 import { styled } from "@mui/system";
 
 import FrontCamera from "./FrontCamera";
+import { useSession } from "next-auth/react";
 
 const BottomContainer = styled(Container)(({ theme }) => ({
   position: "fixed",
@@ -48,11 +50,59 @@ const RightBox = styled(Box)({
   justifyContent: "flex-end",
 });
 
+export const GET_PROFILES = gql`
+  query GetProfiles {
+    profiles {
+      name
+      avatar
+      email
+    }
+  }
+`;
+
+type User = {
+  [key: number]: any;
+  length: number;
+  name: string;
+  email: string;
+  image: string;
+};
+
 export default function StreamView() {
+  const { loading, error, data } = useQuery(GET_PROFILES);
+  const { data: session } = useSession();
+
+  const [candidate, setCandidate] = useState<User | null>(null);
   const [timeLeft, setTimeLeft] = useState(120);
 
+  function getCandidate(users: User[], user?: User): void {
+    if (user && users?.length) {
+      const randomUser = users[Math.floor(Math.random() * users.length)];
+
+      if (user?.email === randomUser.email) return getCandidate(users, user);
+
+      setCandidate(randomUser);
+    }
+
+    return;
+  }
+
+  function onSmash(users: User[], user?: User) {
+    return getCandidate(users, user);
+  }
+
+  function onPass() {
+    console.log("add to DB and navigate to success page");
+  }
+
   useEffect(() => {
-    if (timeLeft === 0) return;
+    getCandidate(data.profiles, session?.user as User | undefined);
+  }, []);
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      return onPass();
+    }
     const intervalId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
 
     return () => clearInterval(intervalId);
@@ -64,7 +114,13 @@ export default function StreamView() {
   return (
     <>
       <CenterGridV2>
-        <CircularProgress />
+        {!candidate ? (
+          <CircularProgress />
+        ) : (
+          <Typography variant="h1" sx={{ color: "primary.main" }}>
+            {candidate.name}
+          </Typography>
+        )}
       </CenterGridV2>
       <BottomContainer>
         <GridContainer container spacing={2}>
@@ -81,8 +137,14 @@ export default function StreamView() {
                 variant="outlined"
                 aria-label="outlined button group"
               >
-                <Button>Smash</Button>
-                <Button>Pass</Button>
+                <Button
+                  onClick={() =>
+                    onSmash(data.profiles, session?.user as User | undefined)
+                  }
+                >
+                  Smash
+                </Button>
+                <Button onClick={onPass}>Pass</Button>
               </ButtonGroup>
             </Box>
           </CenterGrid>

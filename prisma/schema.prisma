@@ -19,7 +19,7 @@ model Profile {
   updatedAt DateTime @updatedAt
   avatar    String
   name      String
-  email     String
+  email     String   @unique
 }
 
 
