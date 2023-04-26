@@ -11,14 +11,16 @@ export const resolvers = {
   Mutation: {
     likeProfile: async (_parent: any, { profileId, likedProfileId }: any) => {
       try {
-        return await prisma.profile.update({
+        const profile = await prisma.profile.update({
           where: { id: profileId },
           data: {
             likedProfiles: {
-              set: [{ id: likedProfileId }],
+              connect: [{ id: likedProfileId }],
             },
           },
         });
+
+        return profile;
       } catch (error) {
         console.error(error);
       }
