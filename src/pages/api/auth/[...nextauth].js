@@ -12,18 +12,26 @@ export const authOptions = {
     }),
   ],
   callbacks: {
+    async session({ session, user, token }) {
+      return { ...session, id: user.id };
+    },
     async signIn({ user }) {
-      const userExists = await prisma.profile.findUnique({
-        where: { id: user.id },
-      });
-      if (!userExists) {
-        const newUser = {
-          avatar: user.image,
-          name: user.name,
-          email: user.email,
-        };
+      try {
+        const userExists = await prisma.profile.findUnique({
+          where: { id: user.id },
+        });
+        if (!userExists) {
+          const newUser = {
+            avatar: user.image,
+            name: user.name,
+            email: user.email,
+            likedProfiles: [],
+          };
 
-        await prisma.profile.create({ data: newUser });
+          await prisma.profile.create({ data: newUser });
+        }
+      } catch (error) {
+        console.log(error);
       }
       return true;
     },

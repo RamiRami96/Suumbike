@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useRouter } from "next/router";
+import { useQuery, gql, useMutation } from "@apollo/client";
 import {
   Container,
   Unstable_Grid2 as Grid,
@@ -50,9 +51,48 @@ const RightBox = styled(Box)({
   justifyContent: "flex-end",
 });
 
-export const GET_PROFILES = gql`
+const GET_PROFILES = gql`
   query GetProfiles {
     profiles {
+      id
+      name
+      avatar
+      email
+      likedProfiles {
+        id
+        name
+        avatar
+        email
+      }
+    }
+  }
+`;
+
+const LIKE_PROFILE_MUTATION = gql`
+  mutation LikeProfile($profileId: ID!, $likedProfileId: ID!) {
+    likeProfile(profileId: $profileId, likedProfileId: $likedProfileId) {
+      likedProfiles {
+        id
+        name
+        avatar
+        email
+      }
+    }
+  }
+`;
+
+type User = {
+  [key: number]: any;
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+};
+
+const GET_PROFILE_ID = gql`
+  query getProfileID($email: String!) {
+    profile(email: $email) {
+      id
       name
       avatar
       email
@@ -60,23 +100,24 @@ export const GET_PROFILES = gql`
   }
 `;
 
-type User = {
-  [key: number]: any;
-  length: number;
-  name: string;
-  email: string;
-  image: string;
-};
-
 export default function StreamView() {
-  const { loading, error, data } = useQuery(GET_PROFILES);
+  const router = useRouter();
   const { data: session } = useSession();
+
+  const { data } = useQuery(GET_PROFILES);
+  const { data: profileData } = useQuery(GET_PROFILE_ID, {
+    variables: { email: (session?.user as User)?.email || "ram@gmail.com" },
+  });
+
+  const id = profileData.profile.id;
+
+  const [likeProfile] = useMutation(LIKE_PROFILE_MUTATION);
 
   const [candidate, setCandidate] = useState<User | null>(null);
   const [timeLeft, setTimeLeft] = useState(120);
 
-  function getCandidate(users: User[], user?: User): void {
-    if (user && users?.length) {
+  function getCandidate(users?: User[], user?: User): void {
+    if (users && user) {
       const randomUser = users[Math.floor(Math.random() * users.length)];
 
       if (user?.email === randomUser.email) return getCandidate(users, user);
@@ -91,17 +132,27 @@ export default function StreamView() {
     return getCandidate(users, user);
   }
 
-  function onPass() {
-    console.log("add to DB and navigate to success page");
+  function onPass(profileId?: string, likedProfileId?: string) {
+    if (profileId && likedProfileId) {
+      likeProfile({
+        variables: {
+          profileId,
+          likedProfileId,
+        },
+      });
+      router.push("/success");
+    }
+
+    return;
   }
 
   useEffect(() => {
-    getCandidate(data.profiles, session?.user as User | undefined);
-  }, []);
+    getCandidate(data?.profiles, session?.user as User | undefined);
+  }, [data]);
 
   useEffect(() => {
     if (timeLeft === 0) {
-      return onPass();
+      return onPass(id, candidate?.id);
     }
     const intervalId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
 
@@ -144,7 +195,7 @@ export default function StreamView() {
                 >
                   Smash
                 </Button>
-                <Button onClick={onPass}>Pass</Button>
+                <Button onClick={() => onPass(id, candidate?.id)}>Pass</Button>
               </ButtonGroup>
             </Box>
           </CenterGrid>
