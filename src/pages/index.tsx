@@ -7,5 +7,9 @@ export default function Page() {
 
   const handleClick = () => setStreamMode(!streamMode);
 
-  return streamMode ? <StreamView /> : <Start handleClick={handleClick} />;
+  return streamMode ? (
+    <StreamView handleClick={handleClick} />
+  ) : (
+    <Start handleClick={handleClick} />
+  );
 }

@@ -100,7 +100,11 @@ const GET_PROFILE_ID = gql`
   }
 `;
 
-export default function StreamView() {
+type Props = {
+  handleClick: () => void;
+};
+
+export default function StreamView({ handleClick }: Props) {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -195,6 +199,7 @@ export default function StreamView() {
                 >
                   Smash
                 </Button>
+                <Button onClick={handleClick}>Close</Button>
                 <Button onClick={() => onPass(id, candidate?.id)}>Pass</Button>
               </ButtonGroup>
             </Box>

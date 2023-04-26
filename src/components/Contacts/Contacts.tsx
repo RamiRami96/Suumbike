@@ -58,9 +58,7 @@ export default function Contacts() {
     variables: { email: (session?.user as User)?.email },
   });
 
-  const CONTACT_LIST = profileData?.likedProfiles;
-
-  console.log(CONTACT_LIST, "CONTACT_LIST");
+  console.log(profileData, "profileData");
 
   return (
     <TableContainer component={Paper}>
