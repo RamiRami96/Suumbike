@@ -6,6 +6,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useSession } from "next-auth/react";
+import { gql, useQuery } from "@apollo/client";
 
 function createData(
   name: string,
@@ -25,7 +27,41 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
+type User = {
+  [key: number]: any;
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+};
+
+const GET_PROFILE_ID = gql`
+  query getProfileID($email: String!) {
+    profile(email: $email) {
+      id
+      name
+      avatar
+      email
+      likedProfiles {
+        id
+        name
+        avatar
+        email
+      }
+    }
+  }
+`;
+
 export default function Contacts() {
+  const { data: session } = useSession();
+  const { data: profileData } = useQuery(GET_PROFILE_ID, {
+    variables: { email: (session?.user as User)?.email },
+  });
+
+  const CONTACT_LIST = profileData?.likedProfiles;
+
+  console.log(CONTACT_LIST, "CONTACT_LIST");
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

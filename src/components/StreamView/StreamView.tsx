@@ -106,10 +106,10 @@ export default function StreamView() {
 
   const { data } = useQuery(GET_PROFILES);
   const { data: profileData } = useQuery(GET_PROFILE_ID, {
-    variables: { email: (session?.user as User)?.email || "ram@gmail.com" },
+    variables: { email: (session?.user as User)?.email },
   });
 
-  const id = profileData.profile.id;
+  const id = profileData?.profile?.id;
 
   const [likeProfile] = useMutation(LIKE_PROFILE_MUTATION);
 
@@ -117,7 +117,7 @@ export default function StreamView() {
   const [timeLeft, setTimeLeft] = useState(120);
 
   function getCandidate(users?: User[], user?: User): void {
-    if (users && user) {
+    if (users?.length && user) {
       const randomUser = users[Math.floor(Math.random() * users.length)];
 
       if (user?.email === randomUser.email) return getCandidate(users, user);

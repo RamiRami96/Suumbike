@@ -24,16 +24,16 @@ const pages = [
   { title: "contacts", link: "/contacts" },
 ];
 
-const StyledLink = styled(Link)<{ isMobile?: boolean }>(
-  ({ theme, isMobile }) => ({
+const StyledLink = styled(Link)<{ ismobile?: string }>(
+  ({ theme, ismobile }) => ({
     textDecoration: "none",
-    color: isMobile
+    color: ismobile
       ? theme.palette.secondary.dark
       : theme.palette.secondary.main,
 
     "&:focus, &:hover, &:visited, &:link, &:active": {
       textDecoration: "none",
-      color: isMobile
+      color: ismobile
         ? theme.palette.secondary.dark
         : theme.palette.secondary.main,
     },
@@ -104,7 +104,7 @@ export default function Header() {
               }}
             >
               {pages.map(({ title, link }) => (
-                <StyledLink key={title} href={link} isMobile>
+                <StyledLink key={title} href={link} ismobile="true">
                   <MenuItem key={title} onClick={handleCloseNavMenu}>
                     {title}
                   </MenuItem>
