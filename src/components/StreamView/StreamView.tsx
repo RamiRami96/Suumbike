@@ -58,12 +58,6 @@ const GET_PROFILES = gql`
       name
       avatar
       email
-      likedProfiles {
-        id
-        name
-        avatar
-        email
-      }
     }
   }
 `;
@@ -72,9 +66,8 @@ const LIKE_PROFILE_MUTATION = gql`
   mutation LikeProfile($profileId: ID!, $likedProfileId: ID!) {
     likeProfile(profileId: $profileId, likedProfileId: $likedProfileId) {
       likedProfiles {
-        id
-        name
         avatar
+        name
         email
       }
     }
@@ -93,9 +86,6 @@ const GET_PROFILE_ID = gql`
   query getProfileID($email: String!) {
     profile(email: $email) {
       id
-      name
-      avatar
-      email
     }
   }
 `;

@@ -39,9 +39,7 @@ export default function Contacts() {
     variables: { email: (session?.user as User)?.email },
   });
 
-  const likedProfiles = profileData?.likedProfiles;
-
-  console.log(profileData?.likedProfiles, "likedProfiles");
+  const likedProfiles = profileData?.profile?.likedProfiles;
 
   return (
     <Container>

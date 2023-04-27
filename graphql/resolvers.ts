@@ -6,7 +6,10 @@ export const resolvers = {
   Query: {
     profiles: () => prisma.profile.findMany(),
     profile: (_: any, { email }: any) =>
-      prisma.profile.findUnique({ where: { email } }),
+      prisma.profile.findUnique({
+        where: { email },
+        include: { likedProfiles: true },
+      }),
   },
   Mutation: {
     likeProfile: async (_parent: any, { profileId, likedProfileId }: any) => {
@@ -17,6 +20,7 @@ export const resolvers = {
 
         const myProfile = await prisma.profile.findUnique({
           where: { id: profileId },
+          include: { likedProfiles: true },
         });
 
         if (myProfile && likedProfile) {
@@ -24,12 +28,7 @@ export const resolvers = {
             where: { id: profileId },
             data: {
               likedProfiles: {
-                create: [
-                  ...(Array.isArray(myProfile.likedProfiles)
-                    ? myProfile.likedProfiles
-                    : []),
-                  likedProfile,
-                ],
+                create: [likedProfile],
               },
             },
           });
