@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -11,16 +11,31 @@ export const resolvers = {
   Mutation: {
     likeProfile: async (_parent: any, { profileId, likedProfileId }: any) => {
       try {
-        const profile = await prisma.profile.update({
-          where: { id: profileId },
-          data: {
-            likedProfiles: {
-              connect: [{ id: likedProfileId }],
-            },
-          },
+        const likedProfile = await prisma.profile.findUnique({
+          where: { id: likedProfileId },
         });
 
-        return profile;
+        const myProfile = await prisma.profile.findUnique({
+          where: { id: profileId },
+        });
+
+        if (myProfile && likedProfile) {
+          const profile = await prisma.profile.update({
+            where: { id: profileId },
+            data: {
+              likedProfiles: {
+                create: [
+                  ...(Array.isArray(myProfile.likedProfiles)
+                    ? myProfile.likedProfiles
+                    : []),
+                  likedProfile,
+                ],
+              },
+            },
+          });
+
+          return profile;
+        }
       } catch (error) {
         console.error(error);
       }

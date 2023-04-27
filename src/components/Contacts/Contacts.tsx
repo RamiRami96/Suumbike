@@ -12,24 +12,6 @@ import {
 import { useSession } from "next-auth/react";
 import { gql, useQuery } from "@apollo/client";
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 type User = {
   [key: number]: any;
   id: string;
@@ -41,10 +23,6 @@ type User = {
 const GET_PROFILE_ID = gql`
   query getProfileID($email: String!) {
     profile(email: $email) {
-      id
-      name
-      avatar
-      email
       likedProfiles {
         id
         name
@@ -61,7 +39,9 @@ export default function Contacts() {
     variables: { email: (session?.user as User)?.email },
   });
 
-  console.log(profileData, "profileData");
+  const likedProfiles = profileData?.likedProfiles;
+
+  console.log(profileData?.likedProfiles, "likedProfiles");
 
   return (
     <Container>
@@ -75,18 +55,29 @@ export default function Contacts() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-              </TableRow>
-            ))}
+            {likedProfiles &&
+              likedProfiles.map(
+                ({
+                  avatar,
+                  name,
+                  email,
+                }: {
+                  avatar: string;
+                  name: string;
+                  email: string;
+                }) => (
+                  <TableRow
+                    key={name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {avatar}
+                    </TableCell>
+                    <TableCell align="right">{name}</TableCell>
+                    <TableCell align="right">{email}</TableCell>
+                  </TableRow>
+                )
+              )}
           </TableBody>
         </Table>
       </TableContainer>

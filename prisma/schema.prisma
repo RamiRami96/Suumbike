@@ -20,11 +20,19 @@ model Profile {
   avatar             String
   name               String
   email              String           @unique
-  likedProfiles      Profile[]         @relation("likedProfiles")
-  likedByProfiles     Profile[]        @relation("likedProfiles")
+  likedProfiles      LikedProfile[]   @relation("LikedProfile")     
 }
 
-
+model LikedProfile {
+id                 String           @id @default(uuid())
+createdAt          DateTime         @default(now())
+updatedAt          DateTime         @updatedAt
+avatar             String
+name               String
+email              String           @unique
+profile            Profile          @relation("LikedProfile",fields: [profileId], references: [id])
+profileId          String          
+}
 
 model Account {
   id                 String  @id @default(cuid())
