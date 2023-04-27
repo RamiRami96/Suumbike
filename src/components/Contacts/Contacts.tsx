@@ -44,18 +44,22 @@ export default function Contacts() {
 
   return (
     <Container>
-      <TableContainer component={Paper} sx={{ marginTop: 5 }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Avatar</TableCell>
-              <TableCell align="right">name</TableCell>
-              <TableCell align="right">mail</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {likedProfiles &&
-              likedProfiles.map(
+      {!likedProfiles || likedProfiles?.length === 0 ? (
+        <h2 style={{ textAlign: "center", padding: "50px 0" }}>
+          Not liked users :(
+        </h2>
+      ) : (
+        <TableContainer component={Paper} sx={{ marginTop: 5 }}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Avatar</TableCell>
+                <TableCell align="right">name</TableCell>
+                <TableCell align="right">mail</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {likedProfiles.map(
                 ({
                   avatar,
                   name,
@@ -77,9 +81,10 @@ export default function Contacts() {
                   </TableRow>
                 )
               )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Container>
   );
 }
