@@ -118,13 +118,16 @@ export default function StreamView({ handleClick }: Props) {
   const [candidate, setCandidate] = useState<User | null>(null);
   const [timeLeft, setTimeLeft] = useState(120);
 
+  const notUsers =
+    data?.profiles.length - profileData?.profile?.likedProfiles.length === 1;
+
   function getCandidate(users?: User[], user?: User): void {
     if (users?.length && user) {
       const randomUser = users[Math.floor(Math.random() * users.length)];
 
       if (
         user?.email === randomUser.email ||
-        user.likedProfiles.every(({ email }) => email === randomUser.email)
+        user.likedProfiles.some(({ email }) => email === randomUser.email)
       )
         return getCandidate(users, user);
 
@@ -153,13 +156,18 @@ export default function StreamView({ handleClick }: Props) {
   }
 
   useEffect(() => {
-    getCandidate(data?.profiles, profileData?.profile);
+    if (!notUsers) {
+      getCandidate(data?.profiles, profileData?.profile);
+    }
   }, [data, profileData]);
 
   useEffect(() => {
     if (timeLeft === 0) {
       return onPass(id, candidate?.id);
     }
+
+    if (!candidate && notUsers) return;
+
     const intervalId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
 
     return () => clearInterval(intervalId);
@@ -196,11 +204,17 @@ export default function StreamView({ handleClick }: Props) {
               >
                 <Button
                   onClick={() => onSmash(data.profiles, profileData?.profile)}
+                  disabled={!candidate && notUsers}
                 >
                   Smash
                 </Button>
                 <Button onClick={handleClick}>Close</Button>
-                <Button onClick={() => onPass(id, candidate?.id)}>Pass</Button>
+                <Button
+                  onClick={() => onPass(id, candidate?.id)}
+                  disabled={!candidate && notUsers}
+                >
+                  Pass
+                </Button>
               </ButtonGroup>
             </Box>
           </CenterGrid>

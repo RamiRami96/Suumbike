@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 
 const Video = styled("video")(({ theme }) => ({
   width: "40%",
-  height: "40%",
+  height: 90.8,
   border: `2px solid ${theme.palette.primary.main}`,
   borderRadius: 10,
 }));

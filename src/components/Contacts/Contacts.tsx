@@ -42,8 +42,6 @@ export default function Contacts() {
 
   const likedProfiles = profileData?.profile?.likedProfiles;
 
-  console.log(profileData);
-
   return (
     <Container>
       <TableContainer component={Paper} sx={{ marginTop: 5 }}>

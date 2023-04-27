@@ -18,21 +18,12 @@ export const resolvers = {
           where: { id: likedProfileId },
         });
 
-        const myProfile = await prisma.profile.findUnique({
-          where: { id: profileId },
-          include: { likedProfiles: true },
-        });
-
-        if (myProfile && likedProfile) {
-          myProfile?.likedProfiles?.forEach((item) => {
-            delete (item as any).profileId;
-          });
-
+        if (likedProfile) {
           const profile = await prisma.profile.update({
             where: { id: profileId },
             data: {
               likedProfiles: {
-                create: [...myProfile.likedProfiles, likedProfile],
+                create: [likedProfile],
               },
             },
           });
