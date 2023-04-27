@@ -79,13 +79,21 @@ type User = {
   id: string;
   name: string;
   email: string;
-  image: string;
+  avatar: string;
+  likedProfiles: User[];
 };
 
 const GET_PROFILE_ID = gql`
   query getProfileID($email: String!) {
     profile(email: $email) {
       id
+      email
+      likedProfiles {
+        id
+        name
+        avatar
+        email
+      }
     }
   }
 `;
@@ -100,7 +108,7 @@ export default function StreamView({ handleClick }: Props) {
 
   const { data } = useQuery(GET_PROFILES);
   const { data: profileData } = useQuery(GET_PROFILE_ID, {
-    variables: { email: (session?.user as User)?.email },
+    variables: { email: (session?.user as any)?.email },
   });
 
   const id = profileData?.profile?.id;
@@ -114,7 +122,11 @@ export default function StreamView({ handleClick }: Props) {
     if (users?.length && user) {
       const randomUser = users[Math.floor(Math.random() * users.length)];
 
-      if (user?.email === randomUser.email) return getCandidate(users, user);
+      if (
+        user?.email === randomUser.email ||
+        user.likedProfiles.every(({ email }) => email === randomUser.email)
+      )
+        return getCandidate(users, user);
 
       setCandidate(randomUser);
     }
@@ -141,8 +153,8 @@ export default function StreamView({ handleClick }: Props) {
   }
 
   useEffect(() => {
-    getCandidate(data?.profiles, session?.user as User | undefined);
-  }, [data]);
+    getCandidate(data?.profiles, profileData?.profile);
+  }, [data, profileData]);
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -183,9 +195,7 @@ export default function StreamView({ handleClick }: Props) {
                 aria-label="outlined button group"
               >
                 <Button
-                  onClick={() =>
-                    onSmash(data.profiles, session?.user as User | undefined)
-                  }
+                  onClick={() => onSmash(data.profiles, profileData?.profile)}
                 >
                   Smash
                 </Button>

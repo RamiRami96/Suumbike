@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Avatar,
 } from "@mui/material";
 
 import { useSession } from "next-auth/react";
@@ -41,6 +42,8 @@ export default function Contacts() {
 
   const likedProfiles = profileData?.profile?.likedProfiles;
 
+  console.log(profileData);
+
   return (
     <Container>
       <TableContainer component={Paper} sx={{ marginTop: 5 }}>
@@ -69,7 +72,7 @@ export default function Contacts() {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {avatar}
+                      <Avatar alt={name} src={avatar} />
                     </TableCell>
                     <TableCell align="right">{name}</TableCell>
                     <TableCell align="right">{email}</TableCell>

@@ -24,11 +24,15 @@ export const resolvers = {
         });
 
         if (myProfile && likedProfile) {
+          myProfile?.likedProfiles?.forEach((item) => {
+            delete (item as any).profileId;
+          });
+
           const profile = await prisma.profile.update({
             where: { id: profileId },
             data: {
               likedProfiles: {
-                create: [likedProfile],
+                create: [...myProfile.likedProfiles, likedProfile],
               },
             },
           });

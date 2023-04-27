@@ -30,8 +30,8 @@ updatedAt          DateTime         @updatedAt
 avatar             String
 name               String
 email              String           @unique
-profile            Profile          @relation("LikedProfile", fields: [profileId], references: [id])
-profileId          String          
+profile            Profile?          @relation("LikedProfile", fields: [profileId], references: [id])
+profileId          String?          
 }
 
 model Account {

@@ -12,8 +12,8 @@ export const typeDefs = `#graphql
     avatar: String!          
     name: String!                
     email: String!               
-    profile: String!              
-    profileId: String!              
+    profile: String             
+    profileId: String              
   }
 
   type Query {
