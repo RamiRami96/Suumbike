@@ -9,9 +9,9 @@ import {
   TableRow,
   Avatar,
 } from "@mui/material";
-
 import { useSession } from "next-auth/react";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+
 import { GET_PROFILE } from "./queries";
 
 type User = {
@@ -28,11 +28,11 @@ export default function Contacts() {
     variables: { email: (session?.user as User)?.email },
   });
 
-  const likedProfiles = profileData?.profile?.likedProfiles;
+  const LIKED_PROFILES = profileData?.profile?.likedProfiles;
 
   return (
     <Container>
-      {!likedProfiles || likedProfiles?.length === 0 ? (
+      {!LIKED_PROFILES || LIKED_PROFILES?.length === 0 ? (
         <h2 style={{ textAlign: "center", padding: "50px 0" }}>
           Not liked users :(
         </h2>
@@ -47,7 +47,7 @@ export default function Contacts() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {likedProfiles.map(
+              {LIKED_PROFILES.map(
                 ({
                   avatar,
                   name,
