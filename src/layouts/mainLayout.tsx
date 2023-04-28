@@ -9,7 +9,7 @@ export default function MainLayout({ children }: Props) {
   return (
     <>
       <Header />
-      {children}
+      <main>{children}</main>
     </>
   );
 }

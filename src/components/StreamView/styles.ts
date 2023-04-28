@@ -30,18 +30,17 @@ export const CenterGridV2 = styled(Grid)({
   height: "75vh",
 });
 
-export const CenterGridV3 = styled(Grid)<{ avatar?: string }>(
-  ({ avatar, theme }) => ({
+export const ContainerView = styled(Grid)<{ avatar?: string }>(
+  ({ avatar }) => ({
     backgroundImage: `url(${avatar})`,
-    backgroundPosition: "top",
+    backgroundPosition: "bottom",
     backgroundRepeat: "no-repeat",
     height: "91.4vh",
-    [theme.breakpoints.down("sm")]: {
-      backgroundSize: "cover",
-    },
-    [theme.breakpoints.up("md")]: {
-      backgroundSize: "contain",
-    },
+    backgroundSize: "contain",
+    position: "fixed",
+    left: 0,
+    bottom: 0,
+    width: "100%",
   })
 );
 
@@ -54,4 +53,42 @@ export const Video = styled("video")(({ theme }) => ({
   height: 90.8,
   border: `2px solid ${theme.palette.primary.light}`,
   borderRadius: 10,
+}));
+
+export const ContainerViewMob = styled(Grid)<{ avatar?: string }>(
+  ({ avatar }) => ({
+    backgroundImage: `url(${avatar})`,
+    backgroundPosition: "top",
+    backgroundRepeat: "no-repeat",
+    height: "100%",
+    backgroundSize: "cover",
+    position: "fixed",
+    left: 0,
+    bottom: "-50px",
+    width: "100%",
+  })
+);
+
+export const BottomContainerMob = styled(Container)(({ theme }) => ({
+  position: "fixed",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: theme.palette.primary.main,
+  display: "flex",
+  justifyContent: "center",
+  paddingBottom: 25,
+  paddingTop: 25,
+}));
+
+export const LeftBoxMob = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  left: 30,
+  top: 25,
+}));
+
+export const RightBoxMob = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  right: 15,
+  top: 25,
 }));

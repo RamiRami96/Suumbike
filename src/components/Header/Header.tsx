@@ -35,7 +35,7 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -49,7 +49,7 @@ export default function Header() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: "primary.light",
               textDecoration: "none",
             }}
           >
@@ -63,7 +63,7 @@ export default function Header() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              sx={{ color: "primary.light" }}
             >
               <MenuIcon />
             </IconButton>
@@ -106,7 +106,7 @@ export default function Header() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: "primary.light",
               textDecoration: "none",
             }}
           >

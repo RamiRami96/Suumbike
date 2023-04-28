@@ -11,16 +11,21 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useSession } from "next-auth/react";
 
 import FrontCamera from "./FrontCamera";
 import { GET_PROFILE, GET_PROFILES, LIKE_PROFILE_MUTATION } from "./queries";
 import {
   BottomContainer,
+  BottomContainerMob,
   CenterGrid,
   CenterGridV2,
-  CenterGridV3,
+  ContainerView,
+  ContainerViewMob,
   GridContainer,
+  LeftBoxMob,
+  RightBoxMob,
   RightBox,
 } from "./styles";
 
@@ -39,6 +44,8 @@ type Props = {
 
 export default function StreamView({ handleClick }: Props) {
   const router = useRouter();
+  const isTabletScreen = useMediaQuery("(min-width:600px)");
+
   const { data: session } = useSession();
 
   const { data: profilesData } = useQuery(GET_PROFILES);
@@ -49,7 +56,7 @@ export default function StreamView({ handleClick }: Props) {
   const [likeProfile] = useMutation(LIKE_PROFILE_MUTATION);
 
   const [candidate, setCandidate] = useState<User | null>(null);
-  const [timeLeft, setTimeLeft] = useState(120);
+  const [timeLeft, setTimeLeft] = useState(111120);
 
   const NOT_USERS =
     profilesData?.profiles.length -
@@ -76,6 +83,7 @@ export default function StreamView({ handleClick }: Props) {
   }
 
   function onSmash(users: User[], user?: User) {
+    setTimeLeft(120);
     return getCandidate(users, user);
   }
 
@@ -114,63 +122,116 @@ export default function StreamView({ handleClick }: Props) {
   const minute = Math.floor(timeLeft / 60);
   const second = timeLeft % 60;
 
+  if (isTabletScreen) {
+    return (
+      <ContainerView avatar={candidate?.avatar || ""}>
+        <CenterGridV2>{!candidate && <CircularProgress />}</CenterGridV2>
+        <BottomContainer>
+          <GridContainer container spacing={2}>
+            <Grid xs={4}>
+              <Box>
+                <Typography variant="h5" sx={{ color: "primary.light" }}>
+                  {`${minute}:${second.toString().padStart(2, "0")}`}
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{ color: "primary.light", paddingTop: "1rem" }}
+                >
+                  {candidate?.name}{" "}
+                  {`${
+                    minute < 1
+                      ? "is wanting sex with you"
+                      : "is meeting with you"
+                  }`}
+                </Typography>
+              </Box>
+            </Grid>
+            <CenterGrid xs={4}>
+              <Box>
+                <ButtonGroup
+                  variant="outlined"
+                  aria-label="outlined button group"
+                  color="secondary"
+                  size="large"
+                >
+                  <Button
+                    onClick={() =>
+                      onSmash(profilesData?.profiles, profileData?.profile)
+                    }
+                    disabled={!candidate && NOT_USERS}
+                    color="secondary"
+                  >
+                    Smash
+                  </Button>
+                  <Button onClick={handleClick} color="secondary">
+                    Close
+                  </Button>
+                  <Button
+                    onClick={() => onPass(PROFILE_ID, CANDIDATE_ID)}
+                    disabled={!candidate && NOT_USERS}
+                    color="secondary"
+                  >
+                    Pass
+                  </Button>
+                </ButtonGroup>
+              </Box>
+            </CenterGrid>
+            <Grid xs={4}>
+              <RightBox>
+                <FrontCamera />
+              </RightBox>
+            </Grid>
+          </GridContainer>
+        </BottomContainer>
+      </ContainerView>
+    );
+  }
+
   return (
-    <CenterGridV3 avatar={candidate?.avatar || ""}>
+    <ContainerViewMob avatar={candidate?.avatar || ""}>
+      <LeftBoxMob>
+        <Typography variant="h5" sx={{ color: "primary.light" }}>
+          {`${minute}:${second.toString().padStart(2, "0")}`}
+        </Typography>
+        <Typography
+          variant="h5"
+          sx={{ color: "primary.light", paddingTop: "1rem" }}
+        >
+          {candidate?.name}
+        </Typography>
+      </LeftBoxMob>
+      <RightBoxMob>
+        <FrontCamera />
+      </RightBoxMob>
       <CenterGridV2>{!candidate && <CircularProgress />}</CenterGridV2>
-      <BottomContainer>
-        <GridContainer container spacing={2}>
-          <Grid xs={4}>
-            <Box>
-              <Typography variant="h5" sx={{ color: "primary.light" }}>
-                {`${minute}:${second.toString().padStart(2, "0")}`}
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{ color: "primary.light", paddingTop: "1rem" }}
-              >
-                {candidate?.name}{" "}
-                {`${
-                  minute < 1 ? "is wanting sex with you" : "is meeting with you"
-                }`}
-              </Typography>
-            </Box>
-          </Grid>
-          <CenterGrid xs={4}>
-            <Box>
-              <ButtonGroup
-                variant="outlined"
-                aria-label="outlined button group"
-                color="secondary"
-              >
-                <Button
-                  onClick={() =>
-                    onSmash(profilesData.profiles, profileData?.profile)
-                  }
-                  disabled={!candidate && NOT_USERS}
-                  color="secondary"
-                >
-                  Smash
-                </Button>
-                <Button onClick={handleClick} color="secondary">
-                  Close
-                </Button>
-                <Button
-                  onClick={() => onPass(PROFILE_ID, CANDIDATE_ID)}
-                  disabled={!candidate && NOT_USERS}
-                  color="secondary"
-                >
-                  Pass
-                </Button>
-              </ButtonGroup>
-            </Box>
-          </CenterGrid>
-          <Grid xs={4}>
-            <RightBox>
-              <FrontCamera />
-            </RightBox>
-          </Grid>
-        </GridContainer>
-      </BottomContainer>
-    </CenterGridV3>
+      <BottomContainerMob>
+        <ButtonGroup
+          variant="outlined"
+          aria-label="outlined button group"
+          color="secondary"
+          size="large"
+        >
+          <Button
+            onClick={() =>
+              onSmash(profilesData?.profiles, profileData?.profile)
+            }
+            disabled={!candidate && NOT_USERS}
+            color="secondary"
+          >
+            Smash
+          </Button>
+          <Button onClick={handleClick} color="secondary">
+            Close
+          </Button>
+          <Button
+            onClick={() => onPass(PROFILE_ID, CANDIDATE_ID)}
+            disabled={!candidate && NOT_USERS}
+            color="secondary"
+          >
+            Pass
+          </Button>
+        </ButtonGroup>
+      </BottomContainerMob>
+    </ContainerViewMob>
   );
 }

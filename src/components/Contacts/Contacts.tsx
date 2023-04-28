@@ -31,7 +31,7 @@ export default function Contacts() {
   const LIKED_PROFILES = profileData?.profile?.likedProfiles;
 
   return (
-    <Container>
+    <Container sx={{ marginTop: 15 }}>
       {!LIKED_PROFILES || LIKED_PROFILES?.length === 0 ? (
         <h2 style={{ textAlign: "center", padding: "50px 0" }}>
           Not liked users :(
@@ -42,8 +42,8 @@ export default function Contacts() {
             <TableHead>
               <TableRow>
                 <TableCell>Avatar</TableCell>
-                <TableCell align="right">name</TableCell>
-                <TableCell align="right">mail</TableCell>
+                <TableCell>name</TableCell>
+                <TableCell>mail</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -64,8 +64,8 @@ export default function Contacts() {
                     <TableCell component="th" scope="row">
                       <Avatar alt={name} src={avatar} />
                     </TableCell>
-                    <TableCell align="right">{name}</TableCell>
-                    <TableCell align="right">{email}</TableCell>
+                    <TableCell>{name}</TableCell>
+                    <TableCell>{email}</TableCell>
                   </TableRow>
                 )
               )}
