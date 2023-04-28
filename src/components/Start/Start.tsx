@@ -26,7 +26,7 @@ type Props = {
 export default function Start({ handleClick }: Props) {
   return (
     <CenteredContainer>
-      <CircleButton onClick={handleClick}>Click me</CircleButton>
+      <CircleButton onClick={handleClick}>Start</CircleButton>
     </CenteredContainer>
   );
 }

@@ -23,7 +23,7 @@ const BottomContainer = styled(Container)(({ theme }) => ({
   left: 0,
   right: 0,
   zIndex: 1,
-  backgroundColor: `${theme.palette.primary.main}10`,
+  backgroundColor: `${theme.palette.primary.main}90`,
   borderRadius: "25px 25px 0 0",
 }));
 
@@ -45,6 +45,19 @@ const CenterGridV2 = styled(Grid)({
   alignItems: "center",
   height: "75vh",
 });
+
+const CenterGridV3 = styled(Grid)<{ avatar?: string }>(({ avatar, theme }) => ({
+  backgroundImage: `url(${avatar})`,
+  backgroundPosition: "top",
+  backgroundRepeat: "no-repeat",
+  height: "91.4vh",
+  [theme.breakpoints.down("sm")]: {
+    backgroundSize: "cover",
+  },
+  [theme.breakpoints.up("md")]: {
+    backgroundSize: "contain",
+  },
+}));
 
 const RightBox = styled(Box)({
   display: "flex",
@@ -177,22 +190,23 @@ export default function StreamView({ handleClick }: Props) {
   const second = timeLeft % 60;
 
   return (
-    <>
-      <CenterGridV2>
-        {!candidate ? (
-          <CircularProgress />
-        ) : (
-          <Typography variant="h1" sx={{ color: "primary.main" }}>
-            {candidate.name}
-          </Typography>
-        )}
-      </CenterGridV2>
+    <CenterGridV3 avatar={candidate?.avatar || ""}>
+      <CenterGridV2>{!candidate && <CircularProgress />}</CenterGridV2>
       <BottomContainer>
         <GridContainer container spacing={2}>
           <Grid xs={4}>
             <Box>
-              <Typography variant="h5" sx={{ color: "primary.main" }}>
+              <Typography variant="h5" sx={{ color: "primary.light" }}>
                 {`${minute}:${second.toString().padStart(2, "0")}`}
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{ color: "primary.light", paddingTop: "1rem" }}
+              >
+                {candidate?.name}{" "}
+                {`${
+                  minute < 1 ? "is wanting sex with you" : "is meeting with you"
+                }`}
               </Typography>
             </Box>
           </Grid>
@@ -201,17 +215,22 @@ export default function StreamView({ handleClick }: Props) {
               <ButtonGroup
                 variant="outlined"
                 aria-label="outlined button group"
+                color="secondary"
               >
                 <Button
                   onClick={() => onSmash(data.profiles, profileData?.profile)}
                   disabled={!candidate && notUsers}
+                  color="secondary"
                 >
                   Smash
                 </Button>
-                <Button onClick={handleClick}>Close</Button>
+                <Button onClick={handleClick} color="secondary">
+                  Close
+                </Button>
                 <Button
                   onClick={() => onPass(id, candidate?.id)}
                   disabled={!candidate && notUsers}
+                  color="secondary"
                 >
                   Pass
                 </Button>
@@ -225,6 +244,6 @@ export default function StreamView({ handleClick }: Props) {
           </Grid>
         </GridContainer>
       </BottomContainer>
-    </>
+    </CenterGridV3>
   );
 }

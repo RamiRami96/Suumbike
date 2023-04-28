@@ -9,13 +9,7 @@ import {
   Tooltip,
   IconButton,
 } from "@mui/material";
-import { styled } from "@mui/system";
 import { signIn, signOut, useSession } from "next-auth/react";
-
-const SignInButton = styled(Button)(({ theme }) => ({
-  background: "#fff",
-  color: theme.palette.primary.main,
-}));
 
 export default function Auth() {
   const { data: session } = useSession();
@@ -66,9 +60,9 @@ export default function Auth() {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <SignInButton variant="contained" onClick={() => signIn()}>
+      <Button color="secondary" variant="outlined" onClick={() => signIn()}>
         Sign in
-      </SignInButton>
+      </Button>
     </Box>
   );
 }
