@@ -12,32 +12,16 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { styled } from "@mui/system";
 
 import MenuIcon from "@mui/icons-material/Menu";
 
 import Auth from "./Auth";
+import { StyledLink } from "./styles";
 
 const pages = [
   { title: "start", link: "/" },
   { title: "contacts", link: "/contacts" },
 ];
-
-const StyledLink = styled(Link)<{ ismobile?: string }>(
-  ({ theme, ismobile }) => ({
-    textDecoration: "none",
-    color: ismobile
-      ? theme.palette.secondary.dark
-      : theme.palette.secondary.main,
-
-    "&:focus, &:hover, &:visited, &:link, &:active": {
-      textDecoration: "none",
-      color: ismobile
-        ? theme.palette.secondary.dark
-        : theme.palette.secondary.main,
-    },
-  })
-);
 
 export default function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);

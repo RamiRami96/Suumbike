@@ -12,6 +12,7 @@ import {
 
 import { useSession } from "next-auth/react";
 import { gql, useQuery } from "@apollo/client";
+import { GET_PROFILE } from "./queries";
 
 type User = {
   [key: number]: any;
@@ -21,22 +22,9 @@ type User = {
   image: string;
 };
 
-const GET_PROFILE_ID = gql`
-  query getProfileID($email: String!) {
-    profile(email: $email) {
-      likedProfiles {
-        id
-        name
-        avatar
-        email
-      }
-    }
-  }
-`;
-
 export default function Contacts() {
   const { data: session } = useSession();
-  const { data: profileData } = useQuery(GET_PROFILE_ID, {
+  const { data: profileData } = useQuery(GET_PROFILE, {
     variables: { email: (session?.user as User)?.email },
   });
 

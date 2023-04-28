@@ -1,11 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { styled } from "@mui/system";
-
-const Video = styled("video")(({ theme }) => ({
-  height: 90.8,
-  border: `2px solid ${theme.palette.primary.light}`,
-  borderRadius: 10,
-}));
+import { Video } from "./styles";
 
 export default function FrontCamera() {
   const videoRef = useRef<HTMLVideoElement>(null!);

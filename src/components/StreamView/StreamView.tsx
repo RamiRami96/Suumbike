@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import {
-  Container,
   Unstable_Grid2 as Grid,
   Box,
   ButtonGroup,
@@ -12,80 +11,18 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
-import { styled } from "@mui/system";
-
-import FrontCamera from "./FrontCamera";
 import { useSession } from "next-auth/react";
 
-const BottomContainer = styled(Container)(({ theme }) => ({
-  position: "fixed",
-  bottom: 0,
-  left: 0,
-  right: 0,
-  zIndex: 1,
-  backgroundColor: `${theme.palette.primary.main}90`,
-  borderRadius: "25px 25px 0 0",
-}));
-
-const GridContainer = styled(Grid)({
-  dispaly: "flex",
-  alignItems: "center",
-  paddingTop: 25,
-  paddingBottom: 25,
-});
-
-const CenterGrid = styled(Grid)({
-  display: "flex",
-  justifyContent: "center",
-});
-
-const CenterGridV2 = styled(Grid)({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "75vh",
-});
-
-const CenterGridV3 = styled(Grid)<{ avatar?: string }>(({ avatar, theme }) => ({
-  backgroundImage: `url(${avatar})`,
-  backgroundPosition: "top",
-  backgroundRepeat: "no-repeat",
-  height: "91.4vh",
-  [theme.breakpoints.down("sm")]: {
-    backgroundSize: "cover",
-  },
-  [theme.breakpoints.up("md")]: {
-    backgroundSize: "contain",
-  },
-}));
-
-const RightBox = styled(Box)({
-  display: "flex",
-  justifyContent: "flex-end",
-});
-
-const GET_PROFILES = gql`
-  query GetProfiles {
-    profiles {
-      id
-      name
-      avatar
-      email
-    }
-  }
-`;
-
-const LIKE_PROFILE_MUTATION = gql`
-  mutation LikeProfile($profileId: ID!, $likedProfileId: ID!) {
-    likeProfile(profileId: $profileId, likedProfileId: $likedProfileId) {
-      likedProfiles {
-        avatar
-        name
-        email
-      }
-    }
-  }
-`;
+import FrontCamera from "./FrontCamera";
+import { GET_PROFILE, GET_PROFILES, LIKE_PROFILE_MUTATION } from "./queries";
+import {
+  BottomContainer,
+  CenterGrid,
+  CenterGridV2,
+  CenterGridV3,
+  GridContainer,
+  RightBox,
+} from "./styles";
 
 type User = {
   [key: number]: any;
@@ -96,21 +33,6 @@ type User = {
   likedProfiles: User[];
 };
 
-const GET_PROFILE_ID = gql`
-  query getProfileID($email: String!) {
-    profile(email: $email) {
-      id
-      email
-      likedProfiles {
-        id
-        name
-        avatar
-        email
-      }
-    }
-  }
-`;
-
 type Props = {
   handleClick: () => void;
 };
@@ -119,20 +41,23 @@ export default function StreamView({ handleClick }: Props) {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const { data } = useQuery(GET_PROFILES);
-  const { data: profileData } = useQuery(GET_PROFILE_ID, {
+  const { data: profilesData } = useQuery(GET_PROFILES);
+  const { data: profileData } = useQuery(GET_PROFILE, {
     variables: { email: (session?.user as any)?.email },
   });
-
-  const id = profileData?.profile?.id;
 
   const [likeProfile] = useMutation(LIKE_PROFILE_MUTATION);
 
   const [candidate, setCandidate] = useState<User | null>(null);
   const [timeLeft, setTimeLeft] = useState(120);
 
-  const notUsers =
-    data?.profiles.length - profileData?.profile?.likedProfiles.length === 1;
+  const NOT_USERS =
+    profilesData?.profiles.length -
+      profileData?.profile?.likedProfiles.length ===
+    1;
+
+  const PROFILE_ID = profileData?.profile?.id;
+  const CANDIDATE_ID = candidate?.id;
 
   function getCandidate(users?: User[], user?: User): void {
     if (users?.length && user) {
@@ -169,17 +94,17 @@ export default function StreamView({ handleClick }: Props) {
   }
 
   useEffect(() => {
-    if (!notUsers) {
-      getCandidate(data?.profiles, profileData?.profile);
+    if (!NOT_USERS) {
+      getCandidate(profilesData?.profiles, profileData?.profile);
     }
-  }, [data, profileData]);
+  }, [profilesData, profileData]);
 
   useEffect(() => {
     if (timeLeft === 0) {
-      return onPass(id, candidate?.id);
+      return onPass(PROFILE_ID, CANDIDATE_ID);
     }
 
-    if (!candidate && notUsers) return;
+    if (!candidate && NOT_USERS) return;
 
     const intervalId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
 
@@ -218,8 +143,10 @@ export default function StreamView({ handleClick }: Props) {
                 color="secondary"
               >
                 <Button
-                  onClick={() => onSmash(data.profiles, profileData?.profile)}
-                  disabled={!candidate && notUsers}
+                  onClick={() =>
+                    onSmash(profilesData.profiles, profileData?.profile)
+                  }
+                  disabled={!candidate && NOT_USERS}
                   color="secondary"
                 >
                   Smash
@@ -228,8 +155,8 @@ export default function StreamView({ handleClick }: Props) {
                   Close
                 </Button>
                 <Button
-                  onClick={() => onPass(id, candidate?.id)}
-                  disabled={!candidate && notUsers}
+                  onClick={() => onPass(PROFILE_ID, CANDIDATE_ID)}
+                  disabled={!candidate && NOT_USERS}
                   color="secondary"
                 >
                   Pass
