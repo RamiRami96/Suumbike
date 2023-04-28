@@ -56,7 +56,7 @@ export default function StreamView({ handleClick }: Props) {
   const [likeProfile] = useMutation(LIKE_PROFILE_MUTATION);
 
   const [candidate, setCandidate] = useState<User | null>(null);
-  const [timeLeft, setTimeLeft] = useState(111120);
+  const [timeLeft, setTimeLeft] = useState(120);
 
   const NOT_USERS =
     profilesData?.profiles.length -
