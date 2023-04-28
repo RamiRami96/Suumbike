@@ -56,6 +56,7 @@ export default function StreamView({ handleClick }: Props) {
   const [likeProfile] = useMutation(LIKE_PROFILE_MUTATION);
 
   const [candidate, setCandidate] = useState<User | null>(null);
+  const [visitedUsers, setVisitedUsers] = useState<User[]>([]);
   const [timeLeft, setTimeLeft] = useState(120);
 
   const NOT_USERS =
@@ -70,11 +71,18 @@ export default function StreamView({ handleClick }: Props) {
     if (users?.length && user) {
       const randomUser = users[Math.floor(Math.random() * users.length)];
 
-      if (
+      if (users.length - visitedUsers.length === 1) {
+        setCandidate(null);
+        return;
+      } else if (
         user?.email === randomUser.email ||
-        user.likedProfiles.some(({ email }) => email === randomUser.email)
-      )
+        user.likedProfiles.some(({ email }) => email === randomUser.email) ||
+        visitedUsers.some(({ email }) => email === randomUser.email)
+      ) {
         return getCandidate(users, user);
+      }
+
+      console.log(visitedUsers);
 
       setCandidate(randomUser);
     }
@@ -100,6 +108,10 @@ export default function StreamView({ handleClick }: Props) {
 
     return;
   }
+
+  useEffect(() => {
+    if (candidate) setVisitedUsers([...visitedUsers, candidate]);
+  }, [candidate]);
 
   useEffect(() => {
     if (!NOT_USERS) {
