@@ -17,11 +17,11 @@ export const typeDefs = `#graphql
   }
 
   type Query {
-    profiles: [Profile]
-    profile(email: String!): Profile
+    profiles: [Profile]!
+    profile(email: String!): Profile!
   }
 
   type Mutation {
-    likeProfile(profileId:ID!, likedProfileId: ID!): Profile
+    likeProfile(profileId:ID!, likedProfileId: ID!): Profile!
   }
 `;

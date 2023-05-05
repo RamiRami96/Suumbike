@@ -82,8 +82,6 @@ export default function StreamView({ handleClick }: Props) {
         return getCandidate(users, user);
       }
 
-      console.log(visitedUsers);
-
       setCandidate(randomUser);
     }
 
