@@ -1,7 +1,7 @@
+import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import Start from "@/components/Start/Start";
 import StreamView from "@/components/StreamView/StreamView";
-import { signIn, useSession } from "next-auth/react";
-import { useState } from "react";
 
 export default function Page() {
   const { data: session } = useSession();
