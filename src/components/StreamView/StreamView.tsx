@@ -13,7 +13,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useSession } from "next-auth/react";
 
 import FrontCamera from "./FrontCamera";
-import { GET_PROFILE, GET_PROFILES, LIKE_PROFILE_MUTATION } from "./queries";
+import { GET_PROFILES_AND_PROFILE, LIKE_PROFILE_MUTATION } from "./queries";
 import {
   BottomContainer,
   BottomContainerMob,
@@ -46,8 +46,7 @@ export default function StreamView({ handleClick }: Props) {
 
   const { data: session } = useSession();
 
-  const { data: profilesData } = useQuery(GET_PROFILES);
-  const { data: profileData } = useQuery(GET_PROFILE, {
+  const { data: profilesData } = useQuery(GET_PROFILES_AND_PROFILE, {
     variables: { email: (session?.user as any)?.email },
   });
 
@@ -57,26 +56,19 @@ export default function StreamView({ handleClick }: Props) {
   const [visitedUsers, setVisitedUsers] = useState<User[]>([]);
   const [timeLeft, setTimeLeft] = useState(120);
 
-  const NOT_USERS =
-    profilesData?.profiles.length -
-      profileData?.profile?.likedProfiles.length ===
-    1;
+  const NOT_USERS = profilesData?.profiles?.length === 0;
 
-  const PROFILE_ID = profileData?.profile?.id;
+  const PROFILE_ID = profilesData?.profile?.id;
   const CANDIDATE_ID = candidate?.id;
 
   function getCandidate(users?: User[], user?: User): void {
     if (users?.length && user) {
       const randomUser = users[Math.floor(Math.random() * users.length)];
 
-      if (users.length - visitedUsers.length === 1) {
+      if (users.length - visitedUsers.length === 0) {
         setCandidate(null);
         return;
-      } else if (
-        user?.email === randomUser.email ||
-        user.likedProfiles.some(({ email }) => email === randomUser.email) ||
-        visitedUsers.some(({ email }) => email === randomUser.email)
-      ) {
+      } else if (visitedUsers.some(({ email }) => email === randomUser.email)) {
         return getCandidate(users, user);
       }
 
@@ -111,16 +103,16 @@ export default function StreamView({ handleClick }: Props) {
 
   useEffect(() => {
     if (!NOT_USERS) {
-      getCandidate(profilesData?.profiles, profileData?.profile);
+      getCandidate(profilesData?.profiles, profilesData?.profile);
     }
-  }, [profilesData, profileData]);
+  }, [profilesData]);
 
   useEffect(() => {
     if (timeLeft === 0) {
       return onPass(PROFILE_ID, CANDIDATE_ID);
     }
 
-    if (!candidate && NOT_USERS) return;
+    if (!candidate || NOT_USERS) return;
 
     const intervalId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
 
@@ -129,6 +121,16 @@ export default function StreamView({ handleClick }: Props) {
 
   const minute = Math.floor(timeLeft / 60);
   const second = timeLeft % 60;
+
+  function renderCandidateInfo() {
+    if (candidate?.name) {
+      return `${candidate?.name} ${
+        minute < 1 ? "is wanting sex with you" : "is meeting with you"
+      }`;
+    } else {
+      return null;
+    }
+  }
 
   if (isTabletScreen) {
     return (
@@ -145,12 +147,7 @@ export default function StreamView({ handleClick }: Props) {
                   variant="h5"
                   sx={{ color: "primary.light", paddingTop: "1rem" }}
                 >
-                  {candidate?.name}{" "}
-                  {`${
-                    minute < 1
-                      ? "is wanting sex with you"
-                      : "is meeting with you"
-                  }`}
+                  {renderCandidateInfo()}
                 </Typography>
               </Box>
             </Grid>
@@ -164,9 +161,9 @@ export default function StreamView({ handleClick }: Props) {
                 >
                   <Button
                     onClick={() =>
-                      onSmash(profilesData?.profiles, profileData?.profile)
+                      onSmash(profilesData?.profiles, profilesData?.profile)
                     }
-                    disabled={!candidate && NOT_USERS}
+                    disabled={!candidate || NOT_USERS}
                     color="secondary"
                   >
                     Smash
@@ -176,7 +173,7 @@ export default function StreamView({ handleClick }: Props) {
                   </Button>
                   <Button
                     onClick={() => onPass(PROFILE_ID, CANDIDATE_ID)}
-                    disabled={!candidate && NOT_USERS}
+                    disabled={!candidate || NOT_USERS}
                     color="secondary"
                   >
                     Pass
@@ -221,9 +218,9 @@ export default function StreamView({ handleClick }: Props) {
         >
           <Button
             onClick={() =>
-              onSmash(profilesData?.profiles, profileData?.profile)
+              onSmash(profilesData?.profiles, profilesData?.profile)
             }
-            disabled={!candidate && NOT_USERS}
+            disabled={!candidate || NOT_USERS}
             color="secondary"
           >
             Smash
@@ -233,7 +230,7 @@ export default function StreamView({ handleClick }: Props) {
           </Button>
           <Button
             onClick={() => onPass(PROFILE_ID, CANDIDATE_ID)}
-            disabled={!candidate && NOT_USERS}
+            disabled={!candidate || NOT_USERS}
             color="secondary"
           >
             Pass

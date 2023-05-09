@@ -70,12 +70,6 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Profile_email_key" ON "Profile"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "LikedProfile_email_key" ON "LikedProfile"("email");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
 -- CreateIndex

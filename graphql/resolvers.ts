@@ -4,12 +4,38 @@ const prisma = new PrismaClient();
 
 export const resolvers = {
   Query: {
-    profiles: () => prisma.profile.findMany(),
     profile: (_: any, { email }: any) =>
-      prisma.profile.findUnique({
+      prisma.profile.findFirst({
         where: { email },
         include: { likedProfiles: true },
       }),
+    profiles: async (_: any, { email }: any) => {
+      const currentUserProfile = await prisma.profile.findFirst({
+        where: { email },
+        include: { likedProfiles: true },
+      });
+
+      if (currentUserProfile) {
+        const likedProfileIds = currentUserProfile.likedProfiles.map(
+          (lp) => lp.id
+        );
+
+        const excludedProfileIds = [
+          ...likedProfileIds,
+          currentUserProfile.id,
+        ].filter((id) => id !== null) as string[];
+
+        const profiles = await prisma.profile.findMany({
+          where: {
+            NOT: {
+              id: { in: excludedProfileIds },
+            },
+          },
+        });
+
+        return profiles;
+      }
+    },
   },
   Mutation: {
     likeProfile: async (_parent: any, { profileId, likedProfileId }: any) => {

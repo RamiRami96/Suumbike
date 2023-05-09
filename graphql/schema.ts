@@ -17,8 +17,8 @@ export const typeDefs = `#graphql
   }
 
   type Query {
-    profiles: [Profile]!
     profile(email: String!): Profile!
+    profiles(email:String!): [Profile]
   }
 
   type Mutation {
