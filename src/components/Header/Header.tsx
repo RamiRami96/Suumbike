@@ -16,7 +16,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 
 import Auth from "./Auth";
-import { StyledLink } from "./styles";
+import { StyledAppBar, StyledLink } from "./styles";
 
 const pages = [
   { title: "start", link: "/" },
@@ -35,7 +35,7 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="fixed">
+    <StyledAppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -49,7 +49,7 @@ export default function Header() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "primary.light",
+              color: "primary.main",
               textDecoration: "none",
             }}
           >
@@ -63,7 +63,7 @@ export default function Header() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              sx={{ color: "primary.light" }}
+              sx={{ color: "primary.main" }}
             >
               <MenuIcon />
             </IconButton>
@@ -86,7 +86,7 @@ export default function Header() {
               }}
             >
               {pages.map(({ title, link }) => (
-                <StyledLink key={title} href={link} ismobile="true">
+                <StyledLink key={title} href={link}>
                   <MenuItem key={title} onClick={handleCloseNavMenu}>
                     {title}
                   </MenuItem>
@@ -106,7 +106,7 @@ export default function Header() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "primary.light",
+              color: "primary.main",
               textDecoration: "none",
             }}
           >
@@ -122,6 +122,6 @@ export default function Header() {
           <Auth />
         </Toolbar>
       </Container>
-    </AppBar>
+    </StyledAppBar>
   );
 }

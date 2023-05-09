@@ -7,7 +7,8 @@ export const BottomContainer = styled(Container)(({ theme }) => ({
   left: 0,
   right: 0,
   zIndex: 1,
-  backgroundColor: `${theme.palette.primary.main}90`,
+  boxShadow:
+    "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
   borderRadius: "25px 25px 0 0",
 }));
 
@@ -51,7 +52,7 @@ export const RightBox = styled(Box)({
 
 export const Video = styled("video")(({ theme }) => ({
   height: 90.8,
-  border: `2px solid ${theme.palette.primary.light}`,
+  border: `2px solid ${theme.palette.primary.main}`,
   borderRadius: 10,
 }));
 
@@ -74,11 +75,13 @@ export const BottomContainerMob = styled(Container)(({ theme }) => ({
   bottom: 0,
   left: 0,
   right: 0,
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.palette.primary.light,
   display: "flex",
   justifyContent: "center",
   paddingBottom: 25,
   paddingTop: 25,
+  boxShadow:
+    "0px -2px 4px -1px rgba(0,0,0,0.2), 0px -4px 5px 0px rgba(0,0,0,0.14), 0px -1px 10px 0px rgba(0,0,0,0.12)",
 }));
 
 export const LeftBoxMob = styled(Box)(({ theme }) => ({

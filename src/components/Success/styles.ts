@@ -9,7 +9,7 @@ export const SuccessContainer = styled("div")({
 });
 
 export const SuccessText = styled("h2")(({ theme }) => ({
-  color: theme.palette.primary.main,
+  color: theme.palette.primary.light,
   fontSize: "2.5rem",
   textAlign: "center",
 }));

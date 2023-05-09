@@ -1,17 +1,18 @@
 import Link from "next/link";
+import { AppBar, Typography } from "@mui/material";
 
 import { styled } from "@mui/system";
 
-export const StyledLink = styled(Link)<{ ismobile?: string }>(
-  ({ theme, ismobile }) => ({
-    textDecoration: "none",
-    color: ismobile ? theme.palette.primary.dark : theme.palette.primary.light,
+export const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  background: theme.palette.primary.light,
+}));
 
-    "&:focus, &:hover, &:visited, &:link, &:active": {
-      textDecoration: "none",
-      color: ismobile
-        ? theme.palette.primary.dark
-        : theme.palette.primary.light,
-    },
-  })
-);
+export const StyledLink = styled(Link)(({ theme }) => ({
+  textDecoration: "none",
+  color: theme.palette.primary.main,
+
+  "&:focus, &:hover, &:visited, &:link, &:active": {
+    textDecoration: "none",
+    color: theme.palette.primary.main,
+  },
+}));

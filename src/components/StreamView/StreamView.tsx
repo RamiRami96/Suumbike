@@ -13,6 +13,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useSession } from "next-auth/react";
 
 import FrontCamera from "./FrontCamera";
+
 import { GET_PROFILES_AND_PROFILE, LIKE_PROFILE_MUTATION } from "./queries";
 import {
   BottomContainer,
@@ -140,12 +141,12 @@ export default function StreamView({ handleClick }: Props) {
           <GridContainer container spacing={2}>
             <Grid xs={4}>
               <Box>
-                <Typography variant="h5" sx={{ color: "primary.light" }}>
+                <Typography variant="h5" sx={{ color: "primary.main" }}>
                   {`${minute}:${second.toString().padStart(2, "0")}`}
                 </Typography>
                 <Typography
                   variant="h5"
-                  sx={{ color: "primary.light", paddingTop: "1rem" }}
+                  sx={{ color: "primary.main", paddingTop: "1rem" }}
                 >
                   {renderCandidateInfo()}
                 </Typography>
@@ -156,7 +157,7 @@ export default function StreamView({ handleClick }: Props) {
                 <ButtonGroup
                   variant="outlined"
                   aria-label="outlined button group"
-                  color="secondary"
+                  color="primary"
                   size="large"
                 >
                   <Button
@@ -164,17 +165,17 @@ export default function StreamView({ handleClick }: Props) {
                       onSmash(profilesData?.profiles, profilesData?.profile)
                     }
                     disabled={!candidate || NOT_USERS}
-                    color="secondary"
+                    color="primary"
                   >
                     Smash
                   </Button>
-                  <Button onClick={handleClick} color="secondary">
+                  <Button onClick={handleClick} color="primary">
                     Close
                   </Button>
                   <Button
                     onClick={() => onPass(PROFILE_ID, CANDIDATE_ID)}
                     disabled={!candidate || NOT_USERS}
-                    color="secondary"
+                    color="primary"
                   >
                     Pass
                   </Button>
@@ -195,12 +196,12 @@ export default function StreamView({ handleClick }: Props) {
   return (
     <ContainerViewMob avatar={candidate?.avatar || ""}>
       <LeftBoxMob>
-        <Typography variant="h5" sx={{ color: "primary.light" }}>
+        <Typography variant="h5" sx={{ color: "primary.main" }}>
           {`${minute}:${second.toString().padStart(2, "0")}`}
         </Typography>
         <Typography
           variant="h5"
-          sx={{ color: "primary.light", paddingTop: "1rem" }}
+          sx={{ color: "primary.main", paddingTop: "1rem" }}
         >
           {candidate?.name}
         </Typography>
@@ -213,7 +214,7 @@ export default function StreamView({ handleClick }: Props) {
         <ButtonGroup
           variant="outlined"
           aria-label="outlined button group"
-          color="secondary"
+          color="primary"
           size="large"
         >
           <Button
@@ -221,17 +222,17 @@ export default function StreamView({ handleClick }: Props) {
               onSmash(profilesData?.profiles, profilesData?.profile)
             }
             disabled={!candidate || NOT_USERS}
-            color="secondary"
+            color="primary"
           >
             Smash
           </Button>
-          <Button onClick={handleClick} color="secondary">
+          <Button onClick={handleClick} color="primary">
             Close
           </Button>
           <Button
             onClick={() => onPass(PROFILE_ID, CANDIDATE_ID)}
             disabled={!candidate || NOT_USERS}
-            color="secondary"
+            color="primary"
           >
             Pass
           </Button>
