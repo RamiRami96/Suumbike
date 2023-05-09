@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Avatar,
+  Typography,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@apollo/client";
@@ -33,9 +34,17 @@ export default function Contacts() {
   return (
     <Container sx={{ marginTop: 15 }}>
       {!LIKED_PROFILES || LIKED_PROFILES?.length === 0 ? (
-        <h2 style={{ textAlign: "center", padding: "50px 0" }}>
+        <Typography
+          variant="h4"
+          sx={{
+            textAlign: "center",
+            fontWeight: "bold",
+            padding: "50px 0",
+            color: "primary.main",
+          }}
+        >
           Not liked users :(
-        </h2>
+        </Typography>
       ) : (
         <TableContainer component={Paper} sx={{ marginTop: 5 }}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">

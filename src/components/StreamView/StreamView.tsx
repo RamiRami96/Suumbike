@@ -155,8 +155,8 @@ export default function StreamView({ handleClick }: Props) {
             <CenterGrid xs={4}>
               <Box>
                 <ButtonGroup
-                  variant="outlined"
-                  aria-label="outlined button group"
+                  variant="contained"
+                  aria-label="outlined primary button group"
                   color="primary"
                   size="large"
                 >
@@ -212,8 +212,8 @@ export default function StreamView({ handleClick }: Props) {
       <CenterGridV2>{!candidate && <CircularProgress />}</CenterGridV2>
       <BottomContainerMob>
         <ButtonGroup
-          variant="outlined"
-          aria-label="outlined button group"
+          variant="contained"
+          aria-label="outlined primary button group"
           color="primary"
           size="large"
         >

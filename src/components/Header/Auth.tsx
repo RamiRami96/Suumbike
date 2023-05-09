@@ -28,7 +28,10 @@ export default function Auth() {
     return (
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <IconButton
+            onClick={handleOpenUserMenu}
+            sx={{ p: 0, border: "1px solid #FF0000" }}
+          >
             <Avatar src={session.user?.image || ""} alt="avatar" />
           </IconButton>
         </Tooltip>
@@ -49,7 +52,11 @@ export default function Auth() {
           onClose={handleCloseUserMenu}
         >
           <MenuItem onClick={handleCloseUserMenu}>
-            <Typography textAlign="center" onClick={() => signOut()}>
+            <Typography
+              color="primary"
+              textAlign="center"
+              onClick={() => signOut()}
+            >
               Log out
             </Typography>
           </MenuItem>
@@ -60,7 +67,7 @@ export default function Auth() {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Button color="secondary" variant="outlined" onClick={() => signIn()}>
+      <Button color="primary" variant="outlined" onClick={() => signIn()}>
         Sign in
       </Button>
     </Box>
