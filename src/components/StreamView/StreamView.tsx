@@ -49,6 +49,7 @@ export default function StreamView({ handleClick }: Props) {
 
   const { data: profilesData } = useQuery(GET_PROFILES_AND_PROFILE, {
     variables: { email: (session?.user as any)?.email },
+    ssr: true,
   });
 
   const [likeProfile] = useMutation(LIKE_PROFILE_MUTATION);

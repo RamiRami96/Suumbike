@@ -1,3 +1,5 @@
+"use client";
+
 import { useSession } from "next-auth/react";
 import { useQuery } from "@apollo/client";
 import { Avatar } from "@mui/material";
@@ -9,6 +11,7 @@ export default function Success() {
 
   const { data } = useQuery(GET_PROFILE, {
     variables: { email: (session?.user as any)?.email },
+    ssr: true,
   });
 
   const likedProfile = data?.profile?.likedProfiles?.at(-1);
