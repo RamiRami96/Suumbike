@@ -1,5 +1,3 @@
-"use client";
-
 import { useSession } from "next-auth/react";
 import { useQuery } from "@apollo/client";
 import { Avatar } from "@mui/material";
