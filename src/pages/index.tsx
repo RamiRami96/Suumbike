@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import Start from "@/components/Start/Start";
