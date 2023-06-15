@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  experimental: {
+    serverActions: true,
+  },
   images: {
-    domains: ["platform-lookaside.fbsbx.com"],
+    domains: ["platform-lookaside.fbsbx.com", "media.architecturaldigest.com"],
   },
 };
 
