@@ -1,4 +1,4 @@
-import StartButton from "./StartButton";
+import StartButton from "./startButton";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 

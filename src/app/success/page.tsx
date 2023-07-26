@@ -1,29 +1,20 @@
-import { prisma } from "../../../prisma/prismaClient";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import Image from "next/image";
 
-export default async function Page() {
-  const session = await getServerSession(authOptions);
-  const email = session?.user?.email;
+type Props = {
+  searchParams?:  {name:string, avatar:string} ;
+}
 
-  if (!email) return null;
+export default async function Page({searchParams}:Props ) {
 
-  const profile = await prisma.profile.findFirst({
-    where: { email },
-    include: { likedProfiles: true },
-  });
+  if (!searchParams?.avatar && !searchParams?.name) return null
 
-  const likedProfile = profile?.likedProfiles?.at(-1);
-
-  if (!likedProfile) {
-    return null;
-  }
+  const avatar = searchParams.avatar
+  const name = searchParams.name
 
   return (
     <div className="flex flex-col justify-center items-center h-92">
       <Image
-        src={likedProfile.avatar}
+        src={avatar}
         className="object-cover rounded-full w-[300px] h-[300px] mt-10 md:mt-14"
         alt="contact"
         width={300}
@@ -31,7 +22,7 @@ export default async function Page() {
       />
       <h2 className="text-primary text-center font-bold text-xl mt-14">
         <span className="text-pink-600 font-extrabold text-4xl">
-          {likedProfile.name}
+          {name}
         </span>
         {"  "}
         has been added to your contacts

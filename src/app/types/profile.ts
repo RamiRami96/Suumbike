@@ -5,4 +5,5 @@ export type Profile = {
   email: string;
   avatar: string;
   likedProfiles: Profile[];
+ 
 };

@@ -4,7 +4,7 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["platform-lookaside.fbsbx.com", "media.architecturaldigest.com"],
+    domains: ["platform-lookaside.fbsbx.com", "media.glamour.com"],
   },
 };
 
