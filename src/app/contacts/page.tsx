@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Profile } from "../types/profile";
 import { deleteLikedProfile } from "./actions/deleteLikedProfile";
 import { getLikedProfiles } from "./actions/getLikedProfiles";
+import deleteIcon from '../../../public/delete.svg'
 
 
 export default function Page() {
@@ -144,12 +145,12 @@ export default function Page() {
                 <p className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left text-sm text-pink-400">
                   {email}
                 </p>
-                <button className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left text-pink-400" onClick={() => deleteContact(id)} >
-                  X
+                <button className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left" onClick={() => deleteContact(id)} >
+                  <Image src={deleteIcon} alt="delete" width={16} height={16}/>
                 </button>
               </div>
             ))}
-            {isLoading && likedProfiles.length >=5 && <p>Loading...</p>}
+            {isLoading && likedProfiles.length >=10 && <p>Loading...</p>}
           </>
         )}
       </div>

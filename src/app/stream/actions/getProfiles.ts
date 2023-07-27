@@ -1,11 +1,11 @@
 "use server";
 
+import { Profile } from "@/app/types/profile";
 import { prisma } from "../../../../prisma/prismaClient";
-import type{ Profile } from "../stream";
 
 export async function getProfiles() {
     try {
-  
+      // mock data, because i want to write my auth logic instead next-auth
       const email = 'ramiramiusmanov1996@gmail.com';
     
       if (!email) return null;

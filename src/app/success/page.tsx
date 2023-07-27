@@ -5,7 +5,6 @@ type Props = {
 }
 
 export default async function Page({searchParams}:Props ) {
-
   if (!searchParams?.avatar && !searchParams?.name) return null
 
   const avatar = searchParams.avatar

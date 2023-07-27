@@ -7,15 +7,7 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "../components/spinner";
 import { getProfiles } from "./actions/getProfiles";
 import { likeProfile } from "./actions/likeProfile";
-
-export type Profile = {
-  [key: number]: any;
-  id: string;
-  name: string;
-  email: string;
-  avatar: string;
-  likedProfiles: Profile[];
-};
+import { Profile } from "../types/profile";
 
 
 export default function Page() {
@@ -162,6 +154,8 @@ export default function Page() {
             fill
             className="object-cover"
             priority
+            placeholder="blur"
+            blurDataURL={candidate?.avatar}
           />
         ) : (
           <Spinner />

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import type { Session } from "next-auth";
+import logo from '../../../public/logo.svg'
+
 
 type Props = {
-  session: Session;
+  session:{user : {name:string, image:string}} ;
 };
 
 export default function Header({ session }: Props) {
@@ -35,9 +35,7 @@ export default function Header({ session }: Props) {
   return (
     <header className="flex justify-between items-center px-4 py-4 shadow w-full">
       <Link href={"/"}>
-        <div className="font-bold text-pink-400 uppercase tracking-widest">
-          Suumbike
-        </div>
+        <Image src={logo} alt='logo' width={100} height={22}/>
       </Link>
       <ul className="flex items-center">
         <li className="mr-4 font-medium text-pink-400">
@@ -58,9 +56,9 @@ export default function Header({ session }: Props) {
           {isMenuOpen && (
             <div className="absolute bottom-[-8vh] right-[0.6vh] z-50 w-24 border border-pink-600 flex flex-col p-3 rounded-2xl bg-white">
               {session?.user ? (
-                <button onClick={() => signOut()}>Sign out</button>
+                <button onClick={() => console.log('Sign out')}>Sign out</button>
               ) : (
-                <button onClick={() => signIn()}>Sign in</button>
+                <button onClick={() => console.log('Sign in')}>Sign in</button>
               )}
             </div>
           )}
