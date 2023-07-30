@@ -25,7 +25,6 @@ export default function Page() {
 
   const handleClick = () => {
     setLoading(true);
-    console.log(session);
     if (session) {
       router.push("/stream");
     } else {

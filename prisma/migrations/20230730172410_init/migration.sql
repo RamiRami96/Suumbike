@@ -8,6 +8,7 @@ CREATE TABLE "User" (
     "tgNickname" TEXT NOT NULL,
     "avatar" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "isOnline" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -22,6 +23,7 @@ CREATE TABLE "LikedUser" (
     "tgNickname" TEXT NOT NULL,
     "avatar" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "isOnline" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT,
 
     CONSTRAINT "LikedUser_pkey" PRIMARY KEY ("id")

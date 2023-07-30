@@ -1,14 +1,16 @@
 "use server";
 
 import { User } from "@/app/types/user";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
 
 export async function getUsers(tgNickname: string) {
-  "use server";
   try {
     if (!tgNickname) return null;
+
+    await prisma.user.update({
+      where: { tgNickname },
+      data: { isOnline: true },
+    });
 
     const user = await prisma.user.findFirst({
       where: { tgNickname },
@@ -27,6 +29,7 @@ export async function getUsers(tgNickname: string) {
           NOT: {
             id: { in: excludedUserIds },
           },
+          isOnline: true,
         },
       });
 

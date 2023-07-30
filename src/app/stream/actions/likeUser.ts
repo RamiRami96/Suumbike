@@ -18,6 +18,7 @@ export async function likeUser(
           likedUsers: {
             create: [likedUser],
           },
+          isOnline: false,
         },
       });
 
