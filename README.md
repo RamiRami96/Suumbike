@@ -5,7 +5,7 @@ The dating app is under development.
 TODO:
 - Webrtc
 - Refresh JWT token
-- Change avatar
+- Change info in account
 - Delete account
 
 Stack:
