@@ -43,15 +43,18 @@ export default function Page() {
     const observer = new IntersectionObserver(
       async (entries) => {
         if (entries[0].isIntersecting && !isLoading && !isListBottom) {
+          setIsLoading(true);
           const newData = await fetchLikedUsers();
 
           if (!newData) {
             setIsListBottom(true);
             observer.disconnect();
+            setIsLoading(false);
             return;
           }
 
           setLikedUsers((prevUsers) => [...prevUsers, ...newData]);
+          setIsLoading(false);
         }
       },
       { root: null, rootMargin: "0px", threshold: 1 }
