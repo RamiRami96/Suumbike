@@ -5,8 +5,6 @@ The dating app is under development.
 TODO:
 - Webrtc
 - Refresh JWT token
-- Change info in account
-- Delete account
 
 Stack:
 -Next.js 13.4 (server actions)
