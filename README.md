@@ -1,6 +1,11 @@
 Next.js app for dating. 
-This app lets you authenticate with your Facebook account and connect with others through web roulette. 
-The dating app is under development. It is planned to connect a video conference between people in the future.
+This app lets you connect with other people through web roulette. 
+The dating app is under development.
+
+TODO:
+- Webrtc
+- Refresh JWT token
+- Change avatar
 
 Stack:
 -Next.js 13.4 (server actions)
@@ -9,7 +14,6 @@ Stack:
 
 
 Previously stack:
--Next.js
+-Graphql
 -Apollo
--Prisma
 -MUI
