@@ -17,21 +17,34 @@ h2 {
   font-size: 48px;
 }
 
-.bubble {  
+h3 {
+  font-size: 32px;
+}
+
+h4 {
+  font-size: 24px;
+}
+
+h6 {
+  font-size: 18px;
+}
+
+.heart {
   opacity: 0.5;
   position: absolute;
-  left: calc(50% + var(--bubble-left-offset)); 
+  left: calc(50% + var(--heart-left-offset));
   bottom: -50%;
   color: rgb(244 114 182);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--bubble-radius);
-  height: var(--bubble-radius);
-  animation: float-up var(--bubble-float-duration) var(--bubble-float-delay) ease-in infinite;
+  width: var(--heart-radius);
+  height: var(--heart-radius);
+  animation: float-up var(--heart-float-duration) var(--heart-float-delay)
+    ease-in infinite;
 }
 
-.bubble::before {
+.heart::before {
   position: absolute;
   content: "❤";
   top: 0;
@@ -39,8 +52,9 @@ h2 {
   width: 100%;
   height: 100%;
   color: rgb(244 114 182);
-  font-size: var(--bubble-radius);
-  animation: var(--bubble-sway-type) var(--bubble-sway-duration) var(--bubble-sway-delay) ease-in-out alternate infinite;
+  font-size: var(--heart-radius);
+  animation: var(--heart-sway-type) var(--heart-sway-duration)
+    var(--heart-sway-delay) ease-in-out alternate infinite;
 }
 
 /* Animation keyframes remain the same */

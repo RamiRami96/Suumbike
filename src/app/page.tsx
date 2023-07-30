@@ -1,59 +1,61 @@
 "use client";
-import Image from "next/image";
+
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import heartIcon from '../../public/heart.svg'
 
-export default function StartButton() {
-  const { push } = useRouter();
-  
-  const session = {
-    user: {
-      name: 'Ramil Usmanov',
-      email: 'ramiramiusmanov1996@gmail.com',
-      image: 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=178142988471195&height=50&width=50&ext=1692864040&hash=AeT01IymBxPIPs24aOI'
-    },
-    id: 'clki0bxro0000tzl4f4878uxk'
-  }
+const numberOfHearts = 25;
 
+export default function Page() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  const handleClick = () => {
-    if (!session || (session && !session?.user)) {
-      console.log('signIn')
-    }
-    push("/stream");
-  };
-
-  const numberOfBubbles = 25;
-
-  const generateBubbleStyles = (index:number) => {
+  const generateHeartStyles = (index: number) => {
     return {
-      '--bubble-radius': `${index}vw`,
-      '--bubble-float-duration': `${index * 4}s`,
-      '--bubble-sway-duration': `${index * 0.5}s`,
-      '--bubble-float-delay': `${index * 0.1}s`,
-      '--bubble-sway-delay': `${index * 0.1}s`,
-      '--bubble-sway-type': index % 2 === 0 ? 'sway-left-to-right' : 'sway-right-to-left',
+      "--heart-radius": `${index}vw`,
+      "--heart-float-duration": `${index * 4}s`,
+      "--heart-sway-duration": `${index * 0.5}s`,
+      "--heart-float-delay": `${index * 0.1}s`,
+      "--heart-sway-delay": `${index * 0.1}s`,
+      "--heart-sway-type":
+        index % 2 === 0 ? "sway-left-to-right" : "sway-right-to-left",
     };
   };
+
+  const handleClick = () => {
+    setLoading(true);
+    console.log(session);
+    if (session) {
+      router.push("/stream");
+    } else {
+      router.push("/auth/signin");
+    }
+  };
+
   return (
     <div className="h-[90.3vh] flex flex-col items-center justify-center relative overflow-hidden">
-    <div className="bubbles h-[90.3vh]">
-      {Array.from({ length: numberOfBubbles }, (_, index) => (
-        <div
-          key={index}
-          className="bubble animation-pulse"
-          style={generateBubbleStyles(index + 1) as React.CSSProperties}
-        >
-          ❤
-        </div>
-      ))}
+      <div className="hearts h-[90.3vh]">
+        {Array.from({ length: numberOfHearts }, (_, index) => (
+          <div
+            key={index}
+            className="heart"
+            style={generateHeartStyles(index + 1) as React.CSSProperties}
+          >
+            ❤
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={handleClick}
+        className="absolute z-50 border-2 border-pink-400 h-48 w-48 rounded-full bg-white text-pink-600 font-bold uppercase shadow-2xl shadow-pink-300 flex items-center justify-center"
+      >
+        {loading ? (
+          <div className="animate-spin rounded-full border-t-4 border-pink-600 border-solid h-6 w-6" />
+        ) : (
+          "Start"
+        )}
+      </button>
     </div>
-    <button
-      className="absolute z-50 border-2 border-pink-400 h-48 w-48 rounded-full bg-white text-pink-600 font-bold uppercase shadow-2xl shadow-pink-300"
-      onClick={handleClick}
-    >
-      Start
-    </button>
-  </div>
   );
 }

@@ -1,63 +1,80 @@
 "use client";
 
-import FrontCamera from "./frontCamera";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Spinner } from "../components/spinner";
-import { getProfiles } from "./actions/getProfiles";
-import { likeProfile } from "./actions/likeProfile";
-import { Profile } from "../types/profile";
-
+import { redirect, useRouter } from "next/navigation";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import FrontCamera from "./frontCamera";
+import { Spinner } from "../../components/spinner";
+import { getUsers } from "./actions/getUsers";
+import { likeUser } from "./actions/likeUser";
+import type { User } from "../types/user";
 
 export default function Page() {
+  const session = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/auth/signin");
+    },
+  });
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false)
-  const [candidate, setCandidate] = useState<Profile | null>(null);
-  const [visitedUsers, setVisitedUsers] = useState<Profile[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [candidate, setCandidate] = useState<User | null>(null);
+  const [visitedUsers, setVisitedUsers] = useState<User[]>([]);
   const [timeLeft, setTimeLeft] = useState(120);
-  const [profilesData, setProfilesData] = useState<{profile:Profile, profiles:Profile[]}|null>(null);
+  const [usersData, setUsersData] = useState<{
+    user: User;
+    users: User[];
+  } | null>(null);
 
-  const NOT_USERS = profilesData?.profiles?.length === 0;
+  const tgNickname = (session.data?.user as any)?.tgNickname;
 
-  const profile = profilesData?.profile
+  const NOT_USERS = usersData?.users?.length === 0;
 
-  function getCandidate(users?: Profile[], user?: Profile): void {
+  const user = usersData?.user;
+
+  function getCandidate(users?: User[], user?: User): void {
     if (users?.length && user) {
-      setIsLoading(true)
+      setIsLoading(true);
 
       const randomUser = users[Math.floor(Math.random() * users.length)];
 
       if (users.length - visitedUsers.length === 0) {
         setCandidate(null);
         return;
-      } else if (visitedUsers.some(({ email }) => email === randomUser.email)) {
+      } else if (
+        visitedUsers.some(
+          ({ tgNickname }) => tgNickname === randomUser.tgNickname
+        )
+      ) {
         return getCandidate(users, user);
       }
 
       setCandidate(randomUser);
-      setIsLoading(false)
+      setIsLoading(false);
     }
 
     return;
   }
 
-  function onSmash(users?: Profile[], user?: Profile) {
+  function onSmash(users?: User[], user?: User) {
     setTimeLeft(120);
     if (users) {
       return getCandidate(users, user);
     }
   }
 
-  async function onPass(profile?: Profile, candidate?: Profile|null) {
-    setIsLoading(true)
+  async function onPass(user?: User, candidate?: User | null) {
+    setIsLoading(true);
 
-    if (profile && candidate) {
+    if (user && candidate) {
       try {
-        await likeProfile(profile.id, candidate.id);
-        router.push(`/success?name=${candidate.name}&avatar=${candidate.avatar}`);
+        await likeUser(user.id, candidate.id);
+        router.push(
+          `/success?name=${candidate.name}&avatar=${candidate.avatar}`
+        );
       } catch (error) {
-        console.log("Error while liking profile:", error);
+        console.log("Error while liking user:", error);
         setIsLoading(false);
       }
     }
@@ -71,13 +88,13 @@ export default function Page() {
 
   useEffect(() => {
     if (!NOT_USERS) {
-      getCandidate(profilesData?.profiles, profilesData?.profile);
+      getCandidate(usersData?.users, usersData?.user);
     }
-  }, [profilesData?.profiles,profilesData?.profile]);
+  }, [usersData?.users, usersData?.user]);
 
   useEffect(() => {
     if (timeLeft === 0) {
-       onPass(profile, candidate);
+      onPass(user, candidate);
     }
 
     if (isLoading || !candidate || NOT_USERS) return;
@@ -92,14 +109,13 @@ export default function Page() {
 
   function returnToHomePage() {
     router.push("/");
-  }  
+  }
 
   useEffect(() => {
-    getProfiles().then((data)=>{
-      if(data) setProfilesData(data)
-    })
-  }, [])
-  
+    getUsers(tgNickname).then((data) => {
+      if (data) setUsersData(data);
+    });
+  }, [tgNickname]);
 
   return (
     <div className="relative h-[90vh] flex justify-center mt-50">
@@ -118,7 +134,7 @@ export default function Page() {
         <div className="inline-flex">
           <button
             className="px-4 py-2 bg-pink-400 text-white rounded-l-md w-24"
-            onClick={() => onSmash(profilesData?.profiles, profilesData?.profile)}
+            onClick={() => onSmash(usersData?.users, usersData?.user)}
             disabled={isLoading || !candidate || NOT_USERS}
           >
             Smash
@@ -131,7 +147,7 @@ export default function Page() {
           </button>
           <button
             className="px-4 py-2 bg-green-500 text-white rounded-r-md w-24"
-            onClick={() => onPass(profile, candidate)}
+            onClick={() => onPass(user, candidate)}
             disabled={isLoading || !candidate || NOT_USERS}
           >
             Pass
@@ -149,7 +165,7 @@ export default function Page() {
       <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
         {!isLoading && candidate ? (
           <Image
-            src={candidate?.avatar}
+            src={"/avatars/" + candidate?.avatar}
             alt="Background Image"
             fill
             className="object-cover"
