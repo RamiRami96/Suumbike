@@ -6,6 +6,7 @@ TODO:
 - Webrtc
 - Refresh JWT token
 - Change avatar
+- Delete account
 
 Stack:
 -Next.js 13.4 (server actions)
