@@ -42,7 +42,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col items-center mt-8">
+    <section className="flex flex-col items-center mt-8">
       <h4 className="text-center mb-4">Sign in</h4>
       <form onSubmit={handleSubmit(onSubmit)} className="w-5/6 md:w-2/6">
         <div>
@@ -61,10 +61,14 @@ export default function Page() {
                 className={input_style}
                 placeholder="Telegram Nickname"
                 {...field}
+                aria-label="Telegram Nickname"
+                aria-invalid={errors.tgNickname ? "true" : "false"}
               />
             )}
           />
-          <div className={error_style}>{errors.tgNickname?.message || ""}</div>
+          <div role="alert" className={error_style}>
+            {errors.tgNickname?.message || ""}
+          </div>
         </div>
         <div>
           <Controller
@@ -87,12 +91,16 @@ export default function Page() {
                 className={input_style}
                 placeholder="Password"
                 {...field}
+                aria-label="Password"
+                aria-invalid={errors.password ? "true" : "false"}
               />
             )}
           />
           <div className={error_style}>{errors.password?.message || ""}</div>
         </div>
-        <div className={error_style}>{error}</div>
+        <div role="alert" className={error_style}>
+          {error}
+        </div>
         <button
           disabled={isSubmitting || loading}
           type="submit"
@@ -107,6 +115,6 @@ export default function Page() {
           Sign up
         </Link>
       </div>
-    </div>
+    </section>
   );
 }

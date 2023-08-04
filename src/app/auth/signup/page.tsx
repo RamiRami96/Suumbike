@@ -54,7 +54,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col items-center mt-8">
+    <section className="flex flex-col items-center mt-8">
       <h4 className="text-center mb-4">Sign up</h4>
       <form onSubmit={handleSubmit(onSubmit)} className="w-5/6 md:w-2/6">
         <div>
@@ -73,10 +73,18 @@ export default function Page() {
             name="name"
             control={control}
             render={({ field }) => (
-              <input className={input_style} placeholder="Name" {...field} />
+              <input
+                className={input_style}
+                placeholder="Name"
+                {...field}
+                aria-label="Name"
+                aria-invalid={errors.name ? "true" : "false"}
+              />
             )}
           />
-          <div className={error_style}>{errors.name?.message || ""}</div>
+          <div role="alert" className={error_style}>
+            {errors.name?.message || ""}
+          </div>
         </div>
         <div>
           <Controller
@@ -92,10 +100,14 @@ export default function Page() {
                 className={input_style}
                 placeholder="Date of Birth"
                 {...field}
+                aria-label="Date of Birth"
+                aria-invalid={errors.age ? "true" : "false"}
               />
             )}
           />
-          <div className={error_style}>{errors.age?.message || ""}</div>
+          <div role="alert" className={error_style}>
+            {errors.age?.message || ""}
+          </div>
         </div>
         <div>
           <Controller
@@ -113,10 +125,14 @@ export default function Page() {
                 className={input_style}
                 placeholder="Telegram Nickname"
                 {...field}
+                aria-label="Telegram Nickname"
+                aria-invalid={errors.tgNickname ? "true" : "false"}
               />
             )}
           />
-          <div className={error_style}>{errors.tgNickname?.message || ""}</div>
+          <div role="alert" className={error_style}>
+            {errors.tgNickname?.message || ""}
+          </div>
         </div>
         <div>
           <Controller
@@ -139,10 +155,14 @@ export default function Page() {
                 className={input_style}
                 placeholder="Password"
                 {...field}
+                aria-label="Password"
+                aria-invalid={errors.password ? "true" : "false"}
               />
             )}
           />
-          <div className={error_style}>{errors.password?.message || ""}</div>
+          <div role="alert" className={error_style}>
+            {errors.password?.message || ""}
+          </div>
         </div>
         <div>
           <Controller
@@ -166,11 +186,13 @@ export default function Page() {
                   type="file"
                   accept=".png, .jpg, .jpeg"
                   onChange={(e) => field.onChange(e.target.files?.[0])}
+                  aria-label="Avatar"
+                  aria-invalid={errors.avatar ? "true" : "false"}
                 />
               </div>
             )}
           />
-          <div className={error_style}>
+          <div role="alert" className={error_style}>
             {error ?? (errors.avatar?.message || "")}
           </div>
         </div>
@@ -188,6 +210,6 @@ export default function Page() {
           Sign in
         </Link>
       </div>
-    </div>
+    </section>
   );
 }

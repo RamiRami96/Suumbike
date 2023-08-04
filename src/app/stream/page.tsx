@@ -118,8 +118,11 @@ export default function Page() {
   }, [tgNickname]);
 
   return (
-    <div className="relative h-[90vh] flex justify-center mt-50">
-      <time className="absolute z-10 top-12 left-3 text-2xl font-bold text-pink-400 md:hidden w-8 ">
+    <section className="relative h-[90vh] flex justify-center mt-50">
+      <time
+        aria-live="assertive"
+        className="absolute z-10 top-12 left-3 text-2xl font-bold text-pink-400 md:hidden w-8 "
+      >
         {`${minute}:${second.toString().padStart(2, "0")}`}
       </time>
       <div className="absolute z-10 top-10 right-3 md:hidden">
@@ -177,6 +180,6 @@ export default function Page() {
           <Spinner />
         )}
       </div>
-    </div>
+    </section>
   );
 }

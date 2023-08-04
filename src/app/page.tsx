@@ -33,13 +33,14 @@ export default function Page() {
   };
 
   return (
-    <div className="h-[90.3vh] flex flex-col items-center justify-center relative overflow-hidden">
+    <main className="h-[90.3vh] flex flex-col items-center justify-center relative overflow-hidden">
       <div className="hearts h-[90.3vh]">
         {Array.from({ length: numberOfHearts }, (_, index) => (
           <div
             key={index}
             className="heart"
             style={generateHeartStyles(index + 1) as React.CSSProperties}
+            aria-label="Heart"
           >
             ❤
           </div>
@@ -55,6 +56,6 @@ export default function Page() {
           "Start"
         )}
       </button>
-    </div>
+    </main>
   );
 }

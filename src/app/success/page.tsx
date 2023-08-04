@@ -11,7 +11,7 @@ export default async function Page({ searchParams }: Props) {
   const name = searchParams.name;
 
   return (
-    <div className="flex flex-col justify-center items-center h-92">
+    <section className="flex flex-col justify-center items-center h-92">
       <Image
         src={"/avatars/" + avatar}
         className="object-cover rounded-full w-[300px] h-[300px] mt-10 md:mt-14"
@@ -24,6 +24,6 @@ export default async function Page({ searchParams }: Props) {
         {"  "}
         has been added to your contacts
       </h2>
-    </div>
+    </section>
   );
 }
