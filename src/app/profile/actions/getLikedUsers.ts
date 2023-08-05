@@ -30,7 +30,7 @@ export async function getLikedUsers(
       leftArray = user?.likedUsers.slice(0, endIndex);
     }
 
-    const userWithTake = await prisma.user.findFirst({
+    const userWithTake = await prisma.user.findUnique({
       where: { tgNickname },
       include: {
         likedUsers: {
@@ -41,6 +41,7 @@ export async function getLikedUsers(
     });
 
     const likedUsers = userWithTake?.likedUsers;
+
 
     return leftArray ?? likedUsers;
   } catch (error) {

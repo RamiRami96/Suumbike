@@ -8,6 +8,8 @@ import FrontCamera from "./frontCamera";
 import { Spinner } from "../../components/spinner";
 import { getUsers } from "./actions/getUsers";
 import { likeUser } from "./actions/likeUser";
+import { exitFromPage } from "./actions/exitFromPage";
+
 import type { User } from "../types/user";
 
 export default function Page() {
@@ -107,8 +109,9 @@ export default function Page() {
   const minute = Math.floor(timeLeft / 60);
   const second = timeLeft % 60;
 
-  function returnToHomePage() {
-    router.push("/");
+  function returnToHomePage(id?: string) {
+    if (!id) return;
+    exitFromPage(id).then(() => router.push("/"));
   }
 
   useEffect(() => {
@@ -144,7 +147,7 @@ export default function Page() {
           </button>
           <button
             className="px-4 py-2 bg-white text-pink-400 border-2 border-t-pink-400 border-b-pink-400 w-24"
-            onClick={returnToHomePage}
+            onClick={() => returnToHomePage(user?.id)}
           >
             Exit
           </button>

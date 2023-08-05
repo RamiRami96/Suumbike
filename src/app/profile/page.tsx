@@ -59,7 +59,7 @@ export default function Page() {
           setIsLoading(false);
         }
       },
-      { root: null, rootMargin: "0px", threshold: 1 }
+      { root: null, rootMargin: "0px", threshold: 0.8 }
     );
 
     if (lastElement.current) {
@@ -97,14 +97,9 @@ export default function Page() {
     }
   };
 
-  const logout = () => {
-    router.push("/");
-    signOut();
-  };
-
   const handleDeleteAccount = (tgNickname: string, avatar: string) => {
     deleteAccount(tgNickname, avatar).then(() => {
-      logout();
+      signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL });
     });
   };
 
@@ -121,18 +116,20 @@ export default function Page() {
               height={150}
             />
             <div className="flex flex-col ml-6">
-              <h4 className="font-bold">{user?.name}</h4>
+              <h4 className="font-bold uppercase">{user?.name}</h4>
               <button
                 aria-label="Delete account"
                 onClick={() => handleDeleteAccount(tgNickname, avatar)}
-                className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-4 rounded mt-2"
+                className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-2 rounded mt-2"
               >
                 Delete account
               </button>
               <button
                 aria-label="Sign out"
-                onClick={logout}
-                className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-4 rounded mt-2"
+                onClick={() =>
+                  signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL })
+                }
+                className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-2 rounded mt-2"
               >
                 Sign out
               </button>
@@ -144,38 +141,36 @@ export default function Page() {
             <h2>Not liked users :(</h2>
           </div>
         ) : (
-          <div className="border border-pink-400 bg-white rounded-lg overflow-hidden">
-            <div className="flex justify-between bg-pink-400 text-white">
-              <h6 className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left font-medium">
+          <div className="border border-pink-400 bg-white rounded-lg overflow-hidden min-w-[320px] ">
+            <div className="flex justify-between al bg-pink-400 text-white">
+              <h6 className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pl-2 sm:pl-6 text-left font-medium text-sm md:text-md">
                 Avatar
               </h6>
-              <h6 className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left font-medium">
+              <h6 className="w-[100px] sm:w-[140px] md:w-[200px] px-2 py-3 sm:px-6 text-left font-medium text-sm md:text-md">
                 Name
               </h6>
-              <h6 className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left font-medium">
+              <h6 className="w-[100px] sm:w-[140px] md:w-[200px] px-2 py-3 sm:px-6 text-left font-medium text-sm md:text-md">
                 Telegram
               </h6>
-              <h6 className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left font-medium">
-                Action
-              </h6>
+              <h6 className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pr-4 sm:pr-6 text-left font-medium text-sm md:text-md"></h6>
             </div>
-            <div className="h-[50vh] overflow-y-auto">
+            <div className="h-[45vh] md:h-[50vh] overflow-y-auto">
               {likedUsers?.length === 0 ? (
                 Array.from({ length: 7 }).map((_, index) => (
                   <div
                     key={index}
                     className="flex justify-between items-center py-3 animate-pulse"
                   >
-                    <div className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6">
+                    <div className="w-[60px] sm:w-[140px] md:w-[200px]pl-2 sm:pl-6">
                       <div className="w-10 h-10 rounded-full bg-gray-300"></div>
                     </div>
-                    <div className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 h-10 flex align-center">
+                    <div className="w-[100px] sm:w-[140px] md:w-[200px] px-2 py-3 sm:px-6 h-10 flex align-center">
+                      <div className="w-24 sm:w-24 md:w-48 h-10 bg-gray-300"></div>
+                    </div>
+                    <div className="w-[100px] sm:w-[140px] md:w-[200px] px-2 py-3 sm:px-6 h-10 flex align-center">
                       <div className="w-14 sm:w-24 md:w-48 h-10 bg-gray-300"></div>
                     </div>
-                    <div className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 h-10 flex align-center">
-                      <div className="w-14 sm:w-24 md:w-48 h-10 bg-gray-300"></div>
-                    </div>
-                    <div className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 h-10 flex align-center">
+                    <div className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pr-4 sm:pr-6 h-10 flex align-center">
                       <div className="w-14 sm:w-24 md:w-48 h-10 bg-gray-300"></div>
                     </div>
                   </div>
@@ -189,7 +184,7 @@ export default function Page() {
                         key={id}
                         ref={array.length - 1 === i ? lastElement : null}
                       >
-                        <div className="flex items-center justify-start w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6">
+                        <div className="flex items-center justify-start w-[60px] sm:w-[140px] md:w-[200px] py-3 pl-2 sm:pl-6">
                           <Image
                             className="h-10 w-10 rounded-full "
                             src={"/avatars/" + avatar}
@@ -198,27 +193,33 @@ export default function Page() {
                             height={50}
                           />
                         </div>
-                        <p className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left text-sm text-pink-400">
+                        <p className="w-[100px] sm:w-[140px] md:w-[200px]  py-3 px-2 sm:px-6 text-left text-xs md:text-sm text-pink-400">
                           {name}
                         </p>
-                        <p className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left text-sm text-pink-400">
-                          {tgNickname}
+                        <p className="w-[100px] sm:w-[140px] md:w-[200px]  py-3 px-2 sm:px-6 text-left text-xs md:text-sm text-pink-400 break-words">
+                          @{tgNickname}
                         </p>
                         <button
-                          className="w-[90px] sm:w-[140px] md:w-[200px] px-4 py-3 sm:px-6 text-left"
+                          className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pr-4 sm:pr-6 flex justify-center md:justify-start"
                           onClick={() => deleteContact(id)}
                         >
-                          <Image
-                            src={"/icons/delete.svg"}
-                            alt="delete"
-                            width={16}
-                            height={16}
-                          />
+                          <div>
+                            <Image
+                              src={"/icons/delete.svg"}
+                              alt="delete"
+                              width={16}
+                              height={16}
+                            />
+                          </div>
                         </button>
                       </div>
                     )
                   )}
-                  {isLoading && likedUsers.length >= 10 && <p>Loading...</p>}
+                  {isLoading && likedUsers.length >= 10 && (
+                    <div className="flex justify-center items-center py-3">
+                      <div className="animate-spin rounded-full h-6 w-6 border-t-4 border-pink-600" />
+                    </div>
+                  )}
                 </>
               )}
             </div>

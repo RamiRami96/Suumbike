@@ -67,7 +67,13 @@ export default function Header() {
           {isMenuOpen && (
             <div className="absolute bottom-[-8vh] right-[0.6vh] z-50 w-24 border border-pink-600 flex flex-col p-3 rounded-2xl bg-white">
               {user ? (
-                <button onClick={() => signOut()}>Sign out</button>
+                <button
+                  onClick={() =>
+                    signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL })
+                  }
+                >
+                  Sign out
+                </button>
               ) : (
                 <button
                   onClick={() => {
