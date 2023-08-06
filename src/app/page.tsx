@@ -48,7 +48,7 @@ export default function Page() {
       </div>
       <button
         onClick={handleClick}
-        className="absolute z-50 border-2 border-pink-400 h-48 w-48 rounded-full bg-white text-pink-600 font-bold uppercase shadow-2xl shadow-pink-300 flex items-center justify-center"
+        className="absolute z-50 border-2 border-pink-400 h-48 w-48 rounded-full bg-white text-pink-600 font-bold uppercase shadow-2xl shadow-pink-300 flex items-center justify-center opacity-70 hover:opacity-100 active:opacity-100 transition-opacity"
       >
         {loading ? (
           <div className="animate-spin rounded-full border-t-4 border-pink-600 border-solid h-6 w-6" />
