@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 
-export default function FrontCamera() {
+const FrontCamera = memo(function FrontCamera() {
   const videoRef = useRef<HTMLVideoElement>(null!);
   const [stream, setStream] = useState<MediaStream | null>(null);
 
@@ -39,4 +39,6 @@ export default function FrontCamera() {
       />
     </div>
   );
-}
+});
+
+export default FrontCamera;
