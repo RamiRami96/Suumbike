@@ -112,7 +112,7 @@ export default function Page() {
         {avatar && user?.name && tgNickname && (
           <Account
             avatar={avatar}
-            userName={user?.name}
+            userName={user.name}
             tgNickname={tgNickname}
             deleteAccount={handleDeleteAccount}
           />

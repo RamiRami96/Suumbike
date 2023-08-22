@@ -4,7 +4,7 @@ import { memo } from "react";
 
 type Props = {
   avatar: string;
-  userName?: string;
+  userName: string;
   tgNickname: string;
   deleteAccount: (tgNickname: string, avatar: string) => void;
 };
