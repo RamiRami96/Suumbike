@@ -60,7 +60,7 @@ export function Contacts({
               >
                 <div className="flex items-center justify-start w-[60px] sm:w-[140px] md:w-[200px] py-3 pl-2 sm:pl-6">
                   <Image
-                    className="h-10 w-10 rounded-full "
+                    className="h-10 w-10 rounded-full object-cover"
                     src={"/avatars/" + avatar}
                     alt="Avatar"
                     width={50}

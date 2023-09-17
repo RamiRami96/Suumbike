@@ -1,18 +1,24 @@
+// TODO: need to decompose component
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
-import FrontCamera from "./frontCamera";
+import io from "socket.io-client";
+import Peer from "simple-peer";
+
 import { Spinner } from "../../components/spinner";
 import { getUsers } from "./actions/getUsers";
 import { likeUser } from "./actions/likeUser";
 import { exitFromPage } from "./actions/exitFromPage";
 
 import type { User } from "../types/user";
+import FrontCamera from "./frontCamera";
 
-export default function Page() {
+type StreamProps = {};
+
+export default function StreamPage(props: StreamProps) {
   const session = useSession({
     required: true,
     onUnauthenticated() {
@@ -20,20 +26,32 @@ export default function Page() {
     },
   });
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [candidate, setCandidate] = useState<User | null>(null);
   const [visitedUsers, setVisitedUsers] = useState<User[]>([]);
-  const [timeLeft, setTimeLeft] = useState(120);
+  const [timeLeft, setTimeLeft] = useState<number>(12000);
   const [usersData, setUsersData] = useState<{
     user: User;
     users: User[];
   } | null>(null);
 
-  const tgNickname = (session.data?.user as any)?.tgNickname;
+  const [userID, setUserID] = useState<string>("");
+  const [users, setUsers] = useState<{ [key: string]: any }>({});
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [receivingCall, setReceivingCall] = useState<boolean>(false);
+  const [caller, setCaller] = useState<string>("");
+  const [callerSignal, setCallerSignal] = useState<any>();
+  const [connectionAccepted, setConnectionAccepted] = useState<boolean>(false);
 
-  const NOT_USERS = usersData?.users?.length === 0;
+  const partnerVideo = useRef<HTMLVideoElement | null>(null);
+  const socket = useRef<any>();
 
-  const user = usersData?.user;
+  const tgNickname: string | undefined = (session.data?.user as any)
+    ?.tgNickname;
+
+  const NOT_USERS: boolean = usersData?.users?.length === 0;
+
+  const user: User | undefined = usersData?.user;
 
   function getCandidate(users?: User[], user?: User): void {
     if (users?.length && user) {
@@ -60,6 +78,15 @@ export default function Page() {
   }
 
   function onSmash(users?: User[], user?: User) {
+    setUsersData(null);
+    if (stream) {
+      stream.getTracks().forEach((track) => {
+        track.stop();
+      });
+    }
+    if (socket.current) {
+      socket.current.disconnect();
+    }
     setTimeLeft(120);
     if (users) {
       return getCandidate(users, user);
@@ -68,6 +95,15 @@ export default function Page() {
 
   async function onPass(user?: User, candidate?: User | null) {
     setIsLoading(true);
+
+    if (stream) {
+      stream.getTracks().forEach((track) => {
+        track.stop();
+      });
+    }
+    if (socket.current) {
+      socket.current.disconnect();
+    }
 
     if (user && candidate) {
       try {
@@ -99,26 +135,152 @@ export default function Page() {
       onPass(user, candidate);
     }
 
-    if (isLoading || !candidate || NOT_USERS) return;
+    if (isLoading || !candidate || NOT_USERS || !connectionAccepted) return;
 
     const intervalId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
 
     return () => clearInterval(intervalId);
-  });
+  }, [connectionAccepted]);
 
-  const minute = Math.floor(timeLeft / 60);
-  const second = timeLeft % 60;
+  const minute: number = Math.floor(timeLeft / 60);
+  const second: number = timeLeft % 60;
 
   function returnToHomePage(id?: string) {
-    if (!id) return;
+    if (!id || !stream || !socket.current) return;
+    stream.getTracks().forEach((track) => track.stop());
+    socket.current.disconnect();
     exitFromPage(id).then(() => router.push("/"));
   }
 
   useEffect(() => {
+    if (!tgNickname || usersData) return;
+
     getUsers(tgNickname).then((data) => {
       if (data) setUsersData(data);
     });
-  }, [tgNickname]);
+  }, [tgNickname, usersData]);
+
+  useEffect(() => {
+    socket.current = io("http://localhost:8000");
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+      });
+
+    socket.current.on("userID", (id: string) => {
+      setUserID(id);
+    });
+    socket.current.on("allUsers", (u: { [key: string]: any }) => {
+      if (Object.keys(users).length < 3) {
+        setUsers(u);
+      }
+    });
+
+    socket.current.on("init", (data: any) => {
+      setReceivingCall(true);
+      setCaller(data.from);
+      setCallerSignal(data.signal);
+    });
+
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => {
+          track.stop();
+        });
+      }
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    Object.keys(users).map((key) => {
+      if (key === userID) {
+        return null;
+      }
+
+      callPeer(key);
+    });
+  }, [users]);
+
+  useEffect(() => {
+    if (receivingCall) {
+      acceptConnection();
+    }
+  }, [receivingCall]);
+
+  function callPeer(id: string) {
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      config: {
+        iceServers: [
+          {
+            urls: "stun:numb.viagenie.ca",
+            username: "sultan1640@gmail.com",
+            credential: "98376683",
+          },
+          {
+            urls: "turn:numb.viagenie.ca",
+            username: "sultan1640@gmail.com",
+            credential: "98376683",
+          },
+        ],
+      },
+      stream: stream as MediaStream,
+    });
+
+    peer.on("signal", (data) => {
+      socket.current.emit("connectUser", {
+        userToCall: id,
+        signalData: data,
+        from: userID,
+      });
+    });
+
+    peer.on("stream", (stream) => {
+      if (partnerVideo.current) {
+        partnerVideo.current.srcObject = stream;
+      }
+    });
+
+    socket.current.on("connectionAccepted", (signal: any) => {
+      setConnectionAccepted(true);
+      peer.signal(signal);
+    });
+  }
+
+  function acceptConnection() {
+    setConnectionAccepted(true);
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream: stream as MediaStream,
+    });
+    peer.on("signal", (data) => {
+      socket.current.emit("acceptConnection", { signal: data, to: caller });
+    });
+
+    peer.on("stream", (stream) => {
+      if (partnerVideo.current) partnerVideo.current.srcObject = stream;
+    });
+
+    peer.signal(callerSignal);
+  }
+
+  let PartnerVideo;
+  if (connectionAccepted) {
+    PartnerVideo = (
+      <video
+        className="fixed top-2 left-0 w-full h-full object-cover"
+        ref={partnerVideo}
+        autoPlay
+        muted
+      />
+    );
+  }
 
   return (
     <section className="relative h-[90vh] flex justify-center mt-50">
@@ -169,16 +331,10 @@ export default function Page() {
         </h4>
       )}
       <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-        {!isLoading && candidate ? (
-          <Image
-            src={"/avatars/" + candidate?.avatar}
-            alt="Background Image"
-            fill
-            className="object-cover"
-            priority
-            placeholder="blur"
-            blurDataURL={candidate?.avatar}
-          />
+        {!isLoading && candidate && connectionAccepted ? (
+          <div className={connectionAccepted ? " " : "animate-pulse"}>
+            {PartnerVideo}
+          </div>
         ) : (
           <Spinner />
         )}

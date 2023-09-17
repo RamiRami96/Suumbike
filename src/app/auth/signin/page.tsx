@@ -75,14 +75,6 @@ export default function Page() {
             name="password"
             rules={{
               required: "This field is required",
-              minLength: {
-                value: 8,
-                message: "Minimum number of letters is 8",
-              },
-              maxLength: {
-                value: 15,
-                message: "Maximum number of letters is 15",
-              },
             }}
             control={control}
             render={({ field }) => (

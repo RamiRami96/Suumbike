@@ -31,7 +31,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="flex justify-between items-center px-4 py-4 shadow w-full">
+    <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50 bg-white">
       <Link href={"/"}>
         <Image
           src={"/icons/logo.svg"}
