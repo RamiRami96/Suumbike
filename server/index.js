@@ -19,7 +19,7 @@ io.on("connection", (socket) => {
   if (!users[socket.id]) {
     users[socket.id] = socket.id;
   }
-  socket.emit("userID", socket.id);
+  socket.emit("socketID", socket.id);
 
   io.sockets.emit("allUsers", users);
   socket.on("disconnect", () => {
