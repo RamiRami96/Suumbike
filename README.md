@@ -3,10 +3,8 @@ This app lets you connect with other people through web roulette.
 The dating app is under development.
 
 TODO:
-- Webrtc
 - Refresh JWT token
 - Add unit tests
-- Secure routes on the server
 
 Stack:
 -Next.js 13.4 (server actions)
