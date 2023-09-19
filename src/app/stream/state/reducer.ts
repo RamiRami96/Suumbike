@@ -18,16 +18,14 @@ export function reducer(
       return { ...state, usersData: action.payload };
     case ActionTypes.SET_SOCKET_ID:
       return { ...state, socketID: action.payload };
-    case ActionTypes.SET_USERS:
-      return { ...state, users: action.payload };
+    case ActionTypes.SET_CONNECTION_IDS:
+      return { ...state, ids: action.payload };
     case ActionTypes.SET_STREAM:
       return { ...state, stream: action.payload };
     case ActionTypes.SET_RECEIVING_CALL:
       return { ...state, receivingCall: action.payload };
-    case ActionTypes.SET_CALLER:
-      return { ...state, caller: action.payload };
-    case ActionTypes.SET_CALLER_SIGNAL:
-      return { ...state, callerSignal: action.payload };
+    case ActionTypes.SET_CALLER_DATA:
+      return { ...state, callerData: action.payload };
     case ActionTypes.SET_CONNECTION_ACCEPTED:
       return { ...state, connectionAccepted: action.payload };
     case ActionTypes.SET_LOADING:

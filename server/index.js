@@ -11,23 +11,23 @@ const io = require("socket.io")(server, {
   },
 });
 
-let users = {};
+let ids = {};
 
 io.on("connection", (socket) => {
-  users = {};
+  ids = {};
 
-  if (!users[socket.id]) {
-    users[socket.id] = socket.id;
+  if (!ids[socket.id]) {
+    ids[socket.id] = socket.id;
   }
   socket.emit("socketID", socket.id);
 
-  io.sockets.emit("allUsers", users);
+  io.sockets.emit("allIds", Object.keys(ids).length < 3 ? ids : null);
   socket.on("disconnect", () => {
-    delete users[socket.id];
+    delete ids[socket.id];
   });
 
   socket.on("connectUser", (data) => {
-    io.to(data.userToCall).emit("init", {
+    io.to(data.to).emit("init", {
       signal: data.signalData,
       from: data.from,
     });

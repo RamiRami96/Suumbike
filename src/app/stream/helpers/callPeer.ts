@@ -33,9 +33,10 @@ export function callPeer(
     stream: stream as MediaStream,
   });
 
+
   peer.on("signal", (data) => {
     socket.current.emit("connectUser", {
-      userToCall: id,
+      to: id,
       signalData: data,
       from: socketID,
     });

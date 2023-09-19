@@ -10,11 +10,10 @@ export interface StreamPageState {
     users: User[];
   } | null;
   socketID: string;
-  users: { [key: string]: any };
+  ids: { [key: string]: string };
   stream: MediaStream | null;
   receivingCall: boolean;
-  caller: string;
-  callerSignal: string | SignalData | null;
+  callerData: { id: string; signal: string | SignalData } | null;
   connectionAccepted: boolean;
   isLoading: boolean;
 }
@@ -25,11 +24,10 @@ export const initialState: StreamPageState = {
   timeLeft: 12000,
   usersData: null,
   socketID: "",
-  users: {},
+  ids: {},
   stream: null,
   receivingCall: false,
-  caller: "",
-  callerSignal: null,
+  callerData: null,
   connectionAccepted: false,
   isLoading: false,
 };

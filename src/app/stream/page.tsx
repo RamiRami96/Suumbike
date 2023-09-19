@@ -31,11 +31,10 @@ export default function StreamPage() {
     timeLeft,
     usersData,
     socketID,
-    users,
+    ids,
     stream,
     receivingCall,
-    caller,
-    callerSignal,
+    callerData,
     connectionAccepted,
     isLoading,
   }: StreamPageState = state;
@@ -96,42 +95,23 @@ export default function StreamPage() {
   }, [tgNickname, usersData]);
 
   useEffect(() => {
-    Object.keys(users).map((id) => {
+    Object.keys(ids).map((id) => {
       if (id === socketID) {
         return null;
       }
 
       callPeer(dispatch, id, socket, socketID, stream, partnerVideo);
     });
-  }, [users]);
+  }, [ids]);
 
   useEffect(() => {
     if (receivingCall) {
-      acceptConnection(
-        dispatch,
-        socket,
-        partnerVideo,
-        caller,
-        callerSignal,
-        stream
-      );
+      acceptConnection(dispatch, socket, partnerVideo, callerData, stream);
     }
   }, [receivingCall]);
 
   const minute: number = Math.floor(timeLeft / 60);
   const second: number = timeLeft % 60;
-
-  let PartnerVideo;
-  if (connectionAccepted) {
-    PartnerVideo = (
-      <video
-        className="fixed top-2 left-0 w-full h-full object-cover"
-        ref={partnerVideo}
-        autoPlay
-        muted
-      />
-    );
-  }
 
   return (
     <section className="relative h-[90vh] flex justify-center mt-50">
@@ -196,7 +176,14 @@ export default function StreamPage() {
       <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
         {!isLoading && candidate && connectionAccepted ? (
           <div className={connectionAccepted ? " " : "animate-pulse"}>
-            {PartnerVideo}
+            {connectionAccepted && (
+              <video
+                className="fixed top-2 left-0 w-full h-full object-cover"
+                ref={partnerVideo}
+                autoPlay
+                muted
+              />
+            )}
           </div>
         ) : (
           <Spinner />
