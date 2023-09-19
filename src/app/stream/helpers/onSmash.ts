@@ -21,7 +21,7 @@ export function onSmash(
   socket: MutableRefObject<any>,
   users?: User[],
   user?: User,
-  stream?: MediaStream
+  stream?: MediaStream | null
 ) {
   dispatch({ type: ActionTypes.SET_USERS_DATA, payload: null });
 

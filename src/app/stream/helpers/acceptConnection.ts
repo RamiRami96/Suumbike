@@ -10,8 +10,8 @@ export function acceptConnection(
   socket: MutableRefObject<any>,
   partnerVideo: MutableRefObject<HTMLVideoElement | null>,
   caller: string,
-  callerSignal: string | SignalData,
-  stream?: MediaStream
+  callerSignal: string | SignalData | null,
+  stream?: MediaStream | null
 ) {
   dispatch({ type: ActionTypes.SET_CONNECTION_ACCEPTED, payload: true });
 
@@ -28,5 +28,7 @@ export function acceptConnection(
     if (partnerVideo.current) partnerVideo.current.srcObject = stream;
   });
 
-  peer.signal(callerSignal);
+  if (callerSignal) {
+    peer.signal(callerSignal);
+  }
 }

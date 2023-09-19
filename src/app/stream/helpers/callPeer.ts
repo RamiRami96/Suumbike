@@ -10,7 +10,7 @@ export function callPeer(
   id: string,
   socket: MutableRefObject<any>,
   socketID: string,
-  stream?: MediaStream,
+  stream?: MediaStream | null,
   partnerVideo?: MutableRefObject<HTMLVideoElement | null>
 ) {
   const peer = new Peer({

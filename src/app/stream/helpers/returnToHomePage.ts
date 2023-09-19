@@ -6,7 +6,7 @@ export function returnToHomePage(
   router: AppRouterInstance,
   socket: MutableRefObject<any>,
   id?: string,
-  stream?: MediaStream
+  stream?: MediaStream | null
 ) {
   if (!id) return;
 

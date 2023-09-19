@@ -4,7 +4,6 @@ import { likeUser } from "../actions/likeUser";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { User } from "@/app/types/user";
 
-
 export async function onPass(
   router: AppRouterInstance,
   dispatch: Dispatch<{
@@ -14,7 +13,7 @@ export async function onPass(
   socket: MutableRefObject<any>,
   user?: User,
   candidate?: User | null,
-  stream?: MediaStream
+  stream?: MediaStream | null
 ) {
   dispatch({ type: ActionTypes.SET_LOADING, payload: true });
 

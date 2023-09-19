@@ -2,7 +2,9 @@ import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { User } from "@/app/types/user";
 
-export const useUserData = (usersData: { users: User[]; user: User }) => {
+export const useUserData = (
+  usersData: { user: User; users: User[] } | null
+) => {
   const session = useSession({
     required: true,
     onUnauthenticated() {

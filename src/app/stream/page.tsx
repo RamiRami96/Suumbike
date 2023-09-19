@@ -7,7 +7,7 @@ import FrontCamera from "./frontCamera";
 
 import { getUsers } from "./actions/getUsers";
 
-import { initialState } from "./state/initialState";
+import { initialState, StreamPageState } from "./state/initialState";
 import { reducer } from "./state/reducer";
 import { ActionTypes } from "./state/actions";
 import { getCandidate } from "./helpers/getCandidate";
@@ -38,7 +38,7 @@ export default function StreamPage() {
     callerSignal,
     connectionAccepted,
     isLoading,
-  } = state;
+  }: StreamPageState = state;
 
   const partnerVideo = useRef<HTMLVideoElement | null>(null);
   const socket = useRef<any>();
