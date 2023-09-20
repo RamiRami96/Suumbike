@@ -16,12 +16,15 @@ export interface StreamPageState {
   callerData: { id: string; signal: string | SignalData } | null;
   connectionAccepted: boolean;
   isLoading: boolean;
+  isSmashed: boolean;
+  isExited: boolean;
+  isPassed: boolean;
 }
 
 export const initialState: StreamPageState = {
   candidate: null,
   visitedUsers: [],
-  timeLeft: 12000,
+  timeLeft: 1200,
   usersData: null,
   socketID: "",
   ids: {},
@@ -30,4 +33,7 @@ export const initialState: StreamPageState = {
   callerData: null,
   connectionAccepted: false,
   isLoading: false,
+  isSmashed: false,
+  isExited: false,
+  isPassed: false,
 };

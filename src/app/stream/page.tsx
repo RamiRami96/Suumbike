@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useReducer, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 import { Spinner } from "../../components/spinner";
 import FrontCamera from "./frontCamera";
@@ -15,7 +16,6 @@ import { getCandidate } from "./helpers/getCandidate";
 import { useUserData } from "./hooks/useUserData";
 import { onSmash } from "./helpers/onSmash";
 import { onPass } from "./helpers/onPass";
-import { useRouter } from "next/navigation";
 import { returnToHomePage } from "./helpers/returnToHomePage";
 import { callPeer } from "./helpers/callPeer";
 import { acceptConnection } from "./helpers/acceptConnection";
@@ -37,6 +37,9 @@ export default function StreamPage() {
     callerData,
     connectionAccepted,
     isLoading,
+    isSmashed,
+    isExited,
+    isPassed,
   }: StreamPageState = state;
 
   const partnerVideo = useRef<HTMLVideoElement | null>(null);
@@ -70,19 +73,21 @@ export default function StreamPage() {
       onPass(router, dispatch, socket, user, candidate, stream);
     }
 
-    if (isLoading || !candidate || not_users || !connectionAccepted) return;
+    let intervalId: NodeJS.Timer;
 
-    const intervalId = setInterval(
-      () =>
-        dispatch({
-          type: ActionTypes.SET_TIME_DECREASE,
-          payload: null,
-        }),
-      1000
-    );
+    if (!isLoading && candidate && !not_users && connectionAccepted) {
+      intervalId = setInterval(
+        () =>
+          dispatch({
+            type: ActionTypes.SET_TIME_DECREASE,
+            payload: null,
+          }),
+        1000
+      );
+    }
 
     return () => clearInterval(intervalId);
-  }, [connectionAccepted]);
+  }, [isLoading, candidate, not_users, connectionAccepted]);
 
   useEffect(() => {
     if (!tgNickname || usersData) return;
@@ -112,6 +117,50 @@ export default function StreamPage() {
 
   const minute: number = Math.floor(timeLeft / 60);
   const second: number = timeLeft % 60;
+
+  useEffect(() => {
+    if (socket?.current) {
+      socket.current.on(
+        "checkControls",
+        (data: {
+          isSmashed: boolean;
+          isExited: boolean;
+          isPassed: boolean;
+        }) => {
+          dispatch({
+            type: ActionTypes.SET_IS_SMASHED,
+            payload: data.isSmashed,
+          });
+          dispatch({
+            type: ActionTypes.SET_IS_EXITED,
+            payload: data.isExited,
+          });
+          dispatch({
+            type: ActionTypes.SET_IS_PASSED,
+            payload: data.isPassed,
+          });
+        }
+      );
+    }
+  }, [socket?.current]);
+
+  useEffect(() => {
+    if (isSmashed || isExited) {
+      onSmash(
+        getCandidate,
+        dispatch,
+        visitedUsers,
+        socket,
+        usersData?.users,
+        usersData?.user,
+        stream
+      );
+    }
+
+    if (isPassed) {
+      onPass(router, dispatch, socket, user, candidate, stream);
+    }
+  }, [isSmashed, isExited, isPassed]);
 
   return (
     <section className="relative h-[90vh] flex justify-center mt-50">
@@ -144,7 +193,9 @@ export default function StreamPage() {
                 stream
               )
             }
-            disabled={isLoading || !candidate || not_users}
+            disabled={
+              isLoading || !candidate || not_users || !connectionAccepted
+            }
           >
             Smash
           </button>
@@ -159,7 +210,9 @@ export default function StreamPage() {
             onClick={() =>
               onPass(router, dispatch, socket, user, candidate, stream)
             }
-            disabled={isLoading || !candidate || not_users}
+            disabled={
+              isLoading || !candidate || not_users || !connectionAccepted
+            }
           >
             Pass
           </button>

@@ -22,6 +22,7 @@ io.on("connection", (socket) => {
   socket.emit("socketID", socket.id);
 
   io.sockets.emit("allIds", Object.keys(ids).length < 3 ? ids : null);
+
   socket.on("disconnect", () => {
     delete ids[socket.id];
   });
@@ -35,6 +36,10 @@ io.on("connection", (socket) => {
 
   socket.on("acceptConnection", (data) => {
     io.to(data.to).emit("connectionAccepted", data.signal);
+  });
+
+  socket.on("checkControls", (data) => {
+    io.emit("checkControls", data);
   });
 });
 

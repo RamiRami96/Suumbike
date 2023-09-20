@@ -30,7 +30,14 @@ export function reducer(
       return { ...state, connectionAccepted: action.payload };
     case ActionTypes.SET_LOADING:
       return { ...state, isLoading: action.payload };
+    case ActionTypes.SET_IS_SMASHED:
+      return { ...state, isSmashed: action.payload };
+    case ActionTypes.SET_IS_EXITED:
+      return { ...state, isExited: action.payload };
+    case ActionTypes.SET_IS_PASSED:
+      return { ...state, isPassed: action.payload };
     default:
       return state;
   }
 }
+ 

@@ -1,5 +1,4 @@
 import { Dispatch, MutableRefObject } from "react";
-import SimplePeer from "simple-peer";
 import Peer, { SignalData } from "simple-peer";
 import { ActionTypes } from "../state/actions";
 

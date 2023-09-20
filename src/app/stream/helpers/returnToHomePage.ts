@@ -10,15 +10,22 @@ export function returnToHomePage(
 ) {
   if (!id) return;
 
-  exitFromPage(id).then(() => router.push("/"));
+  exitFromPage(id)
+    .then(() => {
+      if (socket.current) {
+        socket.current.emit("checkControls", {
+          isSmashed: false,
+          isExited: true,
+          isPassed: false,
+        });
 
-  if (stream) {
-    stream.getTracks().forEach((track: any) => {
-      track.stop();
-    });
-  }
-
-  if (socket.current) {
-    socket.current.disconnect();
-  }
+        socket.current.disconnect();
+      }
+      if (stream) {
+        stream.getTracks().forEach((track: MediaStreamTrack) => {
+          track.stop();
+        });
+      }
+    })
+    .then(() => router.push("/"));
 }

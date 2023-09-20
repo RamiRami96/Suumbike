@@ -17,15 +17,22 @@ export async function onPass(
 ) {
   dispatch({ type: ActionTypes.SET_LOADING, payload: true });
 
-  if (stream) {
-    stream.getTracks().forEach((track: any) => {
-      track.stop();
-    });
-  }
   if (!socket) return;
 
   if (socket.current) {
+    socket.current.emit("checkControls", {
+      isSmashed: false,
+      isExited: false,
+      isPassed: true,
+    });
+
     socket.current.disconnect();
+  }
+
+  if (stream) {
+    stream.getTracks().forEach((track: MediaStreamTrack) => {
+      track.stop();
+    });
   }
 
   if (user && candidate) {
