@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useReducer, useRef } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { Spinner } from "../../components/spinner";
@@ -90,13 +91,13 @@ export default function StreamPage() {
   }, [isLoading, candidate, not_users, connectionAccepted]);
 
   useEffect(() => {
-    if (!tgNickname || usersData) return;
-
-    getUsers(tgNickname).then((data) => {
-      if (data) {
-        dispatch({ type: ActionTypes.SET_USERS_DATA, payload: data });
-      }
-    });
+    if (tgNickname && !usersData) {
+      getUsers(tgNickname).then((data) => {
+        if (data) {
+          dispatch({ type: ActionTypes.SET_USERS_DATA, payload: data });
+        }
+      });
+    }
   }, [tgNickname, usersData]);
 
   useEffect(() => {
@@ -181,7 +182,7 @@ export default function StreamPage() {
         </div>
         <div className="inline-flex">
           <button
-            className="px-4 py-2 bg-pink-400 text-white rounded-l-md w-24"
+            className="px-4 py-2 bg-pink-400 text-white rounded-l-md w-24 flex justify-center items-center"
             onClick={() =>
               onSmash(
                 getCandidate,
@@ -197,16 +198,21 @@ export default function StreamPage() {
               isLoading || !candidate || not_users || !connectionAccepted
             }
           >
-            Smash
+            <Image
+              src={"/icons/close.svg"}
+              width={20}
+              height={20}
+              alt="close"
+            />
           </button>
           <button
-            className="px-4 py-2 bg-white text-pink-400 border-2 border-t-pink-400 border-b-pink-400 w-24"
+            className="px-4 py-2 bg-white  border-2 border-t-pink-400 border-b-pink-400 w-24 flex justify-center items-center"
             onClick={() => returnToHomePage(router, socket, user?.id, stream)}
           >
-            Exit
+            <Image src={"/icons/home.svg"} width={20} height={20} alt="home" />
           </button>
           <button
-            className="px-4 py-2 bg-green-500 text-white rounded-r-md w-24"
+            className="px-4 py-2 bg-green-400  rounded-r-md w-24 flex justify-center items-center"
             onClick={() =>
               onPass(router, dispatch, socket, user, candidate, stream)
             }
@@ -214,7 +220,7 @@ export default function StreamPage() {
               isLoading || !candidate || not_users || !connectionAccepted
             }
           >
-            Pass
+            <Image src={"/icons/like.svg"} width={20} height={20} alt="like" />
           </button>
         </div>
         <div className="hidden md:block">
