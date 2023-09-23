@@ -19,7 +19,7 @@ export const Account = memo(function Account({
     <div className="flex justify-start items-center mb-8">
       <div className="flex items-center">
         <Image
-          className="rounded-full object-cover cursor-pointer w-[132px] h-[132px]"
+          className="rounded-full object-cover cursor-pointer w-[132px] h-[132px] border border-pink-400"
           src={avatar ? "/avatars/" + avatar : "/icons/user.svg"}
           alt="Avatar"
           width={132}
