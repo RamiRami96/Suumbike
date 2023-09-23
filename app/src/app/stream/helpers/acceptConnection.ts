@@ -21,7 +21,6 @@ export function acceptConnection(
 
   const peer = new Peer({
     initiator: false,
-    trickle: false,
     stream: stream as MediaStream,
   });
   peer.on("signal", (data) => {

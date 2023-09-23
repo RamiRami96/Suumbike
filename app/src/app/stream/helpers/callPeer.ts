@@ -15,7 +15,6 @@ export function callPeer(
 ) {
   const peer = new Peer({
     initiator: true,
-    trickle: false,
     config: {
       iceServers: [
         {
@@ -32,7 +31,6 @@ export function callPeer(
     },
     stream: stream as MediaStream,
   });
-
 
   peer.on("signal", (data) => {
     socket.current.emit("connectUser", {

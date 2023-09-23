@@ -15,9 +15,9 @@ export async function onPass(
   candidate?: User | null,
   stream?: MediaStream | null
 ) {
-  dispatch({ type: ActionTypes.SET_LOADING, payload: true });
-
   if (!socket) return;
+
+  dispatch({ type: ActionTypes.SET_LOADING, payload: true });
 
   if (socket.current) {
     socket.current.emit("checkControls", {

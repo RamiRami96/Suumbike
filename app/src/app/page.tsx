@@ -4,24 +4,22 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const numberOfHearts = 25;
+const generateHeartStyles = (index: number) => {
+  return {
+    "--heart-radius": `${index}vw`,
+    "--heart-float-duration": `${index * 4}s`,
+    "--heart-sway-duration": `${index * 0.5}s`,
+    "--heart-float-delay": `${index * 0.1}s`,
+    "--heart-sway-delay": `${index * 0.1}s`,
+    "--heart-sway-type":
+      index % 2 === 0 ? "sway-left-to-right" : "sway-right-to-left",
+  };
+};
 
 export default function Page() {
   const { data: session } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-
-  const generateHeartStyles = (index: number) => {
-    return {
-      "--heart-radius": `${index}vw`,
-      "--heart-float-duration": `${index * 4}s`,
-      "--heart-sway-duration": `${index * 0.5}s`,
-      "--heart-float-delay": `${index * 0.1}s`,
-      "--heart-sway-delay": `${index * 0.1}s`,
-      "--heart-sway-type":
-        index % 2 === 0 ? "sway-left-to-right" : "sway-right-to-left",
-    };
-  };
 
   const handleClick = () => {
     setLoading(true);
@@ -35,7 +33,7 @@ export default function Page() {
   return (
     <main className="h-[90.3vh] flex flex-col items-center justify-center relative overflow-hidden">
       <div className="hearts h-[90.3vh]">
-        {Array.from({ length: numberOfHearts }, (_, index) => (
+        {Array.from({ length: 25 }, (_, index) => (
           <div
             key={index}
             className="heart"

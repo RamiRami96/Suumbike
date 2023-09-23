@@ -1,14 +1,14 @@
 "use client";
 
+import { useCallback, useEffect, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { User } from "../types/user";
+import { Contacts } from "./contacts";
 import { Account } from "./account";
 import { deleteAccount } from "./actions/deleteAccount";
 import { deleteLikedUser } from "./actions/deleteLikedUser";
 import { getLikedUsers } from "./actions/getLikedUsers";
-import { Contacts } from "./contacts";
+import { User } from "../types/user";
 
 export default function Page() {
   const session = useSession({
@@ -18,10 +18,10 @@ export default function Page() {
     },
   });
   const [likedUsers, setLikedUsers] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [likedUsersAmount, setLikedUsersAmount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [isListBottom, setIsListBottom] = useState(false);
-  const [isNotUsers, setIsNotUsers] = useState(false);
+  const [notUsers, setNotUsers] = useState(false);
   const lastElement = useRef(null);
 
   const user = session.data?.user;
@@ -74,12 +74,12 @@ export default function Page() {
   useEffect(() => {
     fetchLikedUsers().then((data) => {
       if (data && data.length === 0) {
-        setIsNotUsers(true);
+        setNotUsers(true);
       }
 
       if (data && data.length !== 0) {
         setLikedUsers((prevData) => [...prevData, ...data]);
-        setIsNotUsers(false);
+        setNotUsers(false);
       }
     });
   }, []);
@@ -91,9 +91,9 @@ export default function Page() {
       setLikedUsers((prev) =>
         prev.filter((item) => item.id !== deletedUser.id)
       );
-      if (likedUsers.length === 1) setIsNotUsers(true);
+      if (likedUsers.length === 1) setNotUsers(true);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -118,7 +118,7 @@ export default function Page() {
           />
         )}
 
-        {isNotUsers ? (
+        {notUsers ? (
           <div className="flex justify-center text-center mt-14">
             <h2>Not liked users :(</h2>
           </div>

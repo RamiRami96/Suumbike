@@ -12,9 +12,10 @@ import { getUsers } from "./actions/getUsers";
 import { initialState, StreamPageState } from "./state/initialState";
 import { reducer } from "./state/reducer";
 import { ActionTypes } from "./state/actions";
-import { getCandidate } from "./helpers/getCandidate";
 
 import { useUserData } from "./hooks/useUserData";
+
+import { getCandidate } from "./helpers/getCandidate";
 import { onSmash } from "./helpers/onSmash";
 import { onPass } from "./helpers/onPass";
 import { returnToHomePage } from "./helpers/returnToHomePage";
@@ -23,7 +24,6 @@ import { acceptConnection } from "./helpers/acceptConnection";
 
 export default function StreamPage() {
   const router = useRouter();
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const {
@@ -116,9 +116,6 @@ export default function StreamPage() {
     }
   }, [receivingCall]);
 
-  const minute: number = Math.floor(timeLeft / 60);
-  const second: number = timeLeft % 60;
-
   useEffect(() => {
     if (socket?.current) {
       socket.current.on(
@@ -162,6 +159,9 @@ export default function StreamPage() {
       onPass(router, dispatch, socket, user, candidate, stream);
     }
   }, [isSmashed, isExited, isPassed]);
+
+  const minute: number = Math.floor(timeLeft / 60);
+  const second: number = timeLeft % 60;
 
   return (
     <section className="relative h-[90vh] flex justify-center mt-50">

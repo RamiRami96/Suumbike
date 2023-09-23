@@ -23,10 +23,10 @@ export function onSmash(
   user?: User,
   stream?: MediaStream | null
 ) {
+  if (!socket) return;
+
   dispatch({ type: ActionTypes.SET_USERS_DATA, payload: null });
   dispatch({ type: ActionTypes.SET_CONNECTION_ACCEPTED, payload: false });
-
-  if (!socket) return;
 
   if (socket.current) {
     socket.current.emit("checkControls", {
