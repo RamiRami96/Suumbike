@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+
 import { Fragment, MutableRefObject } from "react";
 import { Skeleton } from "./skeleton";
 
@@ -47,13 +49,15 @@ export function Contacts({
                 ref={array.length - 1 === i ? lastElement : null}
               >
                 <div className="flex items-center justify-start w-[60px] sm:w-[140px] md:w-[200px] py-3 pl-2 sm:pl-6">
-                  <Image
-                    className="h-10 w-10 rounded-full object-cover"
-                    src={"/avatars/" + avatar}
-                    alt="Avatar"
-                    width={50}
-                    height={50}
-                  />
+                  <Link href={`profile/${id}`}>
+                    <Image
+                      className="h-10 w-10 rounded-full object-cover"
+                      src={"/avatars/" + avatar}
+                      alt="Avatar"
+                      width={50}
+                      height={50}
+                    />
+                  </Link>
                 </div>
                 <p className="w-[100px] sm:w-[140px] md:w-[200px]  py-3 px-2 sm:px-6 text-left text-xs md:text-sm text-pink-400">
                   {name}
