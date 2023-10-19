@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { Contacts } from "./contacts";
-import { Account } from "./account";
+import { signOut, useSession } from "next-auth/react";
+import { Contacts } from "./components/contacts";
+import { Account } from "./components/account";
 import { deleteAccount } from "./actions/deleteAccount";
 import { deleteLikedUser } from "./actions/deleteLikedUser";
 import { getLikedUsers } from "./actions/getLikedUsers";
@@ -107,30 +107,32 @@ export default function Page() {
   );
 
   return (
-    <section className="flex justify-center w-full">
-      <div className="flex flex-col items-center mt-14 min-w-[320px] w-full sm:w-4/6 ">
-        {avatar && user?.name && tgNickname && (
-          <Account
-            avatar={avatar}
-            userName={user.name}
-            tgNickname={tgNickname}
-            deleteAccount={handleDeleteAccount}
-          />
-        )}
+    <>
+      <section className="flex justify-center w-full">
+        <div className="flex flex-col items-center mt-14 min-w-[320px] w-full sm:w-4/6 ">
+          {avatar && user?.name && tgNickname && (
+            <Account
+              avatar={avatar}
+              userName={user.name}
+              tgNickname={tgNickname}
+              deleteAccount={handleDeleteAccount}
+            />
+          )}
 
-        {notUsers ? (
-          <div className="flex justify-center text-center mt-14">
-            <h2>Not liked users :(</h2>
-          </div>
-        ) : (
-          <Contacts
-            likedUsers={likedUsers}
-            lastElement={lastElement}
-            isLoading={isLoading}
-            deleteContact={deleteContact}
-          />
-        )}
-      </div>
-    </section>
+          {notUsers ? (
+            <div className="flex justify-center text-center mt-14">
+              <h2>Not liked users :(</h2>
+            </div>
+          ) : (
+            <Contacts
+              likedUsers={likedUsers}
+              lastElement={lastElement}
+              isLoading={isLoading}
+              deleteContact={deleteContact}
+            />
+          )}
+        </div>
+      </section>
+    </>
   );
 }

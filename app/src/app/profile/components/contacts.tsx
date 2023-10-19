@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Fragment, MutableRefObject } from "react";
 import { Skeleton } from "./skeleton";
 
-import { User } from "../types/user";
+import { User } from "../../types/user";
 
 type Props = {
   likedUsers: User[];
@@ -33,7 +33,7 @@ export function Contacts({
         </h6>
         <h6 className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pr-4 sm:pr-6 text-left font-medium text-sm md:text-md"></h6>
       </div>
-      <div className="h-[45vh] md:h-[50vh] overflow-y-auto">
+      <div className="h-[45vh] md:h-[50vh] overflow-y-auto px-2">
         {likedUsers?.length === 0 ? (
           Array.from({ length: 7 }).map((_, index) => (
             <Fragment key={index}>
