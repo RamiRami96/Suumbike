@@ -59,7 +59,7 @@ export default function Page() {
       <Wallpaper />
       <div className="w-5/6 md:w-3/6 flex justify-center mt-8 mb-8">
         <div className="flex flex-col items-center w-full md:w-2/3">
-          <h4 className="text-center mb-4">Sign up</h4>
+          <h4 className="text-center mb-4 text-pink-400">Sign up</h4>
           <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div>
               <Controller

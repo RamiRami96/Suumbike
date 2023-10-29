@@ -15,6 +15,7 @@ const generateHeartStyles = (index: number) => {
 export default function Page() {
   return (
     <main className="h-[90.3vh] flex flex-col items-center justify-center relative overflow-hidden">
+      <h1 className="text-center text-white font-black mt-12 relative z-50 drop-shadow-[0_1.2px_1.2px_rgba(219,39,119,0.8)]">MEET<span className="text-xs md:text-sm text-pink-600 px-1">❤</span>CHAT<span className="text-xs md:text-sm text-pink-600 px-1">❤</span>LOVE<span className="text-xs md:text-sm text-pink-600 px-1">❤</span></h1>
       <div className="hearts h-[90.3vh]">
         {Array.from({ length: 25 }, (_, index) => (
           <div
@@ -29,7 +30,7 @@ export default function Page() {
       </div>
       <Link
         href="/stream"
-        className="absolute z-50 border-2 border-pink-400 h-48 w-48 rounded-full bg-white text-pink-600 font-bold uppercase shadow-2xl shadow-pink-300 flex items-center justify-center opacity-70 hover:opacity-100 active:opacity-100 transition-opacity"
+        className="absolute z-50 border-2 border-pink-400 h-48 w-48 rounded-full bg-white text-pink-600 font-bold uppercase shadow-2xl shadow-pink-300 flex items-center justify-center opacity-70 hover:opacity-90 active:opacity-90 transition-opacity"
       >
         Start
       </Link>
