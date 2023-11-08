@@ -84,9 +84,9 @@ export default function Page() {
     });
   }, []);
 
-  const deleteContact = async (id: string) => {
+  const deleteContact = async (likedUserNick: string, userNick: string) => {
     try {
-      const deletedUser = await deleteLikedUser(id, tgNickname);
+      const deletedUser = await deleteLikedUser(likedUserNick, userNick);
       if (!deletedUser) return;
       setLikedUsers((prev) =>
         prev.filter((item) => item.id !== deletedUser.id)
@@ -129,6 +129,7 @@ export default function Page() {
               lastElement={lastElement}
               isLoading={isLoading}
               deleteContact={deleteContact}
+              userNick={tgNickname}
             />
           )}
         </div>

@@ -10,7 +10,8 @@ type Props = {
   likedUsers: User[];
   lastElement: MutableRefObject<null>;
   isLoading: boolean;
-  deleteContact: (id: string) => Promise<void>;
+  deleteContact: (likedUserNick: string, userNick: string) => Promise<void>;
+  userNick: string;
 };
 
 export function Contacts({
@@ -18,6 +19,7 @@ export function Contacts({
   lastElement,
   isLoading,
   deleteContact,
+  userNick,
 }: Props) {
   return (
     <div className="border border-pink-400 bg-white rounded-lg overflow-hidden min-w-[320px] ">
@@ -67,7 +69,7 @@ export function Contacts({
                 </p>
                 <button
                   className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pr-4 sm:pr-6 flex justify-center md:justify-start"
-                  onClick={() => deleteContact(id)}
+                  onClick={() => deleteContact(tgNickname as string, userNick)}
                 >
                   <div>
                     <Image
