@@ -9,18 +9,17 @@ export default async function middleware(req: NextRequest) {
     cookieName: "next-auth.session-token",
   });
 
-
-
   if (
     (req.nextUrl.pathname.startsWith("/profile") ||
-      req.nextUrl.pathname.startsWith("/stream")) &&
+      req.nextUrl.pathname.startsWith("/room")) &&
     !isAuthenticated
   ) {
     console.log(
-      (req.nextUrl.pathname.startsWith("/profile") ||
-        req.nextUrl.pathname.startsWith("/stream")),
-      !isAuthenticated, 'auth'
-    )
+      req.nextUrl.pathname.startsWith("/profile") ||
+        req.nextUrl.pathname.startsWith("/room"),
+      !isAuthenticated,
+      "auth"
+    );
     return NextResponse.redirect(new URL("/auth/signin", req.url));
   }
 }

@@ -17,7 +17,7 @@ export default async function Page({ params }: Props) {
 
   if (!profile)
     return (
-      <h2 className="text-center py-6 text-pink-400">User wasn't found :(</h2>
+      <h2 className="text-center py-6 text-pink-400">Qullanuçı tabılmadı :(</h2>
     );
 
   return (
@@ -26,7 +26,7 @@ export default async function Page({ params }: Props) {
         href="/profile"
         className="bg-pink-400 hover:bg-pink-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer"
       >
-        Go to contacts
+        Profilgä qaytu
       </Link>
       <div className="mt-10 flex flex-col items-center">
         <div className="relative w-[300px] h-[300px]">
@@ -58,11 +58,10 @@ export default async function Page({ params }: Props) {
           </h2>
           <ul className="mt-4 list-none">
             <li>
-              <span className="font-bold">Age</span> - {profile.age}
+              <span className="font-bold">Yaş</span> - {profile.age}
             </li>
             <li>
-              <span className="font-bold">Telegram</span> - @
-              {profile.tgNickname}
+              <span className="font-bold">Nick</span> - @{profile.tgNickname}
             </li>
           </ul>
         </div>

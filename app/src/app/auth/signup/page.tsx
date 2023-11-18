@@ -2,17 +2,15 @@
 
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import {
-  calculateAge,
-  error_style,
-  input_style,
-  validateAge,
-  validateAvatar,
-} from "../helpers";
-import { signUp } from "./actions/signUp";
+
+import { signUp } from "../../../services/auth/signUp";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Wallpaper from "../components/wallpaper";
+
+import { validateAvatar } from "@/utils/validateAvatar";
+import { validateAge } from "@/utils/validateAge";
+import { calculateAge } from "@/utils/calculateAge";
 
 type FieldValues = {
   name: string;
@@ -78,7 +76,9 @@ export default function Page() {
                 control={control}
                 render={({ field }) => (
                   <input
-                    className={input_style}
+                    className={
+                      "form-control block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                    }
                     placeholder="Name"
                     {...field}
                     aria-label="Name"
@@ -86,7 +86,10 @@ export default function Page() {
                   />
                 )}
               />
-              <div role="alert" className={error_style}>
+              <div
+                role="alert"
+                className={"text-red-500 text-xs h-8 flex items-center"}
+              >
                 {errors.name?.message || ""}
               </div>
             </div>
@@ -101,7 +104,9 @@ export default function Page() {
                 render={({ field }) => (
                   <input
                     type="date"
-                    className={input_style}
+                    className={
+                      "form-control block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                    }
                     placeholder="Date of Birth"
                     {...field}
                     aria-label="Date of Birth"
@@ -109,7 +114,10 @@ export default function Page() {
                   />
                 )}
               />
-              <div role="alert" className={error_style}>
+              <div
+                role="alert"
+                className={"text-red-500 text-xs h-8 flex items-center"}
+              >
                 {errors.age?.message || ""}
               </div>
             </div>
@@ -126,7 +134,9 @@ export default function Page() {
                 control={control}
                 render={({ field }) => (
                   <input
-                    className={input_style}
+                    className={
+                      "form-control block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                    }
                     placeholder="Telegram Nickname"
                     {...field}
                     aria-label="Telegram Nickname"
@@ -134,7 +144,10 @@ export default function Page() {
                   />
                 )}
               />
-              <div role="alert" className={error_style}>
+              <div
+                role="alert"
+                className={"text-red-500 text-xs h-8 flex items-center"}
+              >
                 {errors.tgNickname?.message || ""}
               </div>
             </div>
@@ -156,7 +169,9 @@ export default function Page() {
                 render={({ field }) => (
                   <input
                     type="password"
-                    className={input_style}
+                    className={
+                      "form-control block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                    }
                     placeholder="Password"
                     {...field}
                     aria-label="Password"
@@ -164,7 +179,10 @@ export default function Page() {
                   />
                 )}
               />
-              <div role="alert" className={error_style}>
+              <div
+                role="alert"
+                className={"text-red-500 text-xs h-8 flex items-center"}
+              >
                 {errors.password?.message || ""}
               </div>
             </div>
@@ -196,7 +214,10 @@ export default function Page() {
                   </div>
                 )}
               />
-              <div role="alert" className={error_style}>
+              <div
+                role="alert"
+                className={"text-red-500 text-xs h-8 flex items-center"}
+              >
                 {error ?? (errors.avatar?.message || "")}
               </div>
             </div>

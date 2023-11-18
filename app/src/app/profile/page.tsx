@@ -3,12 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { redirect } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { Contacts } from "./components/contacts";
-import { Account } from "./components/account";
-import { deleteAccount } from "./actions/deleteAccount";
-import { deleteLikedUser } from "./actions/deleteLikedUser";
-import { getLikedUsers } from "./actions/getLikedUsers";
-import { User } from "../types/user";
+
+import { Contacts } from "@/components/profile/contacts";
+import { Account } from "@/components/profile/account";
+
+import { deleteAccount } from "@/services/profile/deleteAccount";
+import { deleteLikedUser } from "@/services/profile/deleteLikedUser";
+import { getLikedUsers } from "@/services/profile/getLikedUsers";
+
+import type { User } from "../../models/user";
 
 export default function Page() {
   const session = useSession({

@@ -1,5 +1,5 @@
 import { Montserrat } from "next/font/google";
-import Header from "@/components/header";
+import Header from "@/components/index/header";
 
 import { NextAuthProvider } from "./providers";
 import "./globals.css";
@@ -7,7 +7,7 @@ import "./globals.css";
 const font = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Suumbike",
+  title: "Söyembikä",
   description: "Web app for the dating",
 };
 
