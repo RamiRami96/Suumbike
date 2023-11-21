@@ -1,32 +1,65 @@
 const express = require("express");
 const http = require("http");
+const cors = require("cors");
+
 const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
+    origin: "http://localhost:3000",
+    credentials: true,
   },
 });
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
 io.on("connection", (socket) => {
-  socket.emit("init", socket.id);
+  console.log(`User Connected: ${socket.id}`);
 
-  socket.on("disconnect", () => {
-    socket.broadcast.emit("callEnded");
+  socket.on("join", (roomId) => {
+    const { rooms } = io.sockets.adapter;
+    const room = rooms.get(roomId);
+
+    if (room === undefined) {
+      socket.join(roomId);
+      socket.emit("created");
+    } else if (room.size === 1) {
+      socket.join(roomId);
+      socket.emit("joined");
+    } else {
+      socket.emit("full");
+    }
+    console.log(rooms);
   });
 
-  socket.on("callUser", (data) => {
-    io.to(data.userToCall).emit("callUser", {
-      signal: data.signalData,
-      from: data.from,
-      name: data.name,
-    });
+  socket.on("ready", (roomId) => {
+    socket.broadcast.to(roomId).emit("ready");
   });
 
-  socket.on("answerCall", (data) => {
-    io.to(data.to).emit("callAccepted", data.signal);
+  socket.on("ice-candidate", (candidate, roomId) => {
+    console.log(candidate);
+    socket.broadcast.to(roomId).emit("ice-candidate", candidate);
+  });
+
+  socket.on("offer", (offer, roomId) => {
+    socket.broadcast.to(roomId).emit("offer", offer);
+  });
+
+  socket.on("answer", (answer, roomId) => {
+    socket.broadcast.to(roomId).emit("answer", answer);
+  });
+
+  socket.on("leave", (roomId) => {
+    socket.leave(roomId);
+    socket.broadcast.to(roomId).emit("leave");
   });
 });
 
-server.listen(8000, () => console.log("server is running on port 8000"));
+server.listen(8000, () => {
+  console.log("Server listening on port 8000");
+});
