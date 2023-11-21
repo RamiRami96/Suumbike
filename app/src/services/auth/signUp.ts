@@ -4,12 +4,12 @@ import fs from "fs/promises";
 import path from "path";
 import { prisma } from "@/lib/prisma";
 import { hash } from "bcryptjs";
-import { v4 as uuid } from "uuid";
 
 export const signUp = async (data: FormData) => {
   const name = data.get("name") as string;
   let age = data.get("age") as string;
   const tgNickname = data.get("tgNickname") as string;
+  let sex = data.get("sex") as string;
   const password = data.get("password") as string;
   const avatar = data.get("avatar") as File;
 
@@ -21,7 +21,9 @@ export const signUp = async (data: FormData) => {
 
   const format = `.${avatar.name.split(".").at(-1)}`;
 
-  const avatarName = "avatar-" + uuid() + format;
+  const imgName = avatar.name;
+
+  const avatarName = "avatar-" + imgName + format;
 
   const savePath = path.join(process.cwd(), "/public", "/avatars", avatarName);
 
@@ -39,6 +41,7 @@ export const signUp = async (data: FormData) => {
         age: Number(age),
         tgNickname,
         avatar: avatarName,
+        sex,
         password: hashed_password,
       },
     });

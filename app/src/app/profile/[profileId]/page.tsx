@@ -46,12 +46,12 @@ export default async function Page({ params }: Props) {
             <div className="relative flex h-3 w-3 ml-2">
               <span
                 className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                  profile.isOnline ? "bg-green-500" : "bg-red-500"
+                  profile.roomId ? "bg-green-500" : "bg-red-500"
                 } `}
               ></span>
               <span
                 className={`relative inline-flex rounded-full h-3 w-3 ${
-                  profile.isOnline ? "bg-green-600" : "bg-red-700"
+                  profile.roomId ? "bg-green-600" : "bg-red-700"
                 } `}
               ></span>
             </div>

@@ -1,6 +1,8 @@
 import Room from "@/components/room/room";
-import { prisma } from "@/lib/prisma";
 import { getParticipant } from "@/services/room/getParticipant";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { User } from "@/models/user";
 
 type Params = {
   room: string[];
@@ -15,7 +17,16 @@ export default async function Page({ params }: Props) {
 
   const participant = await getParticipant(participantNick);
 
-  if (!participant) return <h1>Participant not found ...</h1>;
+  const isUsersRoom = participantNick === "myRoom";
 
-  return <Room roomId={roomId} participant={participant} />;
+  const user: User | null = await getServerSession(authOptions);
+
+  return (
+    <Room
+      roomId={roomId}
+      user={user ?? null}
+      participant={participant ?? null}
+      isUsersRoom={isUsersRoom}
+    />
+  );
 }

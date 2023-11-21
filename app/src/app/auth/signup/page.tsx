@@ -15,6 +15,7 @@ import { calculateAge } from "@/utils/calculateAge";
 type FieldValues = {
   name: string;
   age: string;
+  sex: "male" | "female";
   password: string;
   tgNickname: string;
   avatar: File | null;
@@ -38,6 +39,7 @@ export default function Page() {
     formData.append("name", data.name);
     formData.append("age", String(calculateAge(data.age)));
     formData.append("tgNickname", data.tgNickname);
+    formData.append("sex", data.sex);
     formData.append("password", data.password);
     formData.append("avatar", data.avatar);
 
@@ -149,6 +151,32 @@ export default function Page() {
                 className={"text-red-500 text-xs h-8 flex items-center"}
               >
                 {errors.tgNickname?.message || ""}
+              </div>
+            </div>
+            <div>
+              <Controller
+                rules={{
+                  required: "This field is required",
+                }}
+                name="sex"
+                control={control}
+                render={({ field }) => (
+                  <select
+                    className="form-select block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                    aria-label="Select sex"
+                    {...field}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                )}
+              />
+              <div
+                role="alert"
+                className={"text-red-500 text-xs h-8 flex items-center"}
+              >
+                {errors.sex?.message || ""}
               </div>
             </div>
             <div>

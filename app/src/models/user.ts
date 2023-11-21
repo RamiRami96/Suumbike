@@ -5,6 +5,6 @@ export type User = {
   name: string;
   tgNickname: string;
   avatar: string;
-  isOnline: boolean;
+  roomId?: string;
   likedUsers: User[];
 };

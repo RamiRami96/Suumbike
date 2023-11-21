@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { generateHeartStyles } from "./helpers/generateHeartStyles";
-import { v4 as uuid } from "uuid";
 import { User } from "@/models/user";
+import { getUser } from "@/services/profile/getUser";
+import { createRoom } from "@/services/room/createRoom";
 
 type Props = {
   users: User[] | null;
@@ -18,8 +19,12 @@ export default function Main({ users, userNick }: Props) {
 
   const [inputValue, setinputValue] = useState("");
 
+  const createMyRoom = (nick: string) => {
+    createRoom(nick).then((data) => router.push(`/room/${data.roomId}/myRoom`));
+  };
+
   const joinRoom = (nick: string) => {
-    router.push(`/room/room-${uuid()}/${nick}`);
+    getUser(nick).then((data) => router.push(`/room/${data.roomId}/${nick}`));
   };
 
   const filterRooms = (nick: string, userNick: string) => {
@@ -77,21 +82,17 @@ export default function Main({ users, userNick }: Props) {
               Ezlärğä
             </button>
             <button
-              onClick={() => joinRoom(userNick)}
+              onClick={() => createMyRoom(userNick)}
               className="border-2 border-pink-500 h-12 w-24 rounded-lg bg-pink-500 text-white font-bold text-xs md:text-sm"
             >
-              Minem fatir
+              Minem bülmä
             </button>
           </div>
           <div className="relative">
             <ul className="mt-2 w-full rounded-lg border-2 border-pink-400 h-80 p-4 overflow-y-auto bg-opacity-75">
-              {/* Users List */}
               {users &&
-                users.map(({ name, tgNickname }) => (
-                  <li
-                    key={tgNickname}
-                    className="flex items-center justify-between mt-2"
-                  >
+                users.map(({ tgNickname, name }) => (
+                  <li className="flex items-center justify-between mt-2">
                     <span className="font-bold text-sm text-green-500">
                       {name} bülmäse
                     </span>

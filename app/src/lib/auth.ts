@@ -45,6 +45,7 @@ export const authOptions: NextAuthOptions = {
           extraData: {
             age: user.age,
             tgNickname: user.tgNickname,
+            sex: user.sex,
             avatar: user.avatar,
           },
         };
@@ -56,6 +57,7 @@ export const authOptions: NextAuthOptions = {
       const token = {
         age: (data.user as any)?.extraData?.age,
         tgNickname: (data.user as any)?.extraData?.tgNickname,
+        sex: (data.user as any)?.extraData?.sex,
         avatar: (data.user as any)?.extraData?.avatar,
         randomKey: (data.user as any)?.randomKey,
       };
@@ -70,6 +72,7 @@ export const authOptions: NextAuthOptions = {
           name: token.name,
           age: token.age,
           tgNickname: token.tgNickname,
+          sex: token.sex,
           avatar: token.avatar,
           randomKey: token.randomKey,
         },

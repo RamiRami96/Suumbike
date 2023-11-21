@@ -2,8 +2,8 @@ import { getServerSession } from "next-auth";
 
 import Main from "@/components/index/main";
 import { authOptions } from "@/lib/auth";
-import { getOnlineUsers } from "@/services/profile/getOnlineUsers";
 import { User } from "@/models/user";
+import { getRooms } from "@/services/room/getRooms";
 
 export default async function Page({
   searchParams,
@@ -13,12 +13,9 @@ export default async function Page({
   const searchedUser = searchParams ? searchParams["filter[nick]"] : null;
 
   const session = await getServerSession(authOptions);
-  const users = await getOnlineUsers(
-    (session?.user as User).tgNickname,
-    searchedUser
-  );
+  const tgNickname = (session?.user as User)?.tgNickname;
 
-  return (
-    <Main users={users} currentUserNick={(session?.user as User).tgNickname} />
-  );
+  const users = await getRooms(tgNickname, searchedUser);
+
+  return <Main users={users} userNick={tgNickname} />;
 }

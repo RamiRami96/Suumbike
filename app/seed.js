@@ -11,7 +11,7 @@ async function seedUsers() {
         tgNickname: "em_johnson",
         avatar: "kendall.jpg",
         password: "password123",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Sophia",
@@ -19,7 +19,7 @@ async function seedUsers() {
         tgNickname: "sophia_smith",
         avatar: "kendall2.jpg",
         password: "hello123",
-        isOnline: false,
+        sex: "female",
       },
       {
         name: "Olivia",
@@ -27,7 +27,7 @@ async function seedUsers() {
         tgNickname: "olivia_williams",
         avatar: "kendall3.jpg",
         password: "bob1234",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Isabella",
@@ -35,7 +35,7 @@ async function seedUsers() {
         tgNickname: "isabella_brown",
         avatar: "kendall.jpg",
         password: "eva_123",
-        isOnline: false,
+        sex: "female",
       },
       {
         name: "Ava",
@@ -43,7 +43,7 @@ async function seedUsers() {
         tgNickname: "ava_lee",
         avatar: "kendall2.jpg",
         password: "michael456",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Mia",
@@ -51,7 +51,7 @@ async function seedUsers() {
         tgNickname: "mia_chen",
         avatar: "kendall3.jpg",
         password: "sophia_pass",
-        isOnline: false,
+        sex: "female",
       },
       {
         name: "Amelia",
@@ -59,7 +59,7 @@ async function seedUsers() {
         tgNickname: "amelia_wang",
         avatar: "kendall.jpg",
         password: "william789",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Harper",
@@ -67,7 +67,7 @@ async function seedUsers() {
         tgNickname: "harper_liu",
         avatar: "kendall2.jpg",
         password: "olivia_pass123",
-        isOnline: false,
+        sex: "female",
       },
       {
         name: "Evelyn",
@@ -75,7 +75,7 @@ async function seedUsers() {
         tgNickname: "evelyn_zhang",
         avatar: "kendall2.jpg",
         password: "james4321",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Abigail",
@@ -83,7 +83,8 @@ async function seedUsers() {
         tgNickname: "abigail_wu",
         avatar: "kendall3.jpg",
         password: "wu_emily",
-        isOnline: false,
+
+        sex: "female",
       },
       {
         name: "Emma",
@@ -91,7 +92,7 @@ async function seedUsers() {
         tgNickname: "qem",
         avatar: "kendall.jpg",
         password: "qpassword123",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Sophia",
@@ -99,7 +100,7 @@ async function seedUsers() {
         tgNickname: "qsophia",
         avatar: "kendall2.jpg",
         password: "qhello123",
-        isOnline: false,
+        sex: "female",
       },
       {
         name: "Olivia",
@@ -107,7 +108,7 @@ async function seedUsers() {
         tgNickname: "qolivia",
         avatar: "kendall3.jpg",
         password: "qbob1234",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Isabella",
@@ -115,7 +116,7 @@ async function seedUsers() {
         tgNickname: "qisabella",
         avatar: "kendall.jpg",
         password: "qeva_123",
-        isOnline: false,
+        sex: "female",
       },
       {
         name: "Ava",
@@ -123,7 +124,7 @@ async function seedUsers() {
         tgNickname: "qava",
         avatar: "kendall2.jpg",
         password: "qmichael456",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Mia",
@@ -131,7 +132,7 @@ async function seedUsers() {
         tgNickname: "qmia",
         avatar: "kendall3.jpg",
         password: "qsophia_pass",
-        isOnline: false,
+        sex: "female",
       },
       {
         name: "Amelia",
@@ -139,7 +140,7 @@ async function seedUsers() {
         tgNickname: "qamelia",
         avatar: "kendall.jpg",
         password: "qwilliam789",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Harper",
@@ -147,7 +148,7 @@ async function seedUsers() {
         tgNickname: "qharper",
         avatar: "kendall2.jpg",
         password: "qolivia_pass123",
-        isOnline: false,
+        sex: "female",
       },
       {
         name: "Evelyn",
@@ -155,7 +156,7 @@ async function seedUsers() {
         tgNickname: "qevelyn",
         avatar: "kendall2.jpg",
         password: "1james4321",
-        isOnline: true,
+        sex: "female",
       },
       {
         name: "Abigail",
@@ -163,7 +164,7 @@ async function seedUsers() {
         tgNickname: "qabigail_wu",
         avatar: "kendall3.jpg",
         password: "1wu_emily",
-        isOnline: false,
+        sex: "female",
       },
     ];
 
