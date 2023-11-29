@@ -19,12 +19,9 @@ export default async function Page({ params }: Props) {
 
   const isUsersRoom = participantNick === "myRoom";
 
-  const user: User | null = await getServerSession(authOptions);
-
   return (
     <Room
       roomId={roomId}
-      user={user ?? null}
       participant={participant ?? null}
       isUsersRoom={isUsersRoom}
     />

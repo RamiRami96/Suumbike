@@ -37,13 +37,13 @@ export default function Header() {
           src={"/icons/logo.svg"}
           alt="logo"
           width={40}
-          height={31.1}
+          height={31}
           priority
         />
       </Link>
       <ul className="flex items-center">
         <li className="mr-4 font-medium text-pink-400">
-          <Link href={"/"}>Töp</Link>
+          <Link href={"/"}>Main</Link>
         </li>
         <li className="mr-4 font-medium text-pink-400">
           <Link href={"/profile"}>Profile</Link>
@@ -72,7 +72,7 @@ export default function Header() {
                     signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL })
                   }
                 >
-                  Kerergä
+                  Sign out
                 </button>
               ) : (
                 <button
@@ -81,7 +81,7 @@ export default function Header() {
                     toggleMenu();
                   }}
                 >
-                  Сhygarga
+                  Sign In
                 </button>
               )}
             </div>

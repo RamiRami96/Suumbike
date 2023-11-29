@@ -28,7 +28,7 @@ export function Contacts({
           Avatar
         </h6>
         <h6 className="w-[100px] sm:w-[140px] md:w-[200px] px-2 py-3 sm:px-6 text-left font-medium text-sm md:text-md">
-          Isem
+          Name
         </h6>
         <h6 className="w-[100px] sm:w-[140px] md:w-[200px] px-2 py-3 sm:px-6 text-left font-medium text-sm md:text-md">
           Nick
@@ -83,7 +83,7 @@ export function Contacts({
                     </div>
                   </button>
                   <button
-                  className="ml-2"
+                    className="ml-2"
                     onClick={() =>
                       deleteContact(tgNickname as string, userNick)
                     }

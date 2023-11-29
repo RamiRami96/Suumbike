@@ -33,7 +33,7 @@ export const Account = memo(function Account({
             onClick={() => deleteAccount(tgNickname, avatar)}
             className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-2 rounded mt-2"
           >
-            profilne beterü
+            Delete account
           </button>
           <button
             aria-label="Sign out"
@@ -42,7 +42,7 @@ export const Account = memo(function Account({
             }
             className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-2 rounded mt-2"
           >
-            Сhygarga
+            Sign out
           </button>
         </div>
       </div>

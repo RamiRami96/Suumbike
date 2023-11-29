@@ -47,7 +47,7 @@ export default function Main({ users, userNick }: Props) {
         Aralaşu
         <span className="text-xs md:text-sm text-pink-400 px-1">❤</span>
         Mähäbbät
-        <span className="text-xs md:text-sm text-red-400 px-1">❤</span>
+        <span className="text-xs md:text-sm text-pink-400 px-1">❤</span>
       </h1>
       <div className="hearts h-[90.3dvh]">
         {Array.from({ length: 25 }, (_, index) => (
@@ -79,28 +79,31 @@ export default function Main({ users, userNick }: Props) {
               onClick={() => filterRooms(inputValue, userNick)}
               className="border-2 border-pink-500 h-12 w-24 rounded-lg bg-pink-500 text-white font-bold text-xs md:text-sm"
             >
-              Ezlärğä
+              Search
             </button>
             <button
               onClick={() => createMyRoom(userNick)}
               className="border-2 border-pink-500 h-12 w-24 rounded-lg bg-pink-500 text-white font-bold text-xs md:text-sm"
             >
-              Minem bülmä
+              My room
             </button>
           </div>
           <div className="relative">
             <ul className="mt-2 w-full rounded-lg border-2 border-pink-400 h-80 p-4 overflow-y-auto bg-opacity-75">
               {users &&
                 users.map(({ tgNickname, name }) => (
-                  <li className="flex items-center justify-between mt-2">
+                  <li
+                    className="flex items-center justify-between mt-2"
+                    key={tgNickname}
+                  >
                     <span className="font-bold text-sm text-green-500">
-                      {name} bülmäse
+                      {name}'s room
                     </span>
                     <button
                       onClick={() => joinRoom(tgNickname)}
                       className="border-2 border-green-500 h-12 w-24 rounded-lg bg-green-500 text-white font-bold text-xs md:text-sm"
                     >
-                      Kererge
+                      Join
                     </button>
                   </li>
                 ))}

@@ -42,7 +42,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("ice-candidate", (candidate, roomId) => {
-    console.log(candidate);
     socket.broadcast.to(roomId).emit("ice-candidate", candidate);
   });
 

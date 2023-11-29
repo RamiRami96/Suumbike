@@ -13,11 +13,12 @@ import Image from "next/image";
 import { Spinner } from "@/components/layout/spinner";
 import { User } from "@/models/user";
 import { likeUser } from "@/services/profile/likeUser";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { getParticipant } from "@/services/room/getParticipant";
 import useSocket from "@/hooks/useSocket";
 import { io, Socket } from "socket.io-client";
 import { deleteRoom } from "@/services/room/deleteRoom";
+import { useSession } from "next-auth/react";
 
 const ICE_SERVERS = {
   iceServers: [
@@ -29,20 +30,23 @@ const ICE_SERVERS = {
 
 type Props = {
   roomId: string;
-  user?: User | null;
   participant?: User | null;
   isUsersRoom?: boolean;
 };
 
-export default function Room({
-  roomId,
-  user,
-  participant,
-  isUsersRoom,
-}: Props) {
+export default function Room({ roomId, participant, isUsersRoom }: Props) {
   useSocket();
 
   const router = useRouter();
+  const session = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/auth/signin");
+    },
+  });
+
+  const user = session.data?.user;
+
   const userVideoRef: RefObject<HTMLVideoElement> =
     useRef<HTMLVideoElement>(null);
   const peerVideoRef: RefObject<HTMLVideoElement> =
@@ -260,19 +264,18 @@ export default function Room({
       rtcConnectionRef.current = null;
     }
 
-    if (isUsersRoom) {
-      // deleteRoom(user.tgNickname).then(() => {
-      //   router.push("/");
-      // });
-      router.push("/");
+    if (isUsersRoom && (user as User)?.tgNickname) {
+      deleteRoom((user as User).tgNickname).then(() => {
+        router.push("/");
+      });
     } else {
       router.push("/");
     }
   };
 
   const likeParticipant = () => {
-    if (user?.tgNickname && participant?.tgNickname) {
-      likeUser(user?.tgNickname, participant?.tgNickname).then(() => {
+    if ((user as User)?.tgNickname && participant?.tgNickname) {
+      likeUser((user as User)?.tgNickname, participant?.tgNickname).then(() => {
         router.push(
           `/success?name=${participant.name}&avatar=${participant.avatar}`
         );
@@ -282,7 +285,7 @@ export default function Room({
 
   return (
     <section className="relative h-[90vh] flex justify-center mt-50">
-      <div className="absolute z-10 top-10 right-3 md:hidden">
+      <div className="absolute z-10 top-10 right-3">
         <div className={userVideoRef ? " " : "animate-pulse"}>
           <video
             className="h-20 border border-pink-400 rounded-2xl w-[106px] bg-pink-400"
@@ -291,8 +294,8 @@ export default function Room({
           />
         </div>
       </div>
-      <div className="absolute z-10 bg-white bottom-0 w-50 h-24 flex justify-center md:justify-between items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
-        <div className="inline-flex">
+      <div className="absolute z-10 bg-white bottom-0 w-50 h-24 flex justify-center  items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
+        <div className="flex">
           <button
             onClick={leaveRoom}
             className="px-4 py-2 bg-pink-400 text-white rounded-l-md w-24 flex justify-center items-center"
@@ -313,7 +316,7 @@ export default function Room({
         </div>
       </div>
       <h4 className="absolute z-50 bottom-28 font-black text-pink-600 text-4xl">
-        {participant ? participant.name : <Spinner />}
+        {isUsersRoom ? "My room" : `${participant?.name}'s room`}
       </h4>
       <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
         {peerVideoRef ? (
