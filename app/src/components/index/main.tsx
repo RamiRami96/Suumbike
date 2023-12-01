@@ -42,7 +42,7 @@ export default function Main({ users, userNick }: Props) {
 
   return (
     <main className="h-[90vh] flex flex-col items-center justify-center relative overflow-hidden">
-      <h1 className="text-center text-green-400 font-black mt-12 relative z-50 drop-shadow-[0_1.2px_1.2px_rgba(244,114,182,0.8)]">
+      <h1 className="text-center text-green-400 font-black mt-12 relative z-50 drop-shadow-[0_1.2px_1.2px_rgba(74,222,128,0.8)]">
         Tanişu<span className="text-xs md:text-sm text-pink-400 px-1">❤</span>
         Aralaşu
         <span className="text-xs md:text-sm text-pink-400 px-1">❤</span>

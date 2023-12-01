@@ -19,7 +19,13 @@ app.use(
 );
 
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
+  socket.on("checkControls", (data) => {
+    io.emit("checkControls", data);
+  });
+
+  socket.on("users", (data) => {
+    io.emit("users", data);
+  });
 
   socket.on("join", (roomId) => {
     const { rooms } = io.sockets.adapter;
@@ -34,7 +40,6 @@ io.on("connection", (socket) => {
     } else {
       socket.emit("full");
     }
-    console.log(rooms);
   });
 
   socket.on("ready", (roomId) => {
