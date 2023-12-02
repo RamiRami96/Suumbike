@@ -29,9 +29,11 @@ export default function Main({ users, userNick }: Props) {
 
   const filterRooms = (nick: string, userNick: string) => {
     if (nick === userNick) {
-      setError("equal");
+      setError("You have entered your nick");
       return;
     }
+
+    setError("");
 
     if (!nick) {
       router.push(pathname);

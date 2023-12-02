@@ -7,8 +7,6 @@ export async function getLikedUsers(
   tgNickname: string
 ): Promise<any> {
   try {
-    if (!tgNickname) return null;
-
     const user = await prisma.user.findFirst({
       where: { tgNickname },
       include: {

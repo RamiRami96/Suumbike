@@ -9,21 +9,17 @@ export default async function middleware(req: NextRequest) {
     cookieName: "next-auth.session-token",
   });
 
+  console.log(!!isAuthenticated, "auth");
+
   if (
     (req.nextUrl.pathname.startsWith("/profile") ||
       req.nextUrl.pathname.startsWith("/room")) &&
     !isAuthenticated
   ) {
-    console.log(
-      req.nextUrl.pathname.startsWith("/profile") ||
-        req.nextUrl.pathname.startsWith("/room"),
-      !isAuthenticated,
-      "auth"
-    );
     return NextResponse.redirect(new URL("/auth/signin", req.url));
   }
 }
 
 export const config = {
-  matchter: ["/stream", "/profile"],
+  matchter: ["/room", "/profile"],
 };
