@@ -9,6 +9,8 @@ export default function Wallpaper() {
         width={500}
         height={500}
         className="animate-waving-couple"
+        placeholder="blur"
+        blurDataURL={"/images/couple.png"}
       />
     </div>
   );

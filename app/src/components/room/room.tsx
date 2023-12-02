@@ -423,6 +423,8 @@ export default function Room({ roomId, isUsersRoom }: Props) {
               width={20}
               height={20}
               alt="close"
+              placeholder="blur"
+              blurDataURL={"/icons/close.svg"}
             />
           </button>
           <button
@@ -430,7 +432,14 @@ export default function Room({ roomId, isUsersRoom }: Props) {
             onClick={likeParticipant}
             className="px-4 py-2 bg-green-400 disabled:bg-green-100 rounded-r-md w-24 flex justify-center items-center"
           >
-            <Image src={"/icons/like.svg"} width={20} height={20} alt="like" />
+            <Image
+              src={"/icons/like.svg"}
+              width={20}
+              height={20}
+              alt="like"
+              placeholder="blur"
+              blurDataURL={"/icons/like.svg"}
+            />
           </button>
         </div>
       </div>

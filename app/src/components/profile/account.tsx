@@ -24,6 +24,8 @@ export const Account = memo(function Account({
           alt="Avatar"
           width={132}
           height={132}
+          placeholder="blur"
+          blurDataURL={"/icons/user.svg"}
         />
 
         <div className="flex flex-col ml-6">

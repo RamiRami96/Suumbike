@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { generateHeartStyles } from "./helpers/generateHeartStyles";
 import { User } from "@/models/user";
@@ -40,6 +40,14 @@ export default function Main({ users, userNick }: Props) {
     }
   };
 
+  useEffect(() => {
+    let interval = setInterval(() => {
+      router.refresh();
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <main className="h-[90vh] flex flex-col items-center justify-center relative overflow-hidden">
       <h1 className="text-center text-green-400 font-black mt-12 relative z-50 drop-shadow-[0_1.2px_1.2px_rgba(74,222,128,0.8)]">
@@ -63,12 +71,12 @@ export default function Main({ users, userNick }: Props) {
       </div>
       <div className="flex flex-col items-center absolute bottom-10 z-50 w-5/6 md:w-3/6">
         <div>
-          <div className="flex items-start space-x-1 md:space-x-4">
+          <div className="flex items-start space-x-1 md:space-x-4 w-full">
             <div>
               <input
                 type="text"
-                className="border-2 border-pink-500 h-12 w-full p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-pink-500 placeholder-pink-300 text-xs md:text-sm"
-                placeholder="Qullanuçını tapıgız"
+                className="border-2 border-pink-500 h-12 w-36 md:w-48 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-pink-500 placeholder-pink-300 text-xs md:text-sm"
+                placeholder="Enter telegram nick"
                 value={inputValue}
                 onChange={(e) => setinputValue(e.target.value.toLowerCase())}
               />
@@ -93,7 +101,7 @@ export default function Main({ users, userNick }: Props) {
               {users &&
                 users.map(({ tgNickname, name }) => (
                   <li
-                    className="flex items-center justify-between mt-2"
+                    className="flex items-center justify-between mt-2 animate-fade-in-element"
                     key={tgNickname}
                   >
                     <span className="font-bold text-sm text-green-500">

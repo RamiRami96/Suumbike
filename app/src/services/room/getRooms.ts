@@ -9,9 +9,21 @@ export async function getRooms(
 ): Promise<User[]> {
   try {
     let users;
+
+    const usersWithRooms = await prisma.user.findMany({
+      where: {
+        roomId: {
+          not: null,
+        },
+      },
+    });
+
+    const skip = Math.floor(Math.random() * usersWithRooms.length);
+
     if (!currentUserNick) {
       users = await prisma.user.findMany({
         take: 5,
+        skip: skip,
       });
     }
 
@@ -35,6 +47,7 @@ export async function getRooms(
           },
         },
         take: 5,
+        skip: skip,
       });
     }
 

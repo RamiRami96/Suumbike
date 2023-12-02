@@ -26,7 +26,7 @@ export default async function Page({ params }: Props) {
         href="/profile"
         className="bg-pink-400 hover:bg-pink-700 text-white font-bold py-3 px-4 rounded-lg cursor-pointer"
       >
-        Profilgä qaytu
+        Back to profile page
       </Link>
       <div className="mt-10 flex flex-col items-center">
         <div className="relative w-[300px] h-[300px]">
@@ -36,29 +36,17 @@ export default async function Page({ params }: Props) {
               profile.avatar ? "/avatars/" + profile.avatar : "/icons/user.svg"
             }
             alt="Avatar"
-            width="300"
-            height="300"
+            width={300}
+            height={300}
+            placeholder="blur"
+            blurDataURL={"/icons/user.svg"}
           />
         </div>
         <div className="mt-4 w-[300px] p-4 bg-pink-400 text-white rounded-b-xl">
-          <h2 className="text-4xl flex items-center">
-            {profile.name}{" "}
-            <div className="relative flex h-3 w-3 ml-2">
-              <span
-                className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                  profile.roomId ? "bg-green-500" : "bg-red-500"
-                } `}
-              ></span>
-              <span
-                className={`relative inline-flex rounded-full h-3 w-3 ${
-                  profile.roomId ? "bg-green-600" : "bg-red-700"
-                } `}
-              ></span>
-            </div>
-          </h2>
+          <h2 className="text-4xl">{profile.name} </h2>
           <ul className="mt-4 list-none">
             <li>
-              <span className="font-bold">Yaş</span> - {profile.age}
+              <span className="font-bold">Age</span> - {profile.age}
             </li>
             <li>
               <span className="font-bold">Nick</span> - @{profile.tgNickname}

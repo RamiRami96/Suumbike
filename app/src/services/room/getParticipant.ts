@@ -9,7 +9,7 @@ export async function getParticipant(
   try {
     const participant = await prisma.user.findUnique({ where: { tgNickname } });
 
-    return participant;
+    return participant as unknown as User;
   } catch (error) {
     console.log(error);
   }

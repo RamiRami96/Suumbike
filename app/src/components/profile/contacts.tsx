@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
-import { Fragment, MutableRefObject } from "react";
+import { Fragment, MutableRefObject, useState } from "react";
 import { Skeleton } from "./skeleton";
+import { DeleteConfirmationModal } from "./deleteConfirmationModal";
 
 import { User } from "../../models/user";
 
@@ -21,6 +24,25 @@ export function Contacts({
   deleteContact,
   userNick,
 }: Props) {
+  const [showModal, setShowModal] = useState(false);
+  const [contactToDelete, setContactToDelete] = useState("");
+
+  const confirmDelete = (tgNickname: string) => {
+    setContactToDelete(tgNickname);
+    setShowModal(true);
+  };
+
+  const handleCancelDelete = () => {
+    setShowModal(false);
+    setContactToDelete("");
+  };
+
+  const handleDelete = async () => {
+    await deleteContact(contactToDelete, userNick);
+    setShowModal(false);
+    setContactToDelete("");
+  };
+
   return (
     <div className="border border-pink-400 bg-white rounded-lg overflow-hidden min-w-[320px] ">
       <div className="flex justify-between al bg-pink-400 text-white">
@@ -58,6 +80,8 @@ export function Contacts({
                       alt="Avatar"
                       width={50}
                       height={50}
+                      placeholder="blur"
+                      blurDataURL={"/icons/user.svg"}
                     />
                   </Link>
                 </div>
@@ -69,24 +93,8 @@ export function Contacts({
                 </p>
                 <div className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pr-4 sm:pr-6 flex justify-center md:justify-start">
                   <button
-                    onClick={() =>
-                      deleteContact(tgNickname as string, userNick)
-                    }
-                  >
-                    <div>
-                      <Image
-                        src={"/icons/delete.svg"}
-                        alt="delete"
-                        width={16}
-                        height={16}
-                      />
-                    </div>
-                  </button>
-                  <button
                     className="ml-2"
-                    onClick={() =>
-                      deleteContact(tgNickname as string, userNick)
-                    }
+                    onClick={() => confirmDelete(tgNickname)}
                   >
                     <div>
                       <Image
@@ -94,6 +102,8 @@ export function Contacts({
                         alt="delete"
                         width={16}
                         height={16}
+                        placeholder="blur"
+                        blurDataURL={"/icons/delete.svg"}
                       />
                     </div>
                   </button>
@@ -108,6 +118,11 @@ export function Contacts({
           </>
         )}
       </div>
+      <DeleteConfirmationModal
+        isOpen={showModal}
+        onCancel={handleCancelDelete}
+        onDelete={handleDelete}
+      />
     </div>
   );
 }

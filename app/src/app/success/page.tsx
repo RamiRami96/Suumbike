@@ -18,6 +18,8 @@ export default async function Page({ searchParams }: Props) {
         alt="contact"
         width={300}
         height={300}
+        placeholder="blur"
+        blurDataURL={"/icons/user.svg"}
       />
       <h2 className="text-primary text-center font-bold text-xl mt-14">
         <span className="text-pink-600 font-extrabold text-4xl">{name}</span>

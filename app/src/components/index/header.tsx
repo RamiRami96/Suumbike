@@ -63,6 +63,8 @@ export default function Header() {
             alt="Avatar"
             width={40}
             height={40}
+            placeholder="blur"
+            blurDataURL={"/icons/user.svg"}
           />
           {isMenuOpen && (
             <div className="absolute bottom-[-8vh] right-[0.6vh] z-50 w-24 border border-pink-600 flex flex-col p-3 rounded-2xl bg-white">
