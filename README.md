@@ -1,12 +1,8 @@
 Next.js app for dating. 
-This app lets you connect with other people through web roulette. 
-The dating app is under development.
-
-TODO:
-- Refresh JWT token
-- Add unit tests
+This app lets you connect with other people through video rooms. 
 
 Stack:
 -Next.js 13.4 (server actions)
+-Socket.io
 -Tailwind
 -Prisma
