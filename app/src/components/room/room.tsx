@@ -400,7 +400,7 @@ export default function Room({ roomId, isUsersRoom }: Props) {
   }, [user, users, socketRef?.current]);
 
   return (
-    <section className="relative h-[90vh] flex justify-center mt-50">
+    <section className="relative h-[90dvh] flex justify-center mt-50">
       <div className="absolute z-10 top-10 right-3">
         <div className={userVideoRef ? " " : "animate-pulse"}>
           <video
@@ -411,7 +411,7 @@ export default function Room({ roomId, isUsersRoom }: Props) {
           />
         </div>
       </div>
-      <div className="absolute z-10 bg-[linear-gradient(180deg,_#140133f2_-29.17%,_#160229fa_91.67%)] bottom-0 w-50 h-24 flex justify-center  items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
+      <div className="absolute z-10 bottom-0 w-50 h-24 flex justify-center  items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
         <div className="flex">
           <button
             disabled={isLoading}

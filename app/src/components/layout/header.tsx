@@ -31,13 +31,13 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50 bg-white">
+    <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50">
       <Link href={"/"}>
         <Image
           src={"/icons/logo.svg"}
           alt="logo"
-          width={100}
-          height={22}
+          width={40}
+          height={31}
           priority
         />
       </Link>
@@ -54,7 +54,7 @@ export default function Header() {
         >
           <Image
             onClick={toggleMenu}
-            className="rounded-full object-cover cursor-pointer w-full h-full border-2 border-pink-600"
+            className="rounded-full object-cover cursor-pointer w-full h-full border border-pink-400"
             src={
               (user as any)?.avatar
                 ? "/avatars/" + (user as any)?.avatar
@@ -83,7 +83,7 @@ export default function Header() {
                     toggleMenu();
                   }}
                 >
-                  Sign in
+                  Sign In
                 </button>
               )}
             </div>

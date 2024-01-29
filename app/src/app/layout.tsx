@@ -1,5 +1,5 @@
 import { Montserrat } from "next/font/google";
-import Header from "@/components/index/header";
+import Header from "@/components/layout/header";
 
 import { NextAuthProvider } from "./providers";
 import "./globals.css";
