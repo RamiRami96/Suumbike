@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100dvh;
+  background: linear-gradient(180deg, #140034 0%, #01010d 100%);
+  color: #fff;
+}
+
 h1,
 h2,
 h3,
@@ -15,7 +23,6 @@ h1 {
   @media only screen and (min-width: 768px) {
     font-size: 54px;
   }
-
 }
 
 h2 {

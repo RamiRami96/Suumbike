@@ -42,19 +42,19 @@ export default function Header() {
         />
       </Link>
       <ul className="flex items-center">
-        <li className="mr-4 font-medium text-pink-400">
-          <Link href={"/"}>Start</Link>
+        <li className="mr-4 font-medium text-pink-600">
+          <Link href={"/"}>Main</Link>
         </li>
-        <li className="mr-4 font-medium text-pink-400">
+        <li className="mr-4 font-medium text-pink-600">
           <Link href={"/profile"}>Profile</Link>
         </li>
         <li
-          className="relative font-medium text-pink-400 w-[40px] h-[40px]"
+          className="relative font-medium text-pink-600 w-[40px] h-[40px]"
           ref={menuRef}
         >
           <Image
             onClick={toggleMenu}
-            className="rounded-full object-cover cursor-pointer w-full h-full border-2 border-pink-400"
+            className="rounded-full object-cover cursor-pointer w-full h-full border-2 border-pink-600"
             src={
               (user as any)?.avatar
                 ? "/avatars/" + (user as any)?.avatar
@@ -67,7 +67,7 @@ export default function Header() {
             blurDataURL={"/icons/user.svg"}
           />
           {isMenuOpen && (
-            <div className="absolute bottom-[-8vh] right-[0.6vh] z-50 w-24 border border-pink-600 flex flex-col p-3 rounded-2xl bg-white">
+            <div className="absolute bottom-[-8vh] right-[0.6vh] z-50 w-24 border border-pink-600 flex flex-col p-3 rounded-2xl bg-dark-purple">
               {user ? (
                 <button
                   onClick={() =>

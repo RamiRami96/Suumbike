@@ -44,8 +44,8 @@ export function Contacts({
   };
 
   return (
-    <div className="border border-pink-400 bg-white rounded-lg overflow-hidden min-w-[320px] ">
-      <div className="flex justify-between al bg-pink-400 text-white">
+    <div className="border border-pink-600  rounded-lg overflow-hidden min-w-[320px] ">
+      <div className="flex justify-between al bg-pink-600 text-white">
         <h6 className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pl-2 sm:pl-6 text-left font-medium text-sm md:text-md">
           Avatar
         </h6>
@@ -57,7 +57,7 @@ export function Contacts({
         </h6>
         <h6 className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pr-4 sm:pr-6 text-left font-medium text-sm md:text-md"></h6>
       </div>
-      <div className="h-[45vh] md:h-[50vh] overflow-y-auto px-2">
+      <div className="h-[45vh] md:h-[50vh] overflow-y-auto px-2 bg-[linear-gradient(180deg,_#140133f2_-29.17%,_#160229fa_91.67%)]">
         {likedUsers?.length === 0 ? (
           Array.from({ length: 7 }).map((_, index) => (
             <Fragment key={index}>
@@ -68,7 +68,7 @@ export function Contacts({
           <>
             {likedUsers.map(({ id, avatar, name, tgNickname }, i, array) => (
               <div
-                className="flex justify-between items-center py-3 border-b border-pink-400"
+                className="flex justify-between items-center py-3 border-b border-pink-600"
                 key={id}
                 ref={array.length - 1 === i ? lastElement : null}
               >
@@ -85,10 +85,10 @@ export function Contacts({
                     />
                   </Link>
                 </div>
-                <p className="w-[100px] sm:w-[140px] md:w-[200px]  py-3 px-2 sm:px-6 text-left text-xs md:text-sm text-pink-400">
+                <p className="w-[100px] sm:w-[140px] md:w-[200px]  py-3 px-2 sm:px-6 text-left text-xs md:text-sm text-pink-600">
                   {name}
                 </p>
-                <p className="w-[100px] sm:w-[140px] md:w-[200px]  py-3 px-2 sm:px-6 text-left text-xs md:text-sm text-pink-400 break-words">
+                <p className="w-[100px] sm:w-[140px] md:w-[200px]  py-3 px-2 sm:px-6 text-left text-xs md:text-sm text-pink-600 break-words">
                   @{tgNickname}
                 </p>
                 <div className="w-[60px] sm:w-[140px] md:w-[200px] py-3 pr-4 sm:pr-6 flex justify-center md:justify-start">

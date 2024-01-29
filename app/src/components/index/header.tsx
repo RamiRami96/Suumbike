@@ -31,7 +31,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50 bg-white">
+    <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50">
       <Link href={"/"}>
         <Image
           src={"/icons/logo.svg"}
@@ -42,14 +42,14 @@ export default function Header() {
         />
       </Link>
       <ul className="flex items-center">
-        <li className="mr-4 font-medium text-pink-400">
+        <li className="mr-4 font-medium text-pink-600">
           <Link href={"/"}>Main</Link>
         </li>
-        <li className="mr-4 font-medium text-pink-400">
+        <li className="mr-4 font-medium text-pink-600">
           <Link href={"/profile"}>Profile</Link>
         </li>
         <li
-          className="relative font-medium text-pink-400  w-[40px] h-[40px]"
+          className="relative font-medium text-pink-600 w-[40px] h-[40px]"
           ref={menuRef}
         >
           <Image
@@ -67,7 +67,7 @@ export default function Header() {
             blurDataURL={"/icons/user.svg"}
           />
           {isMenuOpen && (
-            <div className="absolute bottom-[-8vh] right-[0.6vh] z-50 w-24 border border-pink-600 flex flex-col p-3 rounded-2xl bg-white">
+            <div className="absolute bottom-[-8vh] right-[0.6vh] z-50 w-24 border border-pink-600 flex flex-col p-3 rounded-2xl bg-dark-purple">
               {user ? (
                 <button
                   onClick={() =>

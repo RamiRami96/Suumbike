@@ -404,19 +404,19 @@ export default function Room({ roomId, isUsersRoom }: Props) {
       <div className="absolute z-10 top-10 right-3">
         <div className={userVideoRef ? " " : "animate-pulse"}>
           <video
-            className="h-20 border border-pink-400 rounded-2xl w-[106px] bg-pink-400"
+            className="h-20 border border-pink-600 rounded-2xl w-[106px] bg-pink-600"
             autoPlay
             ref={userVideoRef}
             muted
           />
         </div>
       </div>
-      <div className="absolute z-10 bg-white bottom-0 w-50 h-24 flex justify-center  items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
+      <div className="absolute z-10 bg-[linear-gradient(180deg,_#140133f2_-29.17%,_#160229fa_91.67%)] bottom-0 w-50 h-24 flex justify-center  items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
         <div className="flex">
           <button
             disabled={isLoading}
             onClick={leaveRoom}
-            className="px-4 py-2 bg-pink-400 text-white rounded-l-md w-24 flex justify-center items-center"
+            className="px-4 py-2 bg-pink-600 text-white rounded-l-md w-24 flex justify-center items-center"
           >
             <Image
               src={"/icons/close.svg"}

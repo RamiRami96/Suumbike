@@ -59,7 +59,7 @@ export default function Page() {
       <Wallpaper />
       <div className="w-5/6 md:w-3/6 flex justify-center mt-8 mb-8">
         <div className="flex flex-col items-center w-full md:w-2/3">
-          <h4 className="text-center mb-4 text-pink-400">Sign up</h4>
+          <h4 className="text-center mb-4 text-pink-600">Sign up</h4>
           <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div>
               <Controller
@@ -79,7 +79,7 @@ export default function Page() {
                 render={({ field }) => (
                   <input
                     className={
-                      "form-control block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                      "form-control block w-full px-4 py-4 text-sm font-normal bg-clip-padding border rounded transition ease-in-out m-0 focus:outline-none bg-dark-purple border-pink-600 text-white placeholder:text-white focus:border-pink-700"
                     }
                     placeholder="Name"
                     {...field}
@@ -107,7 +107,7 @@ export default function Page() {
                   <input
                     type="date"
                     className={
-                      "form-control block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                      "form-control block w-full px-4 py-4 text-sm font-normal bg-clip-padding border rounded transition ease-in-out m-0 focus:outline-none bg-dark-purple border-pink-600 text-white placeholder:text-white focus:border-pink-700"
                     }
                     placeholder="Date of Birth"
                     {...field}
@@ -137,7 +137,7 @@ export default function Page() {
                 render={({ field }) => (
                   <input
                     className={
-                      "form-control block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                      "form-control block w-full px-4 py-4 text-sm font-normal bg-clip-padding border rounded transition ease-in-out m-0 focus:outline-none bg-dark-purple border-pink-600 text-white placeholder:text-white focus:border-pink-700"
                     }
                     placeholder="Telegram Nickname"
                     {...field}
@@ -162,7 +162,7 @@ export default function Page() {
                 control={control}
                 render={({ field }) => (
                   <select
-                    className="form-select block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                    className="form-select block w-full px-4 py-4 text-sm font-normal bg-clip-padding border rounded transition ease-in-out m-0 focus:outline-none bg-dark-purple border-pink-600 text-white placeholder:text-white focus:border-pink-700"
                     aria-label="Select sex"
                     {...field}
                   >
@@ -198,7 +198,7 @@ export default function Page() {
                   <input
                     type="password"
                     className={
-                      "form-control block w-full px-4 py-4 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-400 focus:outline-none"
+                      "form-control block w-full px-4 py-4 text-sm font-normal bg-clip-padding border rounded transition ease-in-out m-0 focus:outline-none bg-dark-purple border-pink-600 text-white placeholder:text-white focus:border-pink-700"
                     }
                     placeholder="Password"
                     {...field}
@@ -225,7 +225,7 @@ export default function Page() {
                 render={({ field }) => (
                   <div className="flex items-center">
                     <label
-                      className="text-sm font-medium text-gray-700 cursor-pointer bg-white py-4 px-4 rounded border border-gray-300 shadow-sm hover:bg-blue-100 transition duration-300 w-full"
+                      className="text-sm font-medium text-white cursor-pointer bg-dark-purple py-4 px-4 rounded border border-pink-600 shadow-sm transition duration-300 w-full"
                       htmlFor="avatar"
                     >
                       {field.value?.name ? field.value.name : "Upload Avatar"}
@@ -252,14 +252,14 @@ export default function Page() {
             <button
               disabled={isSubmitting || loading}
               type="submit"
-              className="bg-pink-400 disabled:bg-pink-300 hover:bg-pink-400 text-white py-3 px-4 rounded transition duration-300 w-full mt-1"
+              className="bg-pink-600 disabled:bg-pink-300 hover:bg-pink-600 text-white py-3 px-4 rounded transition duration-300 w-full mt-1"
             >
               Sign Up
             </button>
           </form>
           <div className="text-sm mt-4">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="text-pink-400">
+            <Link href="/auth/signin" className="text-pink-600">
               Sign in
             </Link>
           </div>

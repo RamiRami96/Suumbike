@@ -32,7 +32,7 @@ export function DeleteConfirmationModal({
             blurDataURL={"/images/close_modal.png"}
           />
         </button>
-        <p className="mt-8 mb-8 font-bold text-base text-pink-400">
+        <p className="mt-8 mb-8 font-bold text-base text-pink-600">
           Are you sure you want to delete this contact?
         </p>
         <div className="flex justify-end">
@@ -43,7 +43,7 @@ export function DeleteConfirmationModal({
             Cancel
           </button>
           <button
-            className="px-4 py-2 text-sm bg-pink-400 text-white rounded"
+            className="px-4 py-2 text-sm bg-pink-600 text-white rounded"
             onClick={onDelete}
           >
             Yes

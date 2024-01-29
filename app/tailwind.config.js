@@ -7,6 +7,16 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundColor: {
+        "light-purple": "#B783EB",
+      },
+      colors: {
+        "light-purple": "#B783EB",
+        "dark-purple": "#1B1142",
+      },
+      borderColor: {
+        "light-purple": "#B783EB",
+      },
       keyframes: {
         wave: {
           "0%": { transform: "rotate(0.0deg)" },

@@ -19,7 +19,7 @@ export const Account = memo(function Account({
     <div className="flex justify-start items-center mb-8">
       <div className="flex items-center">
         <Image
-          className="rounded-full object-cover cursor-pointer w-[132px] h-[132px] border border-pink-400"
+          className="rounded-full object-cover cursor-pointer w-[132px] h-[132px] border border-pink-600"
           src={avatar ? "/avatars/" + avatar : "/icons/user.svg"}
           alt="Avatar"
           width={132}
@@ -29,11 +29,11 @@ export const Account = memo(function Account({
         />
 
         <div className="flex flex-col ml-6">
-          <h4 className="font-bold uppercase">{userName}</h4>
+          <h4 className="font-bold uppercase text-pink-600">{userName}</h4>
           <button
             aria-label="Delete account"
             onClick={() => deleteAccount(tgNickname, avatar)}
-            className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-2 rounded mt-2"
+            className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-2 rounded mt-2"
           >
             Delete account
           </button>
@@ -42,7 +42,7 @@ export const Account = memo(function Account({
             onClick={() =>
               signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL })
             }
-            className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-2 rounded mt-2"
+            className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-2 rounded mt-2"
           >
             Sign out
           </button>
