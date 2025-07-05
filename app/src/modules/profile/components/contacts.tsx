@@ -3,31 +3,39 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Fragment } from "react";
+import { Fragment, MutableRefObject } from "react";
 import { Skeleton } from "./skeleton";
 import { DeleteConfirmationModal } from "./deleteConfirmationModal";
 import { useDeleteConfirmation } from "@/modules/profile/hooks/useDeleteConfirmation";
-import { useLikedUsers } from "@/modules/profile/hooks/useLikedUsers";
+import type { User } from "@/shared/models/user";
 
 type Props = {
   userNick: string;
+  likedUsers: User[];
+  isLoading: boolean;
+  lastElement: MutableRefObject<null>;
+  deleteContact: (likedUserNick: string, userNick: string) => Promise<void>;
 };
 
 export function Contacts({
   userNick,
+  likedUsers,
+  isLoading,
+  lastElement,
+  deleteContact,
 }: Props) {
   const {
-    likedUsers,
-    isLoading,
-    lastElement,
-  } = useLikedUsers(userNick);
-
-  const {
     showModal,
+    contactToDelete,
     confirmDelete,
     handleCancelDelete,
     handleDelete,
-  } = useDeleteConfirmation( userNick);
+  } = useDeleteConfirmation();
+
+  const handleDeleteContact = async () => {
+    await deleteContact(contactToDelete, userNick);
+    handleDelete();
+  };
 
   return (
     <div className="border border-pink-600  rounded-lg overflow-hidden min-w-[320px] ">
@@ -107,7 +115,7 @@ export function Contacts({
       <DeleteConfirmationModal
         isOpen={showModal}
         onCancel={handleCancelDelete}
-        onDelete={handleDelete}
+        onDelete={handleDeleteContact}
       />
     </div>
   );

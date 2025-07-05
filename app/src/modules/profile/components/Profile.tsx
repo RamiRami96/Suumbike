@@ -22,9 +22,13 @@ export function Profile() {
   const userNick = (user as User)?.tgNickname;
   const avatar = (user as User)?.avatar;
 
-   const {
-      notUsers,
-    } = useLikedUsers(userNick);
+  const {
+    likedUsers,
+    isLoading,
+    notUsers,
+    lastElement,
+    deleteContact,
+  } = useLikedUsers(userNick);
 
   return (
     <>
@@ -45,6 +49,10 @@ export function Profile() {
           ) : (
             <Contacts
               userNick={userNick}
+              likedUsers={likedUsers}
+              isLoading={isLoading}
+              lastElement={lastElement}
+              deleteContact={deleteContact}
             />
           )}
         </div>

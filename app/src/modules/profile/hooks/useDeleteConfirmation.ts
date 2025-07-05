@@ -1,15 +1,10 @@
 import { useState } from "react";
-import { useLikedUsers } from "./useLikedUsers";
 
 
-export function useDeleteConfirmation(
-  userNick: string
-) {
+export function useDeleteConfirmation() {
   const [showModal, setShowModal] = useState(false);
   const [contactToDelete, setContactToDelete] = useState("");
-    const {
-      deleteContact
-    } = useLikedUsers(userNick);
+
 
   const confirmDelete = (tgNickname: string) => {
     setContactToDelete(tgNickname);
@@ -22,7 +17,6 @@ export function useDeleteConfirmation(
   };
 
   const handleDelete = async () => {
-      await deleteContact(contactToDelete, userNick);
     setShowModal(false);
     setContactToDelete("");
   };
