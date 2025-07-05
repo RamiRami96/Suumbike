@@ -6,11 +6,11 @@ import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import { Spinner } from "@/modules/layout/components/spinner";
-import useSocket from "@/hooks/useSocket";
-import { useRoomSocket } from "@/hooks/useRoomSocket";
-import { useRoomTimer } from "@/hooks/useRoomTimer";
-import { useRoomActions } from "@/hooks/useRoomActions";
-import { useRoomCoordination } from "@/hooks/useRoomCoordination";
+import useSocket from "@/modules/shared/hooks/useSocket";
+import { useRoomSocket } from "@/modules/room/hooks/useRoomSocket";
+import { useRoomTimer } from "@/modules/room/hooks/useRoomTimer";
+import { useRoomActions } from "@/modules/room/hooks/useRoomActions";
+import { useRoomCoordination } from "@/modules/room/hooks/useRoomCoordination";
 import { User } from "@/models/user";
 
 type Props = {

@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { Skeleton } from "./skeleton";
 import { DeleteConfirmationModal } from "./deleteConfirmationModal";
-import { useDeleteConfirmation } from "@/hooks/useDeleteConfirmation";
-import { useLikedUsers } from "@/hooks/useLikedUsers";
+import { useDeleteConfirmation } from "@/modules/profile/hooks/useDeleteConfirmation";
+import { useLikedUsers } from "@/modules/profile/hooks/useLikedUsers";
 
 type Props = {
   userNick: string;

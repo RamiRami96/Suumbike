@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 
 import { Contacts } from "@/modules/profile/components/contacts";
 import { Account } from "@/modules/profile/components/account";
-import { useLikedUsers } from "@/hooks/useLikedUsers";
+import { useLikedUsers } from "@/modules/profile/hooks/useLikedUsers";
 
 import type { User } from "@/models/user";
 
