@@ -2,11 +2,11 @@
 
 import { useForm } from "react-hook-form";
 import { usePathname, useRouter } from "next/navigation";
-import { generateHeartStyles } from "@/helpers/generateHeartStyles";
-import { User } from "@/models/user";
-import { getUser } from "@/services/profile/getUser";
-import { createRoom } from "@/services/room/createRoom";
-import { ERROR_MESSAGE } from "@/app/const/errors.const";
+import { generateHeartStyles } from "@/modules/index/helpers/generateHeartStyles";
+import { User } from "@/shared/models/user";
+import { getUser } from "@/modules/profile/services/getUser";
+import { createRoom } from "@/modules/room/services/createRoom";
+import { ERROR_MESSAGE } from "@/modules/shared/const/errors.const";
 import { useAutoRefresh } from "@/modules/shared/hooks/useAutoRefresh";
 
 type Props = {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { getLikedUsers } from "@/services/profile/getLikedUsers";
-import { deleteLikedUser } from "@/services/profile/deleteLikedUser";
-import type { User } from "@/models/user";
+import { getLikedUsers } from "@/modules/profile/services/getLikedUsers";
+import { deleteLikedUser } from "@/modules/profile/services/deleteLikedUser";
+import type { User } from "@/shared/models/user";
 
 export function useLikedUsers(tgNickname: string) {
   const [likedUsers, setLikedUsers] = useState<User[]>([]);

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, MutableRefObject } from "react";
 import { useRouter } from "next/navigation";
 import { Socket } from "socket.io-client";
-import { User } from "@/models/user";
+import { User } from "@/shared/models/user";
 import { useWebRTC } from "./useWebRTC";
 
 export function useRoomSocket(roomId: string) {

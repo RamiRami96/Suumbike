@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { likeUser } from "@/services/profile/likeUser";
-import { deleteRoom } from "@/services/room/deleteRoom";
-import { User } from "@/models/user";
+import { likeUser } from "@/modules/profile/services/likeUser";
+import { deleteRoom } from "@/modules/room/services/deleteRoom";
+import { User } from "@/shared/models/user";
 
 export function useRoomActions(
   roomId: string,

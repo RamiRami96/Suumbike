@@ -2,7 +2,7 @@
 
 import fs from "fs/promises";
 import path from "path";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/shared/lib/prisma";
 import { hash } from "bcryptjs";
 
 export const signUp = async (data: FormData) => {

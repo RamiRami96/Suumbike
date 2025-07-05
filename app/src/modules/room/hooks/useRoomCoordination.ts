@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { User } from "@/models/user";
+import { User } from "@/shared/models/user";
 
 export function useRoomCoordination({
   isLiked,

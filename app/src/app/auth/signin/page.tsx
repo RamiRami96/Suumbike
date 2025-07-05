@@ -7,7 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 
 import Wallpaper from "@/modules/auth/components/wallpaper";
 import { useErrorState } from "@/modules/shared/hooks/useErrorState";
-import { ERROR_MESSAGE } from "@/app/const/errors.const";
+import { ERROR_MESSAGE } from "@/modules/shared/const/errors.const";
 
 type FieldValues = {
   tgNickname: string;

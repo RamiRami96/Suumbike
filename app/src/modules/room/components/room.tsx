@@ -11,7 +11,7 @@ import { useRoomSocket } from "@/modules/room/hooks/useRoomSocket";
 import { useRoomTimer } from "@/modules/room/hooks/useRoomTimer";
 import { useRoomActions } from "@/modules/room/hooks/useRoomActions";
 import { useRoomCoordination } from "@/modules/room/hooks/useRoomCoordination";
-import { User } from "@/models/user";
+import { User } from "@/shared/models/user";
 
 type Props = {
   roomId: string;

@@ -2,14 +2,14 @@
 
 import { useForm, Controller } from "react-hook-form";
 
-import { signUp } from "../../../services/auth/signUp";
+import { signUp } from "@/modules/auth/services/signUp";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Wallpaper from "@/modules/auth/components/wallpaper";
 
-import { validateAvatar } from "@/utils/validateAvatar";
-import { validateAge } from "@/utils/validateAge";
-import { calculateAge } from "@/utils/calculateAge";
+import { validateAvatar } from "@/modules/auth/helpers/validateAvatar";
+import { validateAge } from "@/modules/auth/helpers/validateAge";
+import { calculateAge } from "@/modules/auth/helpers/calculateAge";
 import { useErrorState } from "@/modules/shared/hooks/useErrorState";
 
 type FieldValues = {

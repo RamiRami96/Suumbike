@@ -1,4 +1,4 @@
-import { deleteAccount } from "@/services/profile/deleteAccount";
+import { deleteAccount } from "@/modules/profile/services/deleteAccount";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { memo, useCallback } from "react";

@@ -1,7 +1,7 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { User } from "@/models/user";
+import { prisma } from "@/shared/lib/prisma";
+import { User } from "@/shared/models/user";
 
 export async function getRooms(
   currentUserNick?: string,
