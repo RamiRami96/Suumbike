@@ -1,5 +1,5 @@
 import { MY_ROOM } from "@/app/const/shared.const";
-import Room from "@/components/room/room";
+import Room from "@/modules/room/components/room";
 
 type Params = {
   room: string[];

@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { signUp } from "../../../services/auth/signUp";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Wallpaper from "../components/wallpaper";
+import Wallpaper from "@/modules/auth/components/wallpaper";
 
 import { validateAvatar } from "@/utils/validateAvatar";
 import { validateAge } from "@/utils/validateAge";

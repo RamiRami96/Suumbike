@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Skeleton } from "../../components/profile/skeleton";
+import { Skeleton } from "@/modules/profile/components/skeleton";
 
 export default function Loading() {
   return (

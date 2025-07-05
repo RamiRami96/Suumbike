@@ -5,7 +5,7 @@ import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import { Spinner } from "@/components/layout/spinner";
+import { Spinner } from "@/modules/layout/components/spinner";
 import useSocket from "@/hooks/useSocket";
 import { useRoomSocket } from "@/hooks/useRoomSocket";
 import { useRoomTimer } from "@/hooks/useRoomTimer";

@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { usePathname, useRouter } from "next/navigation";
-import { generateHeartStyles } from "../../helpers/generateHeartStyles";
+import { generateHeartStyles } from "@/helpers/generateHeartStyles";
 import { User } from "@/models/user";
 import { getUser } from "@/services/profile/getUser";
 import { createRoom } from "@/services/room/createRoom";

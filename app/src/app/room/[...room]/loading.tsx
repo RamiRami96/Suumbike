@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/room/skeleton";
+import { Skeleton } from "@/modules/room/components/skeleton";
 
 export default function Loading() {
   return <Skeleton />;

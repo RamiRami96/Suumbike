@@ -5,7 +5,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useForm, Controller } from "react-hook-form";
 
-import Wallpaper from "../components/wallpaper";
+import Wallpaper from "@/modules/auth/components/wallpaper";
 import { useErrorState } from "@/hooks/useErrorState";
 import { ERROR_MESSAGE } from "@/app/const/errors.const";
 

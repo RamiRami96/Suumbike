@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 
-import Main from "@/components/index/main";
+import Main from "@/modules/index/components/main";
 import { authOptions } from "@/lib/auth";
 import { User } from "@/models/user";
 import { getRooms } from "@/services/room/getRooms";

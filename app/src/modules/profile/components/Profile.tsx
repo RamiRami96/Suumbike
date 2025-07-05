@@ -3,8 +3,8 @@
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import { Contacts } from "@/components/profile/contacts";
-import { Account } from "@/components/profile/account";
+import { Contacts } from "@/modules/profile/components/contacts";
+import { Account } from "@/modules/profile/components/account";
 import { useLikedUsers } from "@/hooks/useLikedUsers";
 
 import type { User } from "@/models/user";
