@@ -1,20 +1,25 @@
+import { deleteAccount } from "@/services/profile/deleteAccount";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
 type Props = {
   avatar: string;
   userName: string;
-  tgNickname: string;
-  deleteAccount: (tgNickname: string, avatar: string) => void;
+  userNick: string;
 };
 
 export const Account = memo(function Account({
   avatar,
   userName,
-  tgNickname,
-  deleteAccount,
+  userNick,
 }: Props) {
+
+  const handleDeleteAccount = async (tgNickname: string, avatar: string): Promise<void> => {
+    await deleteAccount(tgNickname, avatar);
+    signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL });
+  };
+
   return (
     <div className="flex justify-start items-center mb-8">
       <div className="flex items-center">
@@ -32,7 +37,7 @@ export const Account = memo(function Account({
           <h4 className="font-bold uppercase text-pink-600">{userName}</h4>
           <button
             aria-label="Delete account"
-            onClick={() => deleteAccount(tgNickname, avatar)}
+            onClick={() => handleDeleteAccount(userNick, avatar)}
             className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-2 rounded mt-2"
           >
             Delete account

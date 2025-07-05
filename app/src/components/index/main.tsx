@@ -1,39 +1,59 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { usePathname, useRouter } from "next/navigation";
-import { generateHeartStyles } from "./helpers/generateHeartStyles";
+import { generateHeartStyles } from "../../helpers/generateHeartStyles";
 import { User } from "@/models/user";
 import { getUser } from "@/services/profile/getUser";
 import { createRoom } from "@/services/room/createRoom";
+import { ERROR_MESSAGE } from "@/app/const/errors.const";
+import { useAutoRefresh } from "@/hooks/useAutoRefresh";
 
 type Props = {
   users: User[] | null;
   userNick: string;
 };
 
+type FormValues = {
+  inputValue: string;
+};
+
 export default function Main({ users, userNick }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const [error, setError] = useState("");
+  const {
+    register,
+    watch,
+    setError,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      inputValue: "",
+    },
+  });
 
-  const [inputValue, setinputValue] = useState("");
+  const inputValue = watch("inputValue");
 
-  const createMyRoom = (nick: string) => {
+  useAutoRefresh(15000);
+
+  const createMyRoom = (nick: string): void => {
     createRoom(nick).then((data) => router.push(`/room/${data.roomId}/myRoom`));
   };
 
-  const joinRoom = (nick: string) => {
+  const joinRoom = (nick: string): void => {
     getUser(nick).then((data) => router.push(`/room/${data.roomId}/${nick}`));
   };
 
-  const filterRooms = (nick: string, userNick: string) => {
+  const filterRooms = (nick: string, userNick: string): void  => {
     if (nick === userNick) {
-      setError("You have entered your nick");
+      setError("inputValue", { 
+        type: "manual", 
+        message: ERROR_MESSAGE.SAME_NICK_ENTERED 
+      });
       return;
     }
 
-    setError("");
+    setError("inputValue", { type: "manual", message: "" });
 
     if (!nick) {
       router.push(pathname);
@@ -41,14 +61,6 @@ export default function Main({ users, userNick }: Props) {
       router.push(`${pathname}?filter[nick]=${nick}`);
     }
   };
-
-  useEffect(() => {
-    let interval = setInterval(() => {
-      router.refresh();
-    }, 15000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <main className="h-[90vh] flex flex-col items-center justify-center relative overflow-hidden">
@@ -79,10 +91,11 @@ export default function Main({ users, userNick }: Props) {
                 type="text"
                 className="border-2 bg-dark-purple border-pink-600 h-12 w-36 md:w-48 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-700 text-white placeholder-white text-xs md:text-sm"
                 placeholder="Enter telegram nick"
-                value={inputValue}
-                onChange={(e) => setinputValue(e.target.value.toLowerCase())}
+                {...register("inputValue", {
+                  setValueAs: (value) => value.toLowerCase(),
+                })}
               />
-              <p className="h-2 text-red-500 text-xs mt-2">{error}</p>
+              <p className="h-2 text-red-500 text-xs mt-2">{errors.inputValue?.message || ""}</p>
             </div>
 
             <button
@@ -107,7 +120,7 @@ export default function Main({ users, userNick }: Props) {
                     key={tgNickname}
                   >
                     <span className="font-bold text-sm text-purple-500">
-                      {name}'s room
+                      {name}&apos;s room
                     </span>
                     <button
                       onClick={() => joinRoom(tgNickname)}
@@ -118,7 +131,6 @@ export default function Main({ users, userNick }: Props) {
                   </li>
                 ))}
             </ul>
-            {/* Blur Effect Container */}
             <div
               className="absolute inset-0 rounded-lg backdrop-filter backdrop-blur-sm "
               style={{ zIndex: -1 }}

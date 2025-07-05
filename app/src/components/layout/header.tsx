@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 export default function Header() {
   const router = useRouter();
@@ -12,23 +13,12 @@ export default function Header() {
   const menuRef = useRef<HTMLLIElement>(null);
   const { data: session } = useSession();
   const user = session?.user;
+  
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      setIsMenuOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  useClickOutside(menuRef, () => setIsMenuOpen(false));
 
   return (
     <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50">

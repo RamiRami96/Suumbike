@@ -1,4 +1,4 @@
-export const generateHeartStyles = (index: number) => {
+export const generateHeartStyles = (index: number): Record<string, string> => {
   return {
     "--heart-radius": `${index}vw`,
     "--heart-float-duration": `${index * 4}s`,

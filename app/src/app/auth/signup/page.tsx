@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 
 import { signUp } from "../../../services/auth/signUp";
@@ -11,6 +10,7 @@ import Wallpaper from "../components/wallpaper";
 import { validateAvatar } from "@/utils/validateAvatar";
 import { validateAge } from "@/utils/validateAge";
 import { calculateAge } from "@/utils/calculateAge";
+import { useErrorState } from "@/hooks/useErrorState";
 
 type FieldValues = {
   name: string;
@@ -27,8 +27,7 @@ export default function Page() {
     control,
     formState: { errors, isSubmitting },
   } = useForm<FieldValues>();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { error, setError, loading, setLoading } = useErrorState();
   const router = useRouter();
 
   const onSubmit = async (data: FieldValues) => {

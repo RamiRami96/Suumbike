@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useForm, Controller } from "react-hook-form";
 
 import Wallpaper from "../components/wallpaper";
+import { useErrorState } from "@/hooks/useErrorState";
+import { ERROR_MESSAGE } from "@/app/const/errors.const";
 
 type FieldValues = {
   tgNickname: string;
@@ -21,10 +21,10 @@ export default function Page() {
     formState: { errors, isSubmitting },
   } = useForm<FieldValues>();
   const router = useRouter();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { error, setError, loading, setLoading } = useErrorState();
 
   const onSubmit = async (formData: FieldValues) => {
+    setLoading(true);
     try {
       const res = await signIn("credentials", {
         redirect: false,
@@ -33,13 +33,14 @@ export default function Page() {
       });
 
       if (res?.error) {
-        setError("Nickname or password is wrong");
+        setError(ERROR_MESSAGE.INVALID_CREDENTIALS);
       } else {
-        setLoading(true);
         router.push("/");
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,7 +120,7 @@ export default function Page() {
             </button>
           </form>
           <div className="text-sm mt-4">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/signup" className="text-pink-600">
               Sign up
             </Link>

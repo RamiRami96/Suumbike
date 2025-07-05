@@ -1,3 +1,4 @@
+import { MY_ROOM } from "@/app/const/shared.const";
 import Room from "@/components/room/room";
 
 type Params = {
@@ -9,8 +10,9 @@ type Props = {
 };
 
 export default async function Page({ params }: Props) {
-  const [roomId, participantNick] = params.room;
-  const isUsersRoom = participantNick === "myRoom";
+  const roomArray = Array.isArray(params.room) ? params.room : [];
+  const [roomId, participantNick] = roomArray;
+  const isUsersRoom = participantNick === MY_ROOM;
 
   return <Room roomId={roomId} isUsersRoom={isUsersRoom} />;
 }

@@ -7,8 +7,7 @@ type Props = {
 export default async function Page({ searchParams }: Props) {
   if (!searchParams?.avatar && !searchParams?.name) return null;
 
-  const avatar = searchParams.avatar;
-  const name = searchParams.name;
+  const { avatar, name } = searchParams;
 
   return (
     <section className="flex flex-col justify-center items-center h-92">

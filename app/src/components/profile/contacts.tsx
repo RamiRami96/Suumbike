@@ -3,45 +3,31 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Fragment, MutableRefObject, useState } from "react";
+import { Fragment } from "react";
 import { Skeleton } from "./skeleton";
 import { DeleteConfirmationModal } from "./deleteConfirmationModal";
-
-import { User } from "../../models/user";
+import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
+import { useLikedUsers } from "@/hooks/useLikedUsers";
 
 type Props = {
-  likedUsers: User[];
-  lastElement: MutableRefObject<null>;
-  isLoading: boolean;
-  deleteContact: (likedUserNick: string, userNick: string) => Promise<void>;
   userNick: string;
 };
 
 export function Contacts({
-  likedUsers,
-  lastElement,
-  isLoading,
-  deleteContact,
   userNick,
 }: Props) {
-  const [showModal, setShowModal] = useState(false);
-  const [contactToDelete, setContactToDelete] = useState("");
+  const {
+    likedUsers,
+    isLoading,
+    lastElement,
+  } = useLikedUsers(userNick);
 
-  const confirmDelete = (tgNickname: string) => {
-    setContactToDelete(tgNickname);
-    setShowModal(true);
-  };
-
-  const handleCancelDelete = () => {
-    setShowModal(false);
-    setContactToDelete("");
-  };
-
-  const handleDelete = async () => {
-    await deleteContact(contactToDelete, userNick);
-    setShowModal(false);
-    setContactToDelete("");
-  };
+  const {
+    showModal,
+    confirmDelete,
+    handleCancelDelete,
+    handleDelete,
+  } = useDeleteConfirmation( userNick);
 
   return (
     <div className="border border-pink-600  rounded-lg overflow-hidden min-w-[320px] ">
