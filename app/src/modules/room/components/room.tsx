@@ -6,7 +6,7 @@ import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import { Spinner } from "@/modules/layout/components/spinner";
-import useSocket from "@/modules/shared/hooks/useSocket";
+import useSocket from "@/modules/room/hooks/useSocket";
 import { useRoomSocket } from "@/modules/room/hooks/useRoomSocket";
 import { useRoomTimer } from "@/modules/room/hooks/useRoomTimer";
 import { useRoomActions } from "@/modules/room/hooks/useRoomActions";

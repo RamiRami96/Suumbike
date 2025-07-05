@@ -10,7 +10,7 @@ import Wallpaper from "@/modules/auth/components/wallpaper";
 import { validateAvatar } from "@/modules/auth/helpers/validateAvatar";
 import { validateAge } from "@/modules/auth/helpers/validateAge";
 import { calculateAge } from "@/modules/auth/helpers/calculateAge";
-import { useErrorState } from "@/modules/shared/hooks/useErrorState";
+import { useErrorState } from "@/modules/auth/hooks/useErrorState";
 
 type FieldValues = {
   name: string;

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { useClickOutside } from "@/modules/shared/hooks/useClickOutside";
+import { useClickOutside } from "@/modules/layout/hooks/useClickOutside";
 
 export default function Header() {
   const router = useRouter();

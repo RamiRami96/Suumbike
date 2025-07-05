@@ -6,8 +6,8 @@ import { signIn } from "next-auth/react";
 import { useForm, Controller } from "react-hook-form";
 
 import Wallpaper from "@/modules/auth/components/wallpaper";
-import { useErrorState } from "@/modules/shared/hooks/useErrorState";
-import { ERROR_MESSAGE } from "@/modules/shared/const/errors.const";
+import { useErrorState } from "@/modules/auth/hooks/useErrorState";
+import { ERROR_MESSAGE } from "@/modules/auth/const/errors.const";
 
 type FieldValues = {
   tgNickname: string;

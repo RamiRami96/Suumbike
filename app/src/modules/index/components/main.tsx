@@ -6,8 +6,8 @@ import { generateHeartStyles } from "@/modules/index/helpers/generateHeartStyles
 import { User } from "@/shared/models/user";
 import { getUser } from "@/modules/profile/services/getUser";
 import { createRoom } from "@/modules/room/services/createRoom";
-import { ERROR_MESSAGE } from "@/modules/shared/const/errors.const";
-import { useAutoRefresh } from "@/modules/shared/hooks/useAutoRefresh";
+import { ERROR_MESSAGE } from "@/modules/index/const/errors.const";
+import { useAutoRefresh } from "@/modules/index/hooks/useAutoRefresh";
 
 type Props = {
   users: User[] | null;

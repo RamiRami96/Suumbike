@@ -1,4 +1,4 @@
-import { MY_ROOM } from "@/modules/shared/const/shared.const";
+import { MY_ROOM } from "@/modules/room/const/room.const";
 import Room from "@/modules/room/components/room";
 
 type Params = {
