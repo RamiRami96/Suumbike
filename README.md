@@ -161,13 +161,3 @@ Visit `http://localhost:3000` to see the application in action!
 2. Enable camera and microphone permissions
 3. Enjoy real-time video conversations
 4. Use like/pass controls during interactions
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
