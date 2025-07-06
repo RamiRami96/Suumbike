@@ -161,3 +161,47 @@ Visit `http://localhost:3000` to see the application in action!
 2. Enable camera and microphone permissions
 3. Enjoy real-time video conversations
 4. Use like/pass controls during interactions
+
+## 🎯 Future Plans
+
+### 🏗️ **Backend Architecture Migration**
+- **Migrate to NestJS**: Transition from Next.js server functions and separate ws-server to a unified NestJS backend
+  - Improved scalability and maintainability
+  - Better separation of concerns
+  - Enhanced API structure with decorators and modules
+  - Integrated WebSocket support
+  - Professional enterprise-grade architecture
+
+### 📱 **Mobile Application Development**
+- **React Native App**: Create a native mobile application for iOS and Android
+  - Cross-platform compatibility
+  - Native performance and user experience
+  - Push notifications for matches and messages
+  - Camera and microphone integration for mobile video calls
+  - Offline capabilities and sync
+  - App store distribution
+
+### 🚀 **Technical Roadmap**
+1. **Phase 0**: Bug fixes and testing foundation
+   - Fix bugs with video connection stability
+   - Fix bugs with behaviour of second peer
+   - Code quality improvements and refactoring
+   - Add unit tests for critical components
+   - End-to-end testing for user flows
+
+2. **Phase 1**: NestJS backend migration
+   - Set up NestJS project structure
+   - Migrate API endpoints from Next.js server actions
+   - Implement WebSocket gateway for real-time features
+   - Database migration from Prisma to Firebase
+   
+3. **Phase 2**: React Native development
+   - Initialize React Native project
+   - Implement authentication and user management
+   - Build video calling functionality
+   - Create messaging features
+
+4. **Phase 3**: Integration and optimization
+   - Connect mobile app with NestJS backend
+   - Testing and quality assurance
+   - Deployment and distribution
