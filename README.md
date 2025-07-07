@@ -185,15 +185,13 @@ Visit `http://localhost:3000` to see the application in action!
 1. **Phase 0**: Bug fixes and testing foundation
    - Fix bugs with video connection stability
    - Fix bugs with behaviour of second peer
-   - Code quality improvements and refactoring
    - Add unit tests for critical components
-   - End-to-end testing for user flows
 
 2. **Phase 1**: NestJS backend migration
    - Set up NestJS project structure
    - Migrate API endpoints from Next.js server actions
+   - Database migration from PostgreSQL to Firebase
    - Implement WebSocket gateway for real-time features
-   - Database migration from Prisma to Firebase
    
 3. **Phase 2**: React Native development
    - Initialize React Native project
@@ -203,5 +201,4 @@ Visit `http://localhost:3000` to see the application in action!
 
 4. **Phase 3**: Integration and optimization
    - Connect mobile app with NestJS backend
-   - Testing and quality assurance
    - Deployment and distribution
