@@ -1,5 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { User } from "@/shared/models/user";
+
+interface UseRoomCoordinationProps {
+  isLiked: boolean;
+  isExited: boolean;
+  isLoading: boolean;
+  likeParticipant: () => void;
+  leaveRoom: () => void;
+  user: User;
+  users: User[];
+  updateUsers: (user: User, currentUsers: User[]) => void;
+}
 
 export function useRoomCoordination({
   isLiked,
@@ -10,22 +21,15 @@ export function useRoomCoordination({
   user,
   users,
   updateUsers,
-}: {
-  isLiked: boolean;
-  isExited: boolean;
-  isLoading: boolean;
-  likeParticipant: () => void;
-  leaveRoom: () => void;
-  user: User;
-  users: User[];
-  updateUsers: (user: User, currentUsers: User[]) => void;
-}) {
+}: UseRoomCoordinationProps) {
   useEffect(() => {
-    if (isLiked && !isLoading) {
+    if (isLoading) return;
+
+    if (isLiked) {
       likeParticipant();
     }
 
-    if (isExited && !isLoading) {
+    if (isExited) {
       leaveRoom();
     }
   }, [isLiked, isExited, isLoading, likeParticipant, leaveRoom]);

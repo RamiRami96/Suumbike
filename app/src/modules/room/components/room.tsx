@@ -44,7 +44,6 @@ export default function Room({ roomId, isUsersRoom }: Props) {
   const { isBtnDisabled } = useRoomTimer(participant);
 
   const { isLoading, leaveRoom, likeParticipant } = useRoomActions(
-    roomId,
     isUsersRoom,
     user,
     participant,

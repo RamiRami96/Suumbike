@@ -1,7 +1,7 @@
 import { useRef, useEffect, MutableRefObject, RefObject } from "react";
 import { io, Socket } from "socket.io-client";
 
-const ICE_SERVERS = {
+const ICE_SERVERS: RTCConfiguration = {
   iceServers: [
     {
       urls: "stun:openrelay.metered.ca:80",
@@ -9,90 +9,88 @@ const ICE_SERVERS = {
   ],
 };
 
+const MEDIA_CONSTRAINTS: MediaStreamConstraints = {
+  audio: true,
+  video: true,
+};
+
 export function useWebRTC(roomId: string) {
-  const userVideoRef: RefObject<HTMLVideoElement> = useRef<HTMLVideoElement>(null);
-  const peerVideoRef: RefObject<HTMLVideoElement> = useRef<HTMLVideoElement>(null);
-  const rtcConnectionRef: MutableRefObject<any> = useRef<any>(null);
-  const socketRef: MutableRefObject<Socket | null> = useRef<Socket | null>(null);
-  const userStreamRef: MutableRefObject<MediaStream | undefined> = useRef<MediaStream>();
-  const hostRef: MutableRefObject<boolean> = useRef(false);
+  const userVideoRef = useRef<HTMLVideoElement>(null);
+  const peerVideoRef = useRef<HTMLVideoElement>(null);
+  const rtcConnectionRef = useRef<RTCPeerConnection | null>(null);
+  const socketRef = useRef<Socket | null>(null);
+  const userStreamRef = useRef<MediaStream | undefined>(undefined);
+  const hostRef = useRef<boolean>(false);
 
-  const handleRoomJoined = () => {
-    navigator.mediaDevices
-      .getUserMedia({
-        audio: true,
-        video: true,
-      })
-      .then((stream) => {
-        userStreamRef.current = stream;
-        (userVideoRef.current as any).srcObject = stream;
-        (userVideoRef.current as any).onloadedmetadata = () => {
-          (userVideoRef.current as any).play();
+  const setupUserMedia = async (): Promise<void> => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(MEDIA_CONSTRAINTS);
+      userStreamRef.current = stream;
+      
+      if (userVideoRef.current) {
+        userVideoRef.current.srcObject = stream;
+        userVideoRef.current.onloadedmetadata = () => {
+          userVideoRef.current?.play();
         };
-        (socketRef.current as any).emit("ready", roomId);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+    } catch (error) {
+      console.error("Failed to get user media:", error);
+    }
   };
 
-  const handleRoomCreated = () => {
+  const handleRoomJoined = async (): Promise<void> => {
+    await setupUserMedia();
+    socketRef.current?.emit("ready", roomId);
+  };
+
+  const handleRoomCreated = async (): Promise<void> => {
     hostRef.current = true;
-    navigator.mediaDevices
-      .getUserMedia({
-        audio: true,
-        video: true,
-      })
-      .then((stream) => {
-        userStreamRef.current = stream;
-        (userVideoRef.current as any).srcObject = stream;
-        (userVideoRef.current as any).onloadedmetadata = () => {
-          (userVideoRef.current as any).play();
-        };
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await setupUserMedia();
   };
 
-  const createPeerConnection = () => {
+  const createPeerConnection = (): RTCPeerConnection => {
     const connection = new RTCPeerConnection(ICE_SERVERS);
     connection.onicecandidate = handleICECandidateEvent;
     connection.ontrack = handleTrackEvent;
     return connection;
   };
 
-  const initiateCall = () => {
-    if (hostRef.current) {
-      rtcConnectionRef.current = createPeerConnection();
-      rtcConnectionRef.current.addTrack(
-        (userStreamRef.current as any)?.getTracks()[0],
-        userStreamRef.current
-      );
-      rtcConnectionRef.current.addTrack(
-        (userStreamRef.current as any)?.getTracks()[1],
-        userStreamRef.current
-      );
-      rtcConnectionRef.current
-        .createOffer()
-        .then((offer: RTCSessionDescriptionInit) => {
-          rtcConnectionRef.current.setLocalDescription(offer);
-          (socketRef.current as any).emit("offer", offer, roomId);
-        })
-        .catch((error: any) => {
-          console.log(error);
-        });
-    }
+  const addTracksToConnection = (connection: RTCPeerConnection): void => {
+    if (!userStreamRef.current) return;
+    
+    const tracks = userStreamRef.current.getTracks();
+    tracks.forEach(track => {
+      if (userStreamRef.current) {
+        connection.addTrack(track, userStreamRef.current);
+      }
+    });
   };
 
-  const onPeerLeave = () => {
+  const initiateCall = (): void => {
+    if (!hostRef.current) return;
+
+    rtcConnectionRef.current = createPeerConnection();
+    addTracksToConnection(rtcConnectionRef.current);
+
+    rtcConnectionRef.current
+      .createOffer()
+      .then((offer: RTCSessionDescriptionInit) => {
+        rtcConnectionRef.current?.setLocalDescription(offer);
+        socketRef.current?.emit("offer", offer, roomId);
+      })
+      .catch((error: any) => {
+        console.error("Failed to create offer:", error);
+      });
+  };
+
+  const onPeerLeave = (): void => {
     hostRef.current = true;
-    if ((peerVideoRef.current as any).srcObject) {
-      (peerVideoRef.current as any).srcObject
-        .getTracks()
-        .forEach((track: MediaStreamTrack) => {
-          track.stop();
-        });
+    
+    if (peerVideoRef.current?.srcObject) {
+      const stream = peerVideoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track: MediaStreamTrack) => {
+        track.stop();
+      });
     }
 
     if (rtcConnectionRef.current) {
@@ -103,64 +101,58 @@ export function useWebRTC(roomId: string) {
     }
   };
 
-  const handleReceivedOffer = (offer: RTCSessionDescriptionInit) => {
-    if (!hostRef.current) {
-      rtcConnectionRef.current = createPeerConnection();
-      rtcConnectionRef.current.addTrack(
-        (userStreamRef.current as any).getTracks()[0],
-        userStreamRef.current
-      );
-      rtcConnectionRef.current.addTrack(
-        (userStreamRef.current as any).getTracks()[1],
-        userStreamRef.current
-      );
-      rtcConnectionRef.current.setRemoteDescription(offer);
+  const handleReceivedOffer = (offer: RTCSessionDescriptionInit): void => {
+    if (hostRef.current) return;
 
-      rtcConnectionRef.current
-        .createAnswer()
-        .then((answer: RTCSessionDescription) => {
-          rtcConnectionRef.current.setLocalDescription(answer);
-          (socketRef.current as any).emit("answer", answer, roomId);
-        })
-        .catch((error: any) => {
-          console.log(error);
-        });
-    }
-  };
+    rtcConnectionRef.current = createPeerConnection();
+    addTracksToConnection(rtcConnectionRef.current);
+    rtcConnectionRef.current.setRemoteDescription(offer);
 
-  const handleAnswer = (answer: RTCSessionDescriptionInit) => {
     rtcConnectionRef.current
-      .setRemoteDescription(answer)
-      .catch((err: any) => console.log(err));
+      .createAnswer()
+      .then((answer: RTCSessionDescriptionInit) => {
+        rtcConnectionRef.current?.setLocalDescription(answer);
+        socketRef.current?.emit("answer", answer, roomId);
+      })
+      .catch((error: any) => {
+        console.error("Failed to create answer:", error);
+      });
   };
 
-  const handleICECandidateEvent = (event: RTCPeerConnectionIceEvent) => {
+  const handleAnswer = (answer: RTCSessionDescriptionInit): void => {
+    rtcConnectionRef.current
+      ?.setRemoteDescription(answer)
+      .catch((err: any) => console.error("Failed to set remote description:", err));
+  };
+
+  const handleICECandidateEvent = (event: RTCPeerConnectionIceEvent): void => {
     if (event.candidate) {
-      (socketRef.current as any).emit("ice-candidate", event.candidate, roomId);
+      socketRef.current?.emit("ice-candidate", event.candidate, roomId);
     }
   };
 
-  const handlerNewIceCandidateMsg = (incoming: RTCIceCandidateInit) => {
+  const handlerNewIceCandidateMsg = (incoming: RTCIceCandidateInit): void => {
     const candidate = new RTCIceCandidate(incoming);
     rtcConnectionRef.current
-      .addIceCandidate(candidate)
-      .catch((e: any) => console.log(e));
+      ?.addIceCandidate(candidate)
+      .catch((e: any) => console.error("Failed to add ICE candidate:", e));
   };
 
-  const handleTrackEvent = (event: RTCTrackEvent) => {
-    (peerVideoRef.current as any).srcObject = event.streams[0];
-  };
-
-  const cleanupConnections = () => {
-    if (userVideoRef?.current?.srcObject) {
-      (userVideoRef.current?.srcObject as any)
-        .getTracks()
-        .forEach((track: MediaStreamTrack) => track.stop());
+  const handleTrackEvent = (event: RTCTrackEvent): void => {
+    if (peerVideoRef.current) {
+      peerVideoRef.current.srcObject = event.streams[0];
     }
-    if (peerVideoRef?.current?.srcObject) {
-      (peerVideoRef.current.srcObject as any)
-        .getTracks()
-        .forEach((track: MediaStreamTrack) => track.stop());
+  };
+
+  const cleanupConnections = (): void => {
+    if (userVideoRef.current?.srcObject) {
+      const userStream = userVideoRef.current.srcObject as MediaStream;
+      userStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+    }
+
+    if (peerVideoRef.current?.srcObject) {
+      const peerStream = peerVideoRef.current.srcObject as MediaStream;
+      peerStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
     }
 
     if (rtcConnectionRef.current) {

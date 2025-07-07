@@ -5,7 +5,6 @@ import { deleteRoom } from "@/modules/room/services/deleteRoom";
 import { User } from "@/shared/models/user";
 
 export function useRoomActions(
-  roomId: string,
   isUsersRoom?: boolean,
   user?: User,
   participant?: User | null,

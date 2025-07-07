@@ -3,77 +3,91 @@ import { getLikedUsers } from "@/modules/profile/services/getLikedUsers";
 import { deleteLikedUser } from "@/modules/profile/services/deleteLikedUser";
 import type { User } from "@/shared/models/user";
 
+const INTERSECTION_OBSERVER_OPTIONS = {
+  root: null,
+  rootMargin: "0px",
+  threshold: 0.8,
+};
+
 export function useLikedUsers(tgNickname: string) {
   const [likedUsers, setLikedUsers] = useState<User[]>([]);
-  const [likedUsersAmount, setLikedUsersAmount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isListBottom, setIsListBottom] = useState(false);
-  const [notUsers, setNotUsers] = useState(false);
-  const lastElement = useRef(null);
+  const [likedUsersAmount, setLikedUsersAmount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isListBottom, setIsListBottom] = useState<boolean>(false);
+  const [notUsers, setNotUsers] = useState<boolean>(false);
+  const lastElement = useRef<HTMLElement | null>(null);
 
-  const fetchLikedUsers = async (
-    likedUsersAmount: number,
-    tgNickname: string
-  ) => {
+  const fetchLikedUsers = useCallback(async (
+    currentAmount: number,
+    nickname: string
+  ): Promise<User[] | undefined> => {
     try {
-      if (!likedUsersAmount && !tgNickname) return;
+      if (!currentAmount && !nickname) return;
 
-      const data = await getLikedUsers(likedUsersAmount, tgNickname);
+      const data = await getLikedUsers(currentAmount, nickname);
 
       if (data) {
-        setLikedUsersAmount((prev) => (prev += data.length));
+        setLikedUsersAmount((prev) => prev + data.length);
         return data;
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching liked users:", error);
     }
-  };
+  }, []);
 
-  const deleteContact = async (likedUserNick: string, userNick: string) => {
+  const deleteContact = useCallback(async (
+    likedUserNick: string, 
+    userNick: string
+  ): Promise<void> => {
     try {
       setLikedUsers((prev) =>
         prev.filter((item) => item.tgNickname !== likedUserNick)
       );
       setLikedUsersAmount((prev) => prev - 1);
       await deleteLikedUser(likedUserNick, userNick);
-
     } catch (error) {
-      console.log("Error deleting contact:", error);
+      console.error("Error deleting contact:", error);
     }
-  };
+  }, []);
+
+  const handleIntersection = useCallback(async (entries: IntersectionObserverEntry[]): Promise<void> => {
+    const [entry] = entries;
+    
+    if (!entry.isIntersecting || isLoading || isListBottom) return;
+
+    setIsLoading(true);
+    const newData = await fetchLikedUsers(likedUsersAmount, tgNickname);
+
+    if (!newData) {
+      setIsListBottom(true);
+      setIsLoading(false);
+      return;
+    }
+
+    setLikedUsers((prevUsers) => [...prevUsers, ...newData]);
+    setIsLoading(false);
+  }, [fetchLikedUsers, isLoading, isListBottom, likedUsersAmount, tgNickname]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      async (entries) => {
-        if (entries[0].isIntersecting && !isLoading && !isListBottom) {
-          setIsLoading(true);
-          const newData = await fetchLikedUsers(likedUsersAmount, tgNickname);
-
-          if (!newData) {
-            setIsListBottom(true);
-            observer.disconnect();
-            setIsLoading(false);
-            return;
-          }
-
-          setLikedUsers((prevUsers) => [...prevUsers, ...newData]);
-          setIsLoading(false);
-        }
-      },
-      { root: null, rootMargin: "0px", threshold: 0.8 }
+      handleIntersection,
+      INTERSECTION_OBSERVER_OPTIONS
     );
 
-    if (lastElement.current) {
-      observer.observe(lastElement.current);
+    const currentElement = lastElement.current;
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
     return () => {
       observer.disconnect();
     };
-  }, [isLoading, likedUsers, likedUsersAmount, tgNickname, isListBottom]);
+  }, [handleIntersection]);
 
   useEffect(() => {
-    fetchLikedUsers(likedUsersAmount, tgNickname).then((data) => {
+    const loadInitialData = async (): Promise<void> => {
+      const data = await fetchLikedUsers(likedUsersAmount, tgNickname);
+      
       if (data && data.length === 0) {
         setNotUsers(true);
       }
@@ -82,8 +96,10 @@ export function useLikedUsers(tgNickname: string) {
         setLikedUsers((prevData) => [...prevData, ...data]);
         setNotUsers(false);
       }
-    });
-  }, [likedUsersAmount, tgNickname]);
+    };
+
+    loadInitialData();
+  }, [fetchLikedUsers, likedUsersAmount, tgNickname]);
 
   return {
     likedUsers,

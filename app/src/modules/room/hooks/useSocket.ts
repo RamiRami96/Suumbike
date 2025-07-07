@@ -1,19 +1,26 @@
 import { useEffect, useRef } from "react";
 
-const useSocket = () => {
-  const socketCreated = useRef(false);
+const useSocket = (): void => {
+  const socketCreated = useRef<boolean>(false);
+
   useEffect(() => {
-    if (!socketCreated.current) {
-      const socketInitializer = async () => {
-        await fetch(process.env.NEXT_PUBLIC__SOCKET_SERVER as string);
-      };
+    const initializeSocket = async (): Promise<void> => {
+      if (socketCreated.current) return;
+
       try {
-        socketInitializer();
+        const socketServerUrl = process.env.NEXT_PUBLIC__SOCKET_SERVER;
+        if (!socketServerUrl) {
+          throw new Error("Socket server URL not configured");
+        }
+
+        await fetch(socketServerUrl);
         socketCreated.current = true;
       } catch (error) {
-        console.log(error);
+        console.error("Failed to initialize socket:", error);
       }
-    }
+    };
+
+    initializeSocket();
   }, []);
 };
 
