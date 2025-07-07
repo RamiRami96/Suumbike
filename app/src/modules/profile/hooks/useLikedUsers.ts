@@ -31,14 +31,14 @@ export function useLikedUsers(tgNickname: string) {
 
   const deleteContact = async (likedUserNick: string, userNick: string) => {
     try {
-      const deletedUser = await deleteLikedUser(likedUserNick, userNick);
-      if (!deletedUser) return;
       setLikedUsers((prev) =>
-        prev.filter((item) => item.id !== deletedUser.id)
+        prev.filter((item) => item.tgNickname !== likedUserNick)
       );
-      if (likedUsers.length === 1) setNotUsers(true);
+      setLikedUsersAmount((prev) => prev - 1);
+      await deleteLikedUser(likedUserNick, userNick);
+
     } catch (error) {
-      console.log(error);
+      console.log("Error deleting contact:", error);
     }
   };
 

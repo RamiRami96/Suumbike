@@ -33,8 +33,13 @@ export function Contacts({
   } = useDeleteConfirmation();
 
   const handleDeleteContact = async () => {
-    await deleteContact(contactToDelete, userNick);
-    handleDelete();
+    try {
+      await deleteContact(contactToDelete, userNick);
+    } catch (error) {
+      console.error("Failed to delete contact:", error);
+    } finally {
+      handleDelete();
+    }
   };
 
   return (
