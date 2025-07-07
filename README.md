@@ -165,12 +165,6 @@ Visit `http://localhost:3000` to see the application in action!
 ## 🎯 Future Plans
 
 ### 🏗️ **Backend Architecture Migration**
-- **Migrate to NestJS**: Transition from Next.js server functions and separate ws-server to a unified NestJS backend
-  - Improved scalability and maintainability
-  - Better separation of concerns
-  - Enhanced API structure with decorators and modules
-  - Integrated WebSocket support
-  - Professional enterprise-grade architecture
 - **Migrate to Firebase**: Transition from PostgreSQL/Prisma to Firebase
   - Real-time database capabilities
   - Built-in authentication and security rules
