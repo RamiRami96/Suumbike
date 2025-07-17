@@ -60,9 +60,7 @@ io.on("connection", (socket) => {
 
   socket.on("leave", (roomId) => {
     socket.leave(roomId);
-    // Notify all users in the room that someone has left
     socket.broadcast.to(roomId).emit("leave");
-    // If the room is now empty, clean up the room
     const { rooms } = io.sockets.adapter;
     const room = rooms.get(roomId);
     if (!room || room.size === 0) {
