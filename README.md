@@ -164,41 +164,10 @@ Visit `http://localhost:3000` to see the application in action!
 
 ## 🎯 Future Plans
 
-### 🏗️ **Backend Architecture Migration**
-- **Migrate to Firebase**: Transition from PostgreSQL/Prisma to Firebase
-  - Real-time database capabilities
-  - Built-in authentication and security rules
-  - Serverless architecture with automatic scaling
-  - Reduced infrastructure complexity
-  - Better integration with mobile applications
-
 ### 📱 **Mobile Application Development**
 - **React Native App**: Create a native mobile application for iOS and Android
   - Cross-platform compatibility
   - Native performance and user experience
   - Push notifications for matches and messages
-  - Camera and microphone integration for mobile video calls
+  - Camera and microphone integration for mobile audio calls
   - Offline capabilities and sync
-  - App store distribution
-
-### 🚀 **Technical Roadmap**
-1. **Phase 0**: Bug fixes and testing foundation
-   - Fix bugs with video connection stability
-   - Fix bugs with behaviour of second peer
-   - Add unit tests for critical components
-
-2. **Phase 1**: NestJS backend migration
-   - Set up NestJS project structure
-   - Migrate API endpoints from Next.js server actions
-   - Database migration from PostgreSQL to Firebase
-   - Implement WebSocket gateway for real-time features
-   
-3. **Phase 2**: React Native development
-   - Initialize React Native project
-   - Implement authentication and user management
-   - Build video calling functionality
-   - Create messaging features
-
-4. **Phase 3**: Integration and optimization
-   - Connect mobile app with NestJS backend
-   - Deployment and distribution
