@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 import { Spinner } from "@/modules/layout/components/spinner";
 import useSocket from "@/modules/room/hooks/useSocket";
@@ -39,6 +40,12 @@ export default function Room({ roomId, isUsersRoom }: Props) {
     emitLeave,
     updateUsers,
   } = useRoomSocket(roomId);
+
+  useEffect(() => {
+    return () => {
+      webRTC.cleanupConnections();
+    };
+  }, [webRTC]);
 
   const { isBtnDisabled } = useRoomTimer(participant);
 
