@@ -15,7 +15,7 @@ export function useLikedUsers(tgNickname: string) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isListBottom, setIsListBottom] = useState<boolean>(false);
   const [notUsers, setNotUsers] = useState<boolean>(false);
-  const lastElement = useRef<HTMLElement | null>(null);
+  const lastElement = useRef<HTMLDivElement | null>(null);
 
   const fetchLikedUsers = useCallback(async (
     currentAmount: number,

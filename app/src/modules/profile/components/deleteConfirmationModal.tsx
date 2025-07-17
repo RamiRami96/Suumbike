@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-type DeleteConfirmationModalProps = {
+type Props = {
   isOpen: boolean;
   onCancel: () => void;
   onDelete: () => void;
@@ -11,7 +11,7 @@ export function DeleteConfirmationModal({
   isOpen,
   onCancel,
   onDelete,
-}: DeleteConfirmationModalProps) {
+}: Props) {
   if (!isOpen) {
     return null;
   }

@@ -13,7 +13,7 @@ type Props = {
   userNick: string;
   likedUsers: User[];
   isLoading: boolean;
-  lastElement: MutableRefObject<null>;
+  lastElement: MutableRefObject<HTMLDivElement | null>;
   deleteContact: (likedUserNick: string, userNick: string) => Promise<void>;
 };
 

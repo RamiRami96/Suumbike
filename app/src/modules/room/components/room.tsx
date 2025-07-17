@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import Image from "next/image";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import { Spinner } from "@/modules/layout/components/spinner";
