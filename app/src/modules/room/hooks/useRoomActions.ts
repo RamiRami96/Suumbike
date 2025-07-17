@@ -1,8 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { likeUser } from "@/modules/profile/services/likeUser";
 import { deleteRoom } from "@/modules/room/services/deleteRoom";
 import { User } from "@/shared/models/user";
+import { NotificationContext } from "@/modules/layout/context/notificationContext";
+import { NotificationType, NOTIFICATION_MESSAGES, NotificationMessageKey, NOTIFICATION_TYPES } from "@/modules/layout/models/notificationContext.model";
 
 export function useRoomActions(
   isUsersRoom?: boolean,
@@ -14,6 +16,7 @@ export function useRoomActions(
 ) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { showNotification } = useContext(NotificationContext);
 
   const leaveRoom = useCallback(() => {
     setIsLoading(true);
@@ -25,11 +28,13 @@ export function useRoomActions(
     if (isUsersRoom && user?.tgNickname) {
       deleteRoom(user.tgNickname).then(() => {
         router.push("/");
+        showNotification(NOTIFICATION_MESSAGES.owner_reject, NOTIFICATION_TYPES.owner_reject);
       });
     } else {
       router.push("/");
+      showNotification(NOTIFICATION_MESSAGES.opponent_reject, NOTIFICATION_TYPES.opponent_reject);
     }
-  }, [isUsersRoom, user, cleanupConnections, emitLeave, emitCheckControls, router]);
+  }, [isUsersRoom, user, cleanupConnections, emitLeave, emitCheckControls, router, showNotification]);
 
   const likeParticipant = useCallback(() => {
     setIsLoading(true);
@@ -42,18 +47,16 @@ export function useRoomActions(
       likeUser(user.tgNickname, participant.tgNickname).then(() => {
         if (isUsersRoom && user.tgNickname) {
           deleteRoom(user.tgNickname).then(() => {
-            router.push(
-              `/success?name=${participant?.name}&avatar=${participant?.avatar}`
-            );
+            router.push("/profile");
+            showNotification(NOTIFICATION_MESSAGES.owner_pass, NOTIFICATION_TYPES.owner_pass);
           });
         } else {
-          router.push(
-            `/success?name=${participant?.name}&avatar=${participant?.avatar}`
-          );
+          router.push("/profile");
+          showNotification(NOTIFICATION_MESSAGES.opponent_pass, NOTIFICATION_TYPES.opponent_pass);
         }
       });
     }
-  }, [user, participant, isUsersRoom, cleanupConnections, emitLeave, emitCheckControls, router]);
+  }, [user, participant, isUsersRoom, cleanupConnections, emitLeave, emitCheckControls, router, showNotification]);
 
   return {
     isLoading,

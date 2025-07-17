@@ -1,8 +1,9 @@
+import "@/app/globals.css";
 import { Montserrat } from "next/font/google";
-import Header from "@/modules/layout/components/header";
-
 import { NextAuthProvider } from "./providers";
-import "./globals.css";
+import Header from "@/modules/layout/components/header";
+import { NotificationProvider } from "@/modules/layout/context/notificationContext";
+import Notification from "@/modules/layout/components/notification";
 
 const font = Montserrat({ subsets: ["latin"] });
 
@@ -20,8 +21,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={font.className} suppressHydrationWarning={true}>
         <NextAuthProvider>
-          <Header />
-          {children}
+          <NotificationProvider>
+            <Notification />
+            <Header />
+            {children}
+          </NotificationProvider>
         </NextAuthProvider>
       </body>
     </html>
