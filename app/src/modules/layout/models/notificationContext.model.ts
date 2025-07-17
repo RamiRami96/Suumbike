@@ -4,7 +4,8 @@ export type NotificationMessageKey =
   | "owner_reject"
   | "opponent_reject"
   | "owner_pass"
-  | "opponent_pass";
+  | "opponent_pass"
+  | "room_full";
 
 
 export type NotificationContextModel = {

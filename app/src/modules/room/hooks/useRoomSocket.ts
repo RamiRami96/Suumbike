@@ -3,6 +3,9 @@ import { useRouter } from "next/navigation";
 import { io } from "socket.io-client";
 import { User } from "@/shared/models/user";
 import { useWebRTC } from "./useWebRTC";
+import { useContext } from "react";
+import { NotificationContext } from "@/modules/layout/context/notificationContext";
+import { NOTIFICATION_MESSAGES, NOTIFICATION_TYPES } from "@/modules/layout/const/notificationContext.const";
 
 export function useRoomSocket(roomId: string) {
   const router = useRouter();
@@ -12,6 +15,7 @@ export function useRoomSocket(roomId: string) {
   const [isExited, setIsExited] = useState(false);
 
   const webRTC = useWebRTC(roomId);
+  const { showNotification } = useContext(NotificationContext);
 
   const handleCheckControls = useCallback((data: { isExited: boolean; isLiked: boolean }) => {
     setIsLiked(data.isLiked);
@@ -23,8 +27,11 @@ export function useRoomSocket(roomId: string) {
   }, []);
 
   const handleRoomFull = useCallback(() => {
-    router.push("/");
-  }, [router]);
+    showNotification(NOTIFICATION_MESSAGES.room_full, NOTIFICATION_TYPES.room_full);
+    setTimeout(() => {
+      router.push("/");
+    }, 2000);
+  }, [router, showNotification]);
 
   useEffect(() => {
     webRTC.socketRef.current = io(process.env.NEXT_PUBLIC__SOCKET_SERVER as string, {

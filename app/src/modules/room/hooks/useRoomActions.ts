@@ -4,7 +4,7 @@ import { likeUser } from "@/modules/profile/services/likeUser";
 import { deleteRoom } from "@/modules/room/services/deleteRoom";
 import { User } from "@/shared/models/user";
 import { NotificationContext } from "@/modules/layout/context/notificationContext";
-import { NotificationType, NOTIFICATION_MESSAGES, NotificationMessageKey, NOTIFICATION_TYPES } from "@/modules/layout/models/notificationContext.model";
+import { NOTIFICATION_MESSAGES, NOTIFICATION_TYPES } from "@/modules/layout/const/notificationContext.const";
 
 export function useRoomActions(
   isUsersRoom?: boolean,
