@@ -20,8 +20,6 @@ export default function Room({ roomId, isUsersRoom }: Props) {
     isLoading,
   } = useVideoRoom(roomId, isUsersRoom);
 
-
-
   return (
       <section className="relative h-[90dvh] flex justify-center mt-50">
         <div className="absolute z-10 top-10 right-3">
@@ -81,7 +79,7 @@ export default function Room({ roomId, isUsersRoom }: Props) {
               />
             </div>
           ) : (
-            <div className="w-4/5 h-4/5 max-w-4xl max-h-[60vh] rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-600 flex justify-center items-center bg-gray-100">
+            <div className="w-4/5 h-4/5 max-w-4xl max-h-[60vh] rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-600 flex justify-center items-center">
               <Spinner />
             </div>
           )}
