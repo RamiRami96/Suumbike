@@ -23,17 +23,26 @@ export function useRoomActions(
 
     emitLeave?.();
     emitCheckControls?.(true, false);
-    cleanupConnections?.();
-
-    if (isUsersRoom && user?.tgNickname) {
-      deleteRoom(user.tgNickname).then(() => {
-        router.push("/");
-        showNotification(NOTIFICATION_MESSAGES.owner_reject, NOTIFICATION_TYPES.owner_reject);
-      });
-    } else {
-      router.push("/");
-      showNotification(NOTIFICATION_MESSAGES.opponent_reject, NOTIFICATION_TYPES.opponent_reject);
+    
+    if (cleanupConnections) {
+      try {
+        cleanupConnections();
+      } catch (error) {
+        console.error('Error calling cleanup function:', error);
+      }
     }
+    
+    setTimeout(() => {
+      if (isUsersRoom && user?.tgNickname) {
+        deleteRoom(user.tgNickname).then(() => {
+          router.push("/");
+          showNotification(NOTIFICATION_MESSAGES.owner_reject, NOTIFICATION_TYPES.owner_reject);
+        });
+      } else {
+        router.push("/");
+        showNotification(NOTIFICATION_MESSAGES.opponent_reject, NOTIFICATION_TYPES.opponent_reject);
+      }
+    }, 500);
   }, [isUsersRoom, user, cleanupConnections, emitLeave, emitCheckControls, router, showNotification]);
 
   const likeParticipant = useCallback(() => {

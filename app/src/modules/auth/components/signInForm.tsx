@@ -7,6 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import Wallpaper from "@/modules/auth/components/wallpaper";
 import { useErrorState } from "@/modules/auth/hooks/useErrorState";
 import { ERROR_MESSAGE } from "@/modules/auth/const/errors.const";
+import Link from "next/link";
 
 type FieldValues = {
   tgNickname: string;
@@ -118,6 +119,12 @@ export default function SignInForm() {
               Sign In
             </button>
           </form>
+          <div className="text-sm mt-4">
+            Don&apos;t have an account?{" "}
+            <Link href="/auth/signup" className="text-pink-600">
+              Sign up
+            </Link>
+          </div>
         </div>
       </div>
     </section>

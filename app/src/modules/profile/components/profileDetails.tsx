@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { User } from "@/shared/models/user";
+import type { User } from "@/shared/models/user";
 
 type Props = {
   profile: User;

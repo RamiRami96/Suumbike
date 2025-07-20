@@ -1,5 +1,6 @@
-import ProfileDetails from "@/modules/profile/components/ProfileDetails";
+import ProfileDetails from "@/modules/profile/components/profileDetails";
 import { prisma } from "@/shared/lib/prisma";
+import { User } from "@/shared/models/user";
 
 type Params = {
   profileId: string;
@@ -12,7 +13,7 @@ type Props = {
 export default async function Page({ params }: Props) {
   const profile = await prisma.user.findFirst({
     where: { id: params.profileId },
-  });
+  }) as unknown as User | null;
 
   if (!profile)
     return (

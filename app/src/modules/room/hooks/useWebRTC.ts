@@ -21,6 +21,46 @@ export function useWebRTC(roomId: string) {
   const socketRef = useRef<Socket | null>(null);
   const userStreamRef = useRef<MediaStream | undefined>(undefined);
   const hostRef = useRef<boolean>(false);
+  const isCleanedUpRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    return () => {
+      cleanupConnections();
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && userStreamRef.current) {
+        userStreamRef.current.getTracks().forEach((track: MediaStreamTrack) => {
+          track.stop();
+        });
+        userStreamRef.current = undefined;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (userStreamRef.current) {
+        userStreamRef.current.getTracks().forEach((track: MediaStreamTrack) => {
+          track.stop();
+        });
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   const setupUserMedia = async (): Promise<void> => {
     try {
@@ -86,13 +126,12 @@ export function useWebRTC(roomId: string) {
   const onPeerLeave = (): void => {
     hostRef.current = true;
     
-    if (peerVideoRef.current?.srcObject) {
-      const stream = peerVideoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach((track: MediaStreamTrack) => {
-        track.stop();
-      });
+    // Clear peer video element
+    if (peerVideoRef.current) {
+      peerVideoRef.current.srcObject = null;
     }
 
+    // Close and cleanup RTCPeerConnection
     if (rtcConnectionRef.current) {
       rtcConnectionRef.current.ontrack = null;
       rtcConnectionRef.current.onicecandidate = null;
@@ -145,14 +184,21 @@ export function useWebRTC(roomId: string) {
   };
 
   const cleanupConnections = (): void => {
-    if (userVideoRef.current?.srcObject) {
-      const userStream = userVideoRef.current.srcObject as MediaStream;
-      userStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+    if (userStreamRef.current) {
+      const tracks = userStreamRef.current.getTracks();
+      tracks.forEach((track: MediaStreamTrack) => {
+        track.stop();
+      });
+      userStreamRef.current = undefined;
     }
 
-    if (peerVideoRef.current?.srcObject) {
-      const peerStream = peerVideoRef.current.srcObject as MediaStream;
-      peerStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+    // Clear video elements
+    if (userVideoRef.current) {
+      userVideoRef.current.srcObject = null;
+    }
+
+    if (peerVideoRef.current) {
+      peerVideoRef.current.srcObject = null;
     }
 
     if (rtcConnectionRef.current) {
@@ -160,6 +206,33 @@ export function useWebRTC(roomId: string) {
       rtcConnectionRef.current.onicecandidate = null;
       rtcConnectionRef.current.close();
       rtcConnectionRef.current = null;
+    }
+
+    hostRef.current = false;
+    
+    if (typeof window !== 'undefined') {
+      if (userVideoRef.current && userVideoRef.current.srcObject) {
+        const stream = userVideoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => {
+          track.stop();
+        });
+        userVideoRef.current.srcObject = null;
+      }
+      
+      if (peerVideoRef.current && peerVideoRef.current.srcObject) {
+        const stream = peerVideoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => {
+          track.stop();
+        });
+        peerVideoRef.current.srcObject = null;
+      }
+    }
+    
+    if (typeof window !== 'undefined' && 'gc' in window) {
+      try {
+        (window as any).gc();
+      } catch (e) {
+      }
     }
   };
 

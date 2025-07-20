@@ -9,6 +9,7 @@ import { validateAge } from "@/modules/auth/helpers/validateAge";
 import { calculateAge } from "@/modules/auth/helpers/calculateAge";
 import { useErrorState } from "@/modules/auth/hooks/useErrorState";
 import { ERROR_MESSAGE } from "@/modules/auth/const/errors.const";
+import Link from "next/link";
 
 // Form field types
  type FieldValues = {
@@ -254,6 +255,12 @@ export default function SignUpForm() {
               Sign Up
             </button>
           </form>
+          <div className="text-sm mt-4">
+            Already have an account?{" "}
+            <Link href="/auth/signin" className="text-pink-600">
+              Sign in
+            </Link>
+          </div>
         </div>
       </div>
     </section>
