@@ -169,5 +169,5 @@ Visit `http://localhost:3000` to see the application in action!
   - Cross-platform compatibility
   - Native performance and user experience
   - Push notifications for matches and messages
-  - Camera and microphone integration for mobile audio calls
+  - Camera and microphone integration for mobile video calls
   - Offline capabilities and sync
