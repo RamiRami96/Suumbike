@@ -21,35 +21,45 @@ export default function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const confirmLeave = () => {
+  const confirmLeave = (e: React.MouseEvent, destination: string) => {
     if (isInRoom) {
+      e.preventDefault();
       const confirmed = window.confirm("Are you sure you want to leave the room?");
       if (confirmed) {
-        router.push('/');
+        router.push(destination);
       }
     }
   };
 
   const handleSignIn = () => {
     if (isInRoom) {
-      confirmLeave();
+      const confirmed = window.confirm("Are you sure you want to leave the room?");
+      if (confirmed) {
+        router.push("/auth/signin");
+        toggleMenu();
+      }
+    } else {
+      router.push("/auth/signin");
+      toggleMenu();
     }
-    router.push("/auth/signin");
-    toggleMenu();
   };
 
   const handleSignOut = () => {
-    if (isInRoom) { 
-      confirmLeave();
+    if (isInRoom) {
+      const confirmed = window.confirm("Are you sure you want to leave the room?");
+      if (confirmed) {
+        signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL });
+      }
+    } else {
+      signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL });
     }
-    signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL });
   };
 
   useClickOutside(menuRef, () => setIsMenuOpen(false));
 
   return (
     <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50">
-      <Link href={"/"} onClick={confirmLeave}>
+      <Link href="/" onClick={(e) => confirmLeave(e, "/")}>
         <Image
           src={"/icons/logo.svg"}
           alt="logo"
@@ -60,10 +70,10 @@ export default function Header() {
       </Link>
       <ul className="flex items-center">
         <li className="mr-4 font-medium text-pink-600">
-          <Link href={"/"} onClick={confirmLeave}>Main</Link>
+          <Link href="/" onClick={(e) => confirmLeave(e, "/")} className="hover:underline">Main</Link>
         </li>
         <li className="mr-4 font-medium text-pink-600">
-          <Link href={"/profile"} onClick={confirmLeave}>Profile</Link>
+          <Link href="/profile" onClick={(e) => confirmLeave(e, "/profile")} className="hover:underline">Profile</Link>
         </li>
         <li
           className="relative font-medium text-pink-600 w-[40px] h-[40px]"
