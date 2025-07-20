@@ -8,11 +8,9 @@ import { User } from "@/shared/models/user";
 import { NotificationContext } from "@/modules/layout/context/notificationContext";
 import { NOTIFICATION_MESSAGES, NOTIFICATION_TYPES } from "@/modules/layout/const/notificationContext.const";
 import { cleanupWebRTCResources } from "@/shared/heplers/cleanupWebRTC";
+import { ICE_SERVERS } from "@/modules/room/const/room.const";
 
-const ICE_SERVERS = {
-  iceServers: [{ urls: "stun:openrelay.metered.ca:80" }],
-};
-
+//TODO: divide into different hooks
 export const useVideoRoom = (roomId: string, isUsersRoom?: boolean) => {
   const router = useRouter();
   const session = useSession({
