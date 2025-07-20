@@ -10,7 +10,6 @@ export function useRoomActions(
   isUsersRoom?: boolean,
   user?: User,
   participant?: User | null,
-  cleanupConnections?: () => void,
   emitLeave?: () => void,
   emitCheckControls?: (isExited: boolean, isLiked: boolean) => void
 ) {
@@ -24,14 +23,6 @@ export function useRoomActions(
     emitLeave?.();
     emitCheckControls?.(true, false);
     
-    if (cleanupConnections) {
-      try {
-        cleanupConnections();
-      } catch (error) {
-        console.error('Error calling cleanup function:', error);
-      }
-    }
-    
     setTimeout(() => {
       if (isUsersRoom && user?.tgNickname) {
         deleteRoom(user.tgNickname).then(() => {
@@ -43,14 +34,13 @@ export function useRoomActions(
         showNotification(NOTIFICATION_MESSAGES.opponent_reject, NOTIFICATION_TYPES.opponent_reject);
       }
     }, 500);
-  }, [isUsersRoom, user, cleanupConnections, emitLeave, emitCheckControls, router, showNotification]);
+  }, [isUsersRoom, user, emitLeave, emitCheckControls, router, showNotification]);
 
   const likeParticipant = useCallback(() => {
     setIsLoading(true);
 
     emitLeave?.();
     emitCheckControls?.(false, true);
-    cleanupConnections?.();
 
     if (user?.tgNickname && participant?.tgNickname) {
       likeUser(user.tgNickname, participant.tgNickname).then(() => {
@@ -65,7 +55,7 @@ export function useRoomActions(
         }
       });
     }
-  }, [user, participant, isUsersRoom, cleanupConnections, emitLeave, emitCheckControls, router, showNotification]);
+  }, [user, participant, isUsersRoom, emitLeave, emitCheckControls, router, showNotification]);
 
   return {
     isLoading,

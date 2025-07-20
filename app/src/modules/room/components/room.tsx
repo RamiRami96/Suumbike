@@ -43,11 +43,7 @@ export default function Room({ roomId, isUsersRoom }: Props) {
     updateUsers,
   } = useRoomSocket(roomId);
 
-  useEffect(() => {
-    return () => {
-      webRTC.cleanupConnections();
-    };
-  }, [webRTC]);
+
 
   const { isBtnDisabled } = useRoomTimer(participant);
 
@@ -55,7 +51,6 @@ export default function Room({ roomId, isUsersRoom }: Props) {
     isUsersRoom,
     user,
     participant,
-    webRTC.cleanupConnections,
     emitLeave,
     emitCheckControls
   );
@@ -83,48 +78,49 @@ export default function Room({ roomId, isUsersRoom }: Props) {
           />
         </div>
       </div>
-      <div className="absolute z-10 bottom-0 w-50 h-24 flex justify-center  items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
-        <div className="flex">
-          <button
-            disabled={isLoading}
-            onClick={leaveRoom}
-            className="px-4 py-2 bg-pink-600 text-white rounded-l-md w-24 flex justify-center items-center"
-          >
-            <Image
-              src={"/icons/close.svg"}
-              width={20}
-              height={20}
-              alt="close"
-              placeholder="blur"
-              blurDataURL={"/icons/close.svg"}
-            />
-          </button>
-          <button
-            disabled={isLoading || isBtnDisabled}
-            onClick={likeParticipant}
-            className="px-4 py-2 bg-green-400 disabled:bg-green-100 rounded-r-md w-24 flex justify-center items-center"
-          >
-            <Image
-              src={"/icons/like.svg"}
-              width={20}
-              height={20}
-              alt="like"
-              placeholder="blur"
-              blurDataURL={"/icons/like.svg"}
-            />
-          </button>
+      {participant && !isLoading && (
+        <div className="absolute z-10 bottom-0 w-50 h-24 flex justify-center  items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
+          <div className="flex">
+            <button
+              onClick={leaveRoom}
+              className="px-4 py-2 bg-pink-600 text-white rounded-l-md w-24 flex justify-center items-center"
+            >
+              <Image
+                src={"/icons/close.svg"}
+                width={20}
+                height={20}
+                alt="close"
+                placeholder="blur"
+                blurDataURL={"/icons/close.svg"}
+              />
+            </button>
+            <button
+              disabled={isBtnDisabled}
+              onClick={likeParticipant}
+              className="px-4 py-2 bg-green-400 disabled:bg-green-100 rounded-r-md w-24 flex justify-center items-center"
+            >
+              <Image
+                src={"/icons/like.svg"}
+                width={20}
+                height={20}
+                alt="like"
+                placeholder="blur"
+                blurDataURL={"/icons/like.svg"}
+              />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
       <h4 className="absolute z-50 bottom-28 font-black text-pink-600 text-4xl">
         {participant ? participant.name : "My room"}
       </h4>
       <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-        {webRTC.peerVideoRef && !isLoading ? (
+        {participant ? (
           <video
-            className="fixed top-2 left-0 w-full h-full object-cover"
+            className="w-full h-full object-cover"
             ref={webRTC.peerVideoRef}
             autoPlay
-            muted
+            playsInline
           />
         ) : (
           <Spinner />
