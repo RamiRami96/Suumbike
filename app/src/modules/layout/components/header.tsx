@@ -3,26 +3,55 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useClickOutside } from "@/modules/layout/hooks/useClickOutside";
+import LeaveRoomConfirmation from "./leaveRoomConfirmation";
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showLeaveConfirmation, setShowLeaveConfirmation] = useState(false);
   const menuRef = useRef<HTMLLIElement>(null);
   const { data: session } = useSession();
   const user = session?.user;
   
+  // Check if we're currently in a room page
+  const isInRoom = pathname.startsWith("/room/");
+  
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (isInRoom) {
+      e.preventDefault();
+      setShowLeaveConfirmation(true);
+    }
+  };
+
+  const handleMainLinkClick = (e: React.MouseEvent) => {
+    if (isInRoom) {
+      e.preventDefault();
+      setShowLeaveConfirmation(true);
+    }
+  };
+
+  const handleConfirmLeave = () => {
+    setShowLeaveConfirmation(false);
+    router.push("/");
+  };
+
+  const handleCancelLeave = () => {
+    setShowLeaveConfirmation(false);
   };
 
   useClickOutside(menuRef, () => setIsMenuOpen(false));
 
   return (
     <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50">
-      <Link href={"/"}>
+      <Link href={"/"} onClick={handleLogoClick}>
         <Image
           src={"/icons/logo.svg"}
           alt="logo"
@@ -33,7 +62,7 @@ export default function Header() {
       </Link>
       <ul className="flex items-center">
         <li className="mr-4 font-medium text-pink-600">
-          <Link href={"/"}>Main</Link>
+          <Link href={"/"} onClick={handleMainLinkClick}>Main</Link>
         </li>
         <li className="mr-4 font-medium text-pink-600">
           <Link href={"/profile"}>Profile</Link>
@@ -80,6 +109,11 @@ export default function Header() {
           )}
         </li>
       </ul>
+      <LeaveRoomConfirmation
+        isOpen={showLeaveConfirmation}
+        onConfirm={handleConfirmLeave}
+        onCancel={handleCancelLeave}
+      />
     </header>
   );
 }

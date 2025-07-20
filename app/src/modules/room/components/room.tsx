@@ -11,6 +11,7 @@ import { useRoomSocket } from "@/modules/room/hooks/useRoomSocket";
 import { useRoomTimer } from "@/modules/room/hooks/useRoomTimer";
 import { useRoomActions } from "@/modules/room/hooks/useRoomActions";
 import { useRoomCoordination } from "@/modules/room/hooks/useRoomCoordination";
+import { useRoomNavigationGuard } from "@/modules/room/hooks/useRoomNavigationGuard";
 import { User } from "@/shared/models/user";
 
 type Props = {
@@ -20,6 +21,7 @@ type Props = {
 
 export default function Room({ roomId, isUsersRoom }: Props) {
   useSocket();
+  useRoomNavigationGuard();
 
   const session = useSession({
     required: true,
