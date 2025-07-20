@@ -6,52 +6,50 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useClickOutside } from "@/modules/layout/hooks/useClickOutside";
-import LeaveRoomConfirmation from "./leaveRoomConfirmation";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showLeaveConfirmation, setShowLeaveConfirmation] = useState(false);
   const menuRef = useRef<HTMLLIElement>(null);
   const { data: session } = useSession();
   const user = session?.user;
   
-  // Check if we're currently in a room page
   const isInRoom = pathname.startsWith("/room/");
   
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleLogoClick = (e: React.MouseEvent) => {
+  const confirmLeave = () => {
     if (isInRoom) {
-      e.preventDefault();
-      setShowLeaveConfirmation(true);
+      const confirmed = window.confirm("Are you sure you want to leave the room?");
+      if (confirmed) {
+        router.push('/');
+      }
     }
   };
 
-  const handleMainLinkClick = (e: React.MouseEvent) => {
+  const handleSignIn = () => {
     if (isInRoom) {
-      e.preventDefault();
-      setShowLeaveConfirmation(true);
+      confirmLeave();
     }
+    router.push("/auth/signin");
+    toggleMenu();
   };
 
-  const handleConfirmLeave = () => {
-    setShowLeaveConfirmation(false);
-    router.push("/");
-  };
-
-  const handleCancelLeave = () => {
-    setShowLeaveConfirmation(false);
+  const handleSignOut = () => {
+    if (isInRoom) { 
+      confirmLeave();
+    }
+    signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL });
   };
 
   useClickOutside(menuRef, () => setIsMenuOpen(false));
 
   return (
     <header className="flex justify-between items-center px-4 py-4 shadow w-full relative z-50">
-      <Link href={"/"} onClick={handleLogoClick}>
+      <Link href={"/"} onClick={confirmLeave}>
         <Image
           src={"/icons/logo.svg"}
           alt="logo"
@@ -62,10 +60,10 @@ export default function Header() {
       </Link>
       <ul className="flex items-center">
         <li className="mr-4 font-medium text-pink-600">
-          <Link href={"/"} onClick={handleMainLinkClick}>Main</Link>
+          <Link href={"/"} onClick={confirmLeave}>Main</Link>
         </li>
         <li className="mr-4 font-medium text-pink-600">
-          <Link href={"/profile"}>Profile</Link>
+          <Link href={"/profile"} onClick={confirmLeave}>Profile</Link>
         </li>
         <li
           className="relative font-medium text-pink-600 w-[40px] h-[40px]"
@@ -88,20 +86,11 @@ export default function Header() {
           {isMenuOpen && (
             <div className="absolute bottom-[-8vh] right-[0.6vh] z-50 w-24 border border-pink-600 flex flex-col p-3 rounded-2xl bg-dark-purple">
               {user ? (
-                <button
-                  onClick={() =>
-                    signOut({ callbackUrl: process.env.NEXT_PUBLIC__URL })
-                  }
-                >
+                <button onClick={handleSignOut}>
                   Sign out
                 </button>
               ) : (
-                <button
-                  onClick={() => {
-                    router.push("/auth/signin");
-                    toggleMenu();
-                  }}
-                >
+                <button onClick={handleSignIn}>
                   Sign In
                 </button>
               )}
@@ -109,11 +98,6 @@ export default function Header() {
           )}
         </li>
       </ul>
-      <LeaveRoomConfirmation
-        isOpen={showLeaveConfirmation}
-        onConfirm={handleConfirmLeave}
-        onCancel={handleCancelLeave}
-      />
     </header>
   );
 }

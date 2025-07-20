@@ -5,8 +5,9 @@ export type NotificationMessageKey =
   | "opponent_reject"
   | "owner_pass"
   | "opponent_pass"
-  | "room_full";
-
+  | "room_full"
+  | "connection_success"
+  | "connection_rejected";
 
 export type NotificationContextModel = {
   message: string;

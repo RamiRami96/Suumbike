@@ -1,18 +1,8 @@
 "use client";
 
+import { useVideoRoom } from "@/modules/room/hooks/useVideoRoom";
 import Image from "next/image";
-import { redirect } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-
 import { Spinner } from "@/modules/layout/components/spinner";
-import useSocket from "@/modules/room/hooks/useSocket";
-import { useRoomSocket } from "@/modules/room/hooks/useRoomSocket";
-import { useRoomTimer } from "@/modules/room/hooks/useRoomTimer";
-import { useRoomActions } from "@/modules/room/hooks/useRoomActions";
-import { useRoomCoordination } from "@/modules/room/hooks/useRoomCoordination";
-import { useRoomNavigationGuard } from "@/modules/room/hooks/useRoomNavigationGuard";
-import { User } from "@/shared/models/user";
 
 type Props = {
   roomId: string;
@@ -20,65 +10,31 @@ type Props = {
 };
 
 export default function Room({ roomId, isUsersRoom }: Props) {
-  useSocket();
-  useRoomNavigationGuard();
-
-  const session = useSession({
-    required: true,
-    onUnauthenticated() {
-      redirect("/auth/signin");
-    },
-  });
-
-  const user = session.data?.user as User;
-
   const {
-    webRTC,
-    users,
+    userVideoRef,
+    peerVideoRef,
     participant,
-    isLiked,
-    isExited,
-    emitCheckControls,
-    emitLeave,
-    updateUsers,
-  } = useRoomSocket(roomId);
-
-
-
-  const { isBtnDisabled } = useRoomTimer(participant);
-
-  const { isLoading, leaveRoom, likeParticipant } = useRoomActions(
-    isUsersRoom,
-    user,
-    participant,
-    emitLeave,
-    emitCheckControls
-  );
-
-  useRoomCoordination({
-    isLiked,
-    isExited,
-    isLoading,
-    likeParticipant,
     leaveRoom,
-    user,
-    users,
-    updateUsers,
-  });
+    likeParticipant,
+    isBtnDisabled,
+    isLoading,
+  } = useVideoRoom(roomId, isUsersRoom);
+
+
 
   return (
-    <section className="relative h-[90dvh] flex justify-center mt-50">
-      <div className="absolute z-10 top-10 right-3">
-        <div className={webRTC.userVideoRef ? " " : "animate-pulse"}>
-          <video
-            className="h-20 border border-pink-600 rounded-2xl w-[106px] bg-pink-600"
-            autoPlay
-            ref={webRTC.userVideoRef}
-            muted
-          />
+      <section className="relative h-[90dvh] flex justify-center mt-50">
+        <div className="absolute z-10 top-10 right-3">
+          <div className={userVideoRef ? " " : "animate-pulse"}>
+            <video
+              className="h-20 border border-pink-600 rounded-2xl w-[106px] bg-pink-600"
+              autoPlay
+              ref={userVideoRef}
+              muted
+            />
+          </div>
         </div>
-      </div>
-      {participant && !isLoading && (
+        {participant && !isLoading && (
         <div className="absolute z-10 bottom-0 w-50 h-24 flex justify-center  items-center w-11/12 md:w-5/6 shadow-inner rounded-tl-2xl rounded-tr-2xl pl-5 pr-5">
           <div className="flex">
             <button
@@ -95,7 +51,7 @@ export default function Room({ roomId, isUsersRoom }: Props) {
               />
             </button>
             <button
-              disabled={isBtnDisabled}
+                disabled={isBtnDisabled}
               onClick={likeParticipant}
               className="px-4 py-2 bg-green-400 disabled:bg-green-100 rounded-r-md w-24 flex justify-center items-center"
             >
@@ -110,22 +66,26 @@ export default function Room({ roomId, isUsersRoom }: Props) {
             </button>
           </div>
         </div>
-      )}
-      <h4 className="absolute z-50 bottom-28 font-black text-pink-600 text-4xl">
-        {participant ? participant.name : "My room"}
-      </h4>
-      <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-        {participant ? (
-          <video
-            className="w-full h-full object-cover"
-            ref={webRTC.peerVideoRef}
-            autoPlay
-            playsInline
-          />
-        ) : (
-          <Spinner />
         )}
-      </div>
-    </section>
+        <h4 className="absolute z-50 bottom-40 font-black text-pink-600 text-4xl">
+          {participant ? participant.name : "My room"}
+        </h4>
+        <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+          {participant && !isLoading ? (
+            <div className="w-4/5 h-4/5 max-w-4xl max-h-[60vh] rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-600">
+              <video
+                className="w-full h-full object-cover"
+                ref={peerVideoRef}
+                autoPlay
+                muted
+              />
+            </div>
+          ) : (
+            <div className="w-4/5 h-4/5 max-w-4xl max-h-[60vh] rounded-2xl overflow-hidden shadow-2xl border-4 border-pink-600 flex justify-center items-center bg-gray-100">
+              <Spinner />
+            </div>
+          )}
+        </div>
+      </section>
   );
 }
